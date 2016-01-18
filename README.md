@@ -22,11 +22,13 @@ libraries.
 
 ## Build and Setup
 
-You do not need to build the Caliko library yourself to use it, and may instead simply download the caliko and (optionally) caliko-visualisation .JAR files from this github location. Then, it's simply 
-a matter of creating a new project, adding the libraries to your build path and using them. If you're using the visualisation component, then LWJGL3 must also be configured in your project's build path.
+You do not need to build the Caliko library yourself to use it, and may instead simply download a caliko release from this github location. 
+
+Then, it's simply a matter of creating a new project, linking in the library .jars (and optionally the source code and javadoc archives)h and using the library functionality. If you're using the 
+visualisation component, then the LWJGL3 library must also be configured for your project.
 
 Alternatively, rather than using the caliko / caliko-visualisation .jar files, you could just copy the __au.edu.federation.*__ source files into your project, but you may then need to replace them with 
-newer versions as changes/fixes are applied to Caliko - so using the latest .JAR versions is a cleaner and more hassle-free solution.
+newer versions as changes/fixes are applied to Caliko - so using the latest .jar versions is a cleaner and more hassle-free solution.
 
 If you wish to build the Caliko library yourself, then it's configured to use maven for project / dependency management and the entire library can be built by calling:
 mvn package
@@ -47,4 +49,3 @@ structure.updateEmbeddedTargets() can then update each chain in the structure fo
 - Refactor entire library to use quaternions.
 - Add parabolic constraint types.
 - Streamline Model class object copying.
-
