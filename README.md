@@ -32,3 +32,19 @@ If you wish to build the Caliko library yourself, then it's configured to use ma
 mvn package
 
 This will create a file called **caliko.zip** in the top level directory, the contents of which are those from the created **RELEASE** folder.
+
+## TODO
+
+### High priority
+- Add user documentation.
+- Create and link to a high quality video demonstration of the library.
+
+### Medium priority
+- Add mechanism for individual IK chains in a structure to be updated to individual target locations (i.e. each chain holds a reference to a Vec2f/Vec3f which can be updated) so that a single call to 
+structure.updateEmbeddedTargets() can then update each chain in the structure for its own specific target locations.
+
+### Low priority
+- Refactor entire library to use quaternions.
+- Add parabolic constraint types.
+- Streamline Model class object copying.
+
