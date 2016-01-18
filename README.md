@@ -9,8 +9,8 @@ Aristidou, A., & Lasenby, J. (2011). FABRIK: a fast, iterative solver for the in
 ## Structure
 
 The library itself can be built into two separate .JAR files (one mandatory, one optional) suitable for inclusion in your IK projects:
-- **caliko-_<version>_.jar**, and
-- **caliko-visualisation-_<version>_**.jar.
+- **caliko.jar**, and
+- **caliko-visualisation.jar**.
 
 The **caliko** folder contains source code for core IK portion of the library and is capable of running without any visualisation or external dependencies. 
 
@@ -25,8 +25,10 @@ libraries.
 You do not need to build the Caliko library yourself to use it, and may instead simply download the caliko and (optionally) caliko-visualisation .JAR files from this github location. Then, it's simply 
 a matter of creating a new project, adding the libraries to your build path and using them. If you're using the visualisation component, then LWJGL3 must also be configured in your project's build path.
 
-Alternatively, rather than using the caliko / caliko-visualisation .JARs, you could just copy the __au.edu.federation.*__ source files into your project, but you may then need to replace them with 
+Alternatively, rather than using the caliko / caliko-visualisation .jar files, you could just copy the __au.edu.federation.*__ source files into your project, but you may then need to replace them with 
 newer versions as changes/fixes are applied to Caliko - so using the latest .JAR versions is a cleaner and more hassle-free solution.
 
-If you wish to build the Caliko library yourself, then it's configured to use maven for project / dependency management. Build scripts for both Linux and Windows are provided (obviously these depend 
-upon you having maven installed and available in your execution path).
+If you wish to build the Caliko library yourself, then it's configured to use maven for project / dependency management and the entire library can be built by calling:
+mvn package
+
+This will create a file called **caliko.zip** in the top level directory, the contents of which are those from the created **RELEASE** folder.
