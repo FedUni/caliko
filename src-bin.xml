@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<assembly>
+  <id>Caliko-source-single-zip</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <fileSets>
+    <!-- Take everything from these directories and combine them at the top-level of the zip file. Use NOTHING in "outputDirectory" rather than "/" for filesystem portability -->
+    <fileSet>
+      <directory>caliko/src</directory>
+      <outputDirectory></outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>caliko-visualisation/src</directory>
+      <outputDirectory></outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>caliko-demo/src</directory>
+      <outputDirectory></outputDirectory>
+    </fileSet>
+  </fileSets>
+</assembly>

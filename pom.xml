@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>au.edu.federation.caliko</groupId>
+  <artifactId>caliko-aggregate</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0</version>                     <!-- This is the version of the library as a while, which should match with build.txt -->
+  <name>Caliko library Aggregate POM</name>
+  <description>POM to build the Caliko library including the visualisation component, demo application, source and documentation archives.</description>
+  <url>https://github.com/FedUni/caliko</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <skipTests>true</skipTests>
+    <javaVersion>1.8</javaVersion>
+    <calikoVersion>1.0</calikoVersion>
+    <calikoVisVersion>1.0</calikoVisVersion>
+    <calikoDemoVersion>1.0</calikoDemoVersion>
+  </properties>
+
+  <!-- Build these modules in this specific order - the order is important because 'caliko' is
+       standalone, 'caliko-visualisation' depends on 'caliko', and 'caliko-demo' depends on both. -->
+  <modules>
+    <module>caliko</module>
+    <module>caliko-visualisation</module>
+    <module>caliko-demo</module>
+  </modules>
+
+  <build>
+    <directory>BUILD</directory>
+    <outputDirectory>RELEASE</outputDirectory>
+   
+    <plugins>
+
+      <!-- Build aggregated javadoc -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.3</version>   
+        <configuration>
+          <quiet>true</quiet>
+          <reportOutputDirectory>${project.build.directory}</reportOutputDirectory>          
+        </configuration>     
+        <executions>
+          <execution>
+            <phase>compile</phase>            
+            <id>aggregate-javadocs</id>
+            <goals>
+              <goal>aggregate</goal>              
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Assemble items into zip files -->
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.6</version>
+        <executions>
+
+          <!-- Javadoc into zip  -->
+          <execution>
+            <id>docs-assemble</id>
+            <phase>compile</phase>
+            <configuration>
+              <finalName>javadoc</finalName>
+              <appendAssemblyId>false</appendAssemblyId>
+              <descriptors>
+                <descriptor>doc-bin.xml</descriptor>
+              </descriptors>
+            <outputDirectory>${project.build.outputDirectory}/doc</outputDirectory>
+            </configuration>
+            <goals>
+              <goal>single</goal>
+            </goals>            
+          </execution>
+
+          <!-- Source code into zip -->
+          <execution>
+            <id>source-assemble</id>
+            <phase>compile</phase>
+            <configuration>
+              <finalName>src</finalName>
+              <appendAssemblyId>false</appendAssemblyId>
+              <descriptors>
+                <descriptor>src-bin.xml</descriptor>
+              </descriptors>
+            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+            </configuration>
+            <goals>
+              <goal>single</goal>
+            </goals>            
+          </execution>
+
+          <!-- Entire RELEASE folder into final caliko.zip -->
+          <execution>
+            <id>create-release-zip-archive</id>
+            <phase>package</phase>
+            <configuration>
+              <finalName>caliko</finalName>
+              <appendAssemblyId>false</appendAssemblyId>
+              <outputDirectory>${project.basedir}</outputDirectory>
+              <descriptors>
+                <descriptor>lib-bin.xml</descriptor>
+              </descriptors>
+            </configuration>
+            <goals>
+              <goal>single</goal>
+            </goals>            
+          </execution>
+
+        </executions>        
+      </plugin>
+
+      <!-- Copy resources to final RELEASE folder -->
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.7</version>
+        <executions>
+
+          <!-- Copy library jars to RELEASE/jar -->
+          <execution>
+            <id>copy-library-jars</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.outputDirectory}/jar</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>caliko/target</directory>
+                  <includes>
+                    <include>**/*.jar</include>
+                  </includes>
+                </resource>
+                <resource>
+                  <directory>caliko-visualisation/target</directory>
+                  <includes>
+                    <include>**/*.jar</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+
+          <!-- Copy demo jars to RELEASE/demo -->
+          <execution>
+            <id>copy-demo-jar</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.outputDirectory}/demo</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>caliko-demo/target</directory>
+                  <includes>
+                    <include>**/*.jar</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+
+          <!-- Update the build.txt stamp from the version of this POM -->
+          <execution>
+            <id>update-build-stamp</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+              <resources>
+                <resource>
+                  <filtering>true</filtering>
+                  <directory>.</directory>
+                  <includes>
+                    <include>build.txt</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>

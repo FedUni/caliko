@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<assembly>
+  <id>caliko-javadoc-single-zip</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+      <directory>${project.build.directory}/apidocs</directory> <!-- Take everything from here downwards...                                                                       -->
+      <outputDirectory></outputDirectory>                       <!-- ...and place it at the top-level of the zip file. Use NOTHING here instead of "/" for filesystem portability -->
+    </fileSet>
+  </fileSets>
+</assembly>

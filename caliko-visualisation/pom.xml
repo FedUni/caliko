@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- Configure settings & version numbers and specify license -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <skipTests>true</skipTests>
+    <javaVersion>1.8</javaVersion>
+    <calikoVersion>1.0</calikoVersion>
+    <lwjgl.version>3.0.0b</lwjgl.version>
+  </properties>
+
+  <licenses>
+    <license>
+      <name>MIT</name>
+      <url>http://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
+
+  <!-- What we're building... -->
+  <groupId>au.edu.federation.caliko.visualisation</groupId>
+  <artifactId>caliko-visualisation</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0</version> <!-- *** Change this version number on new release and make corresponding change in demo pom *** -->
+  <name>caliko-visualisation</name>
+  <url>https://github.com/FedUni/caliko</url>
+  
+
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+
+      <!-- Force compilation with a modern java version -->
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <executions>
+          <execution>
+            <id>default-compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <source>${javaVersion}</source>
+              <target>${javaVersion}</target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Provide details and path to local 'core' caliko jar -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>2.5.2</version>
+        <configuration>
+          <groupId>au.edu.federation.caliko</groupId>
+          <artifactId>caliko</artifactId>
+          <version>${calikoVersion}</version>
+          <packaging>jar</packaging>
+          <file>../caliko/target/caliko.jar</file>
+        </configuration>
+        <executions>
+          <execution>
+            <id>install-jar-lib</id>
+            <goals>
+              <goal>install-file</goal>
+            </goals>
+            <phase>validate</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <!-- Specify that this visualisation component depends on the functionality in the 'core' caliko jar and on LWJGL -->
+  <dependencies>
+
+    <dependency>
+      <groupId>au.edu.federation.caliko</groupId>
+      <artifactId>caliko</artifactId>
+      <version>${calikoVersion}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl</artifactId>
+      <version>${lwjgl.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+  </dependencies>
+
+  <!-- Developer, contact and source control management details -->
+  <developers>
+    <developer>
+      <id>alansley</id>
+      <name>Alastair Lansley</name>
+      <email>a.lansley@federation.edu.au</email>
+      <url>http://federation.edu.au/faculties-and-schools/faculty-of-science-and-technology/staff-profiles/information-technology/alastair-lansley</url>
+      <organization>Federation University, Australia</organization>
+      <organizationUrl>http://federation.edu.au</organizationUrl>
+      <timezone>Australia/Melbourne</timezone>
+    </developer>
+  </developers>  
+  <scm>
+    <connection>git:https://github.com/FedUni/caliko</connection>
+    <developerConnection>scm:git:https://github.com/FedUni/caliko</developerConnection>
+  </scm>
+
+</project>
