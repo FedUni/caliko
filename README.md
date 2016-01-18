@@ -24,7 +24,7 @@ libraries.
 
 You do not need to build the Caliko library yourself to use it, and may instead simply download a caliko release from this github location. 
 
-Then, it's simply a matter of creating a new project, linking in the library .jars (and optionally the source code and javadoc archives)h and using the library functionality. If you're using the 
+Then, it's simply a matter of creating a new project, linking in the library .jars (and optionally the source code and javadoc archives) and using the library functionality. If you're using the 
 visualisation component, then the LWJGL3 library must also be configured for your project.
 
 Alternatively, rather than using the caliko / caliko-visualisation .jar files, you could just copy the __au.edu.federation.*__ source files into your project, but you may then need to replace them with 
