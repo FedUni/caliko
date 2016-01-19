@@ -35,18 +35,17 @@ This will create a file called **caliko.zip** in the top level directory, the co
 
 ## Demo controls
 
-Left mouse button sets target in 2D mode and enables mouse-look in 3D mode.
-
-Up/Down cursors - Toggle 2D/3D mode.
-Left/Right cursors - Prev/Next demo.
-Space - Pause/Resume target movement (3D).
-L - Toggle display lines.
-M - Toggle display models (3D).
-X - Toggle display axes (3D).
-F - Toggle fixed base mode.
-P - Toggle perspective / orthographic projection (3D)
-R - Toggle rotating base locations (3D)
-Esc - Quit.
+- Left mouse button sets target in 2D mode and enables mouse-look in 3D mode.
+- Up/Down cursors - Toggle 2D/3D mode.
+- Left/Right cursors - Prev/Next demo.
+- Space - Pause/Resume target movement (3D).
+- L - Toggle display lines.
+- M - Toggle display models (3D).
+- X - Toggle display axes (3D).
+- F - Toggle fixed base mode.
+- P - Toggle perspective / orthographic projection (3D)
+- R - Toggle rotating base locations (3D)
+- Esc - Quit.
 
 ## TODO
 
