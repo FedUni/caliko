@@ -1,7 +1,5 @@
 # Caliko
-The Caliko library is an implementation of the FABRIK inverse kinematics (IK) algorithm in the Java programming language.
-
-It is released under the MIT software license. See LICENSE.txt for further details.
+The Caliko library is an implementation of the FABRIK inverse kinematics (IK) algorithm in the Java programming language, and is released under the MIT software license. See LICENSE.txt for further details.
 
 The FABRIK algorithm is explained in the following research paper:
 Aristidou, A., & Lasenby, J. (2011). FABRIK: a fast, iterative solver for the inverse kinematics problem. Graphical Models, 73(5), 243-260.
