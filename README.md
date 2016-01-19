@@ -3,7 +3,7 @@ The Caliko library is an implementation of the FABRIK inverse kinematics (IK) al
 
 It is released under the MIT software license. See LICENSE.txt for further details.
 
-The FABRIK algorithm itself is explained in the following research paper:
+The FABRIK algorithm is explained in the following research paper:
 Aristidou, A., & Lasenby, J. (2011). FABRIK: a fast, iterative solver for the inverse kinematics problem. Graphical Models, 73(5), 243-260.
 
 ## Structure
