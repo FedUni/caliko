@@ -50,7 +50,6 @@ This will create a file called **caliko.zip** in the top level directory, the co
 ## TODO
 
 ### High priority
-- Add user documentation.
 - Create and link to a high quality video demonstration of the library.
 
 ### Medium priority
