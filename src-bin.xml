@@ -8,6 +8,12 @@
   <fileSets>
     <!-- Take everything from these directories and combine them at the top-level of the zip file. Use NOTHING in "outputDirectory" rather than "/" for filesystem portability -->
     <fileSet>
+      <directory>.</directory>
+        <includes>
+          <include>LICENSE.txt</include>
+        </includes>
+    </fileSet>  
+    <fileSet>
       <directory>caliko/src</directory>
       <outputDirectory></outputDirectory>
     </fileSet>

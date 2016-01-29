@@ -39,8 +39,8 @@ public class Application
 	static boolean paused              = true;
 
 	// Create our window and OpenGL context
-	static int windowWidth     = 800;
-	static int windowHeight    = 600;
+	static int windowWidth     = 400;
+	static int windowHeight    = 300;
 	static OpenGLWindow window = new OpenGLWindow(Application.windowWidth, Application.windowHeight);
 
 	// Declare a CalikoDemo object which can run our 3D and 2D demonstration scenarios
@@ -54,10 +54,8 @@ public class Application
 			Application.demo = Application.use3dDemo ? new CalikoDemo3D(Application.demoNumber) : new CalikoDemo2D(Application.demoNumber);
 			Application.mainLoop();
 		}
-		finally
-		{
-			Application.window.cleanup();
-		}
+		catch (Exception e) { e.printStackTrace();          }
+		finally             { Application.window.cleanup();	}
 	}
 
 	private static void mainLoop()

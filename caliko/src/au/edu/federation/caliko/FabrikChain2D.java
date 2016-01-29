@@ -187,7 +187,7 @@ public class FabrikChain2D
 	 * <p>
 	 * This property cannot be accessed by users and is updated in the FabrikStructure2D.updateTarget() method.
 	 */
-	private Vec2f mBaseboneConnectionConstraintUV = new Vec2f();
+	private Vec2f mBaseboneRelativeConstraintUV = new Vec2f();
 	
 	/**
 	 * mTargetLocation	The target location for the end effector of this IK chain.
@@ -256,7 +256,7 @@ public class FabrikChain2D
 		mLastTargetLocation.set(source.mLastTargetLocation);
 		mLastBaseLocation.set(source.mLastBaseLocation);
 		mBaseboneConstraintUV.set(source.mBaseboneConstraintUV);
-		mBaseboneConnectionConstraintUV.set(source.mBaseboneConnectionConstraintUV);	
+		mBaseboneRelativeConstraintUV.set(source.mBaseboneRelativeConstraintUV);	
 		
 		// Native copy by value for primitive members
 		mChainLength            = source.mChainLength;
@@ -757,7 +757,7 @@ public class FabrikChain2D
 	 */
 	private float solveIK(Vec2f target)
 	{	
-		// ---------- Step 1 of 2 - Forward pass from end effector to base -----------
+		// ---------- Step 1 of 2 - Forward pass from end-effector to base -----------
 
 		// Loop over all bones in the chain, from the end effector (numBones-1) back to the base bone (0)		
 		for (int loop = mNumBones-1; loop >= 0; --loop)
@@ -897,8 +897,23 @@ public class FabrikChain2D
 					// Get the constrained direction unit vector between the base bone and the base bone constraint unit vector
 					// Note: On the backward pass we constrain to the limits imposed by the first joint of this bone.
 					float clockwiseConstraintDegs     = mChain.get(loop).getJoint().getClockwiseConstraintDegs();
-					float antiClockwiseConstraintDegs = mChain.get(loop).getJoint().getAnticlockwiseConstraintDegs();					
-					Vec2f constrainedUV = Vec2f.getConstrainedUV(thisBoneInnerToOuterUV, mBaseboneConstraintUV, clockwiseConstraintDegs, antiClockwiseConstraintDegs);
+					float antiClockwiseConstraintDegs = mChain.get(loop).getJoint().getAnticlockwiseConstraintDegs();
+					
+					// LOCAL_ABSOLUTE? (i.e. local-space directional constraint) - then we must constraint about the relative basebone constraint UV...
+					Vec2f constrainedUV;
+					if (mBaseboneConstraintType == BaseboneConstraintType2D.LOCAL_ABSOLUTE)
+					{
+						constrainedUV = Vec2f.getConstrainedUV(thisBoneInnerToOuterUV, mBaseboneRelativeConstraintUV, clockwiseConstraintDegs, antiClockwiseConstraintDegs);
+						
+//						System.out.println("----- In LOCAL_ABSOLUTE --------");
+//						System.out.println("This bone UV = " + thisBoneInnerToOuterUV);
+//						System.out.println("Constraint UV = " + mBaseboneConstraintUV);
+//						System.out.println("Relative constraint UV = " + mBaseboneRelativeConstraintUV);
+					}
+					else // ...otherwise we're free to use the standard basebone constraint UV.
+					{
+						constrainedUV = Vec2f.getConstrainedUV(thisBoneInnerToOuterUV, mBaseboneConstraintUV, clockwiseConstraintDegs, antiClockwiseConstraintDegs);
+					}
 					
 					// At this stage we have an inner-to-outer unit vector for this bone which is within our constraints,
 					// so we can set the new end location to be the start location of this bone plus the constrained
@@ -914,9 +929,8 @@ public class FabrikChain2D
 					if (loop < mNumBones-1)
 					{
 						mChain.get(loop+1).setStartLocation(newEndLocation);
-					}
-					
-				} // End of base bone constraint handling section
+					}					
+				}				
 
 			} // End of base bone handling section
 
@@ -1048,7 +1062,7 @@ public class FabrikChain2D
 		
 		// Not the same target? Then we must solve the chain for the new target.
 		// We'll start by creating a list of bones to store our best solution
-		List<FabrikBone2D> bestSolution = new ArrayList<FabrikBone2D>();
+		List<FabrikBone2D> bestSolution = new ArrayList<FabrikBone2D>(this.mNumBones);
 		
 		// We'll keep track of our best solve distance, starting it at a huge value which will be beaten on first attempt			
 		float bestSolveDistance     = Float.MAX_VALUE;
@@ -1093,14 +1107,14 @@ public class FabrikChain2D
 		return mCurrentSolveDistance;
 	}
 	
-	/** Package-private method to return the constraint UV about which this bone connects to a bone in another chain. */
-	Vec2f getBaseboneConnectionConstraintUV() {	return mBaseboneConnectionConstraintUV; }
+	/** Return the relative constraint UV about which this bone connects to a bone in another chain. */
+	public Vec2f getBaseboneRelativeConstraintUV() { return mBaseboneRelativeConstraintUV; }
 	
 	/**
-	 * Package-private method to set the constraint UV about which this bone connects to a bone in another chain.
+	 * Set the constraint UV about which this bone connects to a bone in another chain.
 	 * <p>
 	 * This method is used internally by the FabrikStructure2D.updateTarget() method.
 	 */
-	void setBaseboneConnectionAbsoluteConstraintUV(Vec2f constraintUV) { mBaseboneConnectionConstraintUV = constraintUV;	}
+	public void setBaseboneRelativeConstraintUV(Vec2f constraintUV) { mBaseboneRelativeConstraintUV.set(constraintUV);	}
 
 } // End of FabrikChain2D class

@@ -140,9 +140,7 @@ public class FabrikConstraint3D
 				// Draw the circle describing the hinge rotation axis
 				float radius = boneLength * RADIUS_FACTOR;
 				mCircle.draw(lineStart, relativeHingeRotationAxis, radius, LOCAL_HINGE_COLOUR, lineWidth, mvpMatrix);
-											
-				if ( !(relativeHingeRotationAxis.length() > 0.0f) ) { throw new RuntimeException("relative hinge rotation axis is fucking zero!"); }
-				
+															
 				// Draw the hinge reference and clockwise/anticlockwise constraints if necessary
 				float anticlockwiseConstraintDegs =  bone.getHingeJointAnticlockwiseConstraintDegs();
 				float clockwiseConstraintDegs     = -bone.getHingeJointClockwiseConstraintDegs(); 
@@ -196,8 +194,13 @@ public class FabrikConstraint3D
 					break;
 				
 				case LOCAL_ROTOR:
-				case LOCAL_HINGE:
-					draw( chain.getBone(0), chain.getBaseboneRelativeConstraintUV(), lineWidth, mvpMatrix );
+				case LOCAL_HINGE:					
+					// If the structure hasn't been solved yet then we won't have a relative basebone constraint which we require
+					// to draw the constraint itself - so our best option is to simply not draw the constraint until we can. 
+					if (chain.getBaseboneRelativeConstraintUV().length() > 0.0f) 
+					{
+						draw( chain.getBone(0), chain.getBaseboneRelativeConstraintUV(), lineWidth, mvpMatrix );
+					}
 					break;
 			
 				// No need for a default - constraint types are enums and we've covered them all.

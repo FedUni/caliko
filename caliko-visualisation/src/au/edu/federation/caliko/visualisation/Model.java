@@ -2,6 +2,7 @@ package au.edu.federation.caliko.visualisation;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -449,10 +450,10 @@ public class Model
 		int lineCount = 0;
 
 		// Try with resources (automagically closes the file on completion or failure)
-		//try (BufferedReader br = new BufferedReader(new FileReader(filename)) )
+		try (BufferedReader br = new BufferedReader(new FileReader(filename)) )
 
-		InputStream is = this.getClass().getResourceAsStream(filename);
-		try (BufferedReader br = new BufferedReader( new InputStreamReader(is)) )
+		//InputStream is = this.getClass().getResourceAsStream(filename);
+		//try (BufferedReader br = new BufferedReader( new InputStreamReader(is)) )
 		{
 			// We'll read through the file one line at a time - this will hold the current line we're working on
 			String line;

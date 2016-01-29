@@ -23,6 +23,8 @@ import au.edu.federation.caliko.utils.Vec2f;
  **/
 public class FabrikStructure2D
 {	
+	private static final Vec2f UP = new Vec2f(0.0f, 1.0f);
+	
 	// ---------- Private Properties ----------
 	
 	/** The string name of this FabrikStructure2D - can be used for creating Maps, if required. */
@@ -34,7 +36,7 @@ public class FabrikStructure2D
 	/** Property to keep track of how many chains exist in this structure. */
 	private int mNumChains = 0;
 	
-	/** Property to indicate if the first chain (chain zero) in this structure has its base bone fixed in place or not. */
+	/** Property to indicate if the first chain (chain zero) in this structure has its basebone fixed in place or not. */
 	private boolean mFixedBaseMode = true;
 
 	// --------- Public Methods ----------
@@ -80,11 +82,11 @@ public class FabrikStructure2D
 			// Is this chain connected to another chain?
 			hostChainNumber = thisChain.getConnectedChainNumber();
 			
-			// Get the base bone constraint type of the chain we're working on
+			// Get the basebone constraint type of the chain we're working on
 			BaseboneConstraintType2D constraintType = thisChain.getBaseboneConstraintType();
 			
-			// If this chain is not connected to another chain, or if the base bone constraint type is global absolute
-			// then we must update the basebone constraint UV for LOCAL_RELATIVE and the basebone connection constraint UV for LOCAL_ABSOLUTE connection types.
+			// If this chain is not connected to another chain and the basebone constraint type of this chain is not global absolute
+			// then we must update the basebone constraint UV for LOCAL_RELATIVE and the basebone relative constraint UV for LOCAL_ABSOLUTE connection types.
 			// Note: For NONE or GLOBAL_ABSOLUTE we don't need to update anything before calling updateTarget().
 			if (hostChainNumber != -1 && constraintType != BaseboneConstraintType2D.GLOBAL_ABSOLUTE)
 			{	
@@ -103,30 +105,30 @@ public class FabrikStructure2D
 					thisChain.setBaseLocation( hostBone.getEndLocation() );
 				}
 				
-				// If the base bone is constrained to the direction of the bone it's connected to... 
+				// If the basebone is constrained to the direction of the bone it's connected to...
+				Vec2f hostBoneUV = hostBone.getDirectionUV();
 				if (constraintType == BaseboneConstraintType2D.LOCAL_RELATIVE)
 				{	
 					// ...then set the basebone constraint UV to be the direction of the bone we're connected to.
-					mChains.get(loop).setBaseboneConstraintUV( hostBone.getDirectionUV() );
+					mChains.get(loop).setBaseboneConstraintUV(hostBoneUV);
 				}				
 				else if (constraintType == BaseboneConstraintType2D.LOCAL_ABSOLUTE)
 				{	
-					// Note: LOCAL_ABSOLUTE directions are directions which are in the local coordinate system of the host bone,
-					// for example, if the baseboneConstraintUV is Vec2f(-1.0f, 0.0f) [i.e. left], then the baseboneConnectionConstraintUV
+					// Note: LOCAL_ABSOLUTE directions are directions which are in the local coordinate system of the host bone.
+					// For example, if the baseboneConstraintUV is Vec2f(-1.0f, 0.0f) [i.e. left], then the baseboneConnectionConstraintUV
 					// will be updated to be left with regard to the host bone.
 					
-					// Get the direction of the host bone and the the basebone constraint UV for the bone connecting to the host bone...
-					Vec2f hostBoneUV = hostBone.getDirectionUV();
-					Vec2f baseboneConstraintUV = thisChain.getBaseboneConstraintUV();
+					// Get the angle between UP and the hostbone direction
+					float angleDegs = UP.getSignedAngleDegsTo(hostBoneUV);
 					
-					// ...then work out the angle between them, and use this to calculate and update the connecting chain's basebone connection constraint UV.
-					float angleDegs = hostBoneUV.getSignedAngleDegsTo(baseboneConstraintUV);
+					// ...then apply that same rotation to this chain's basebone constraint UV to get the relative constraint UV... 
+					Vec2f relativeConstraintUV = Vec2f.rotateDegs( thisChain.getBaseboneConstraintUV(), angleDegs);
 					
-					Vec2f relativeConstraintUV = Vec2f.rotateDegs(baseboneConstraintUV, angleDegs);
-					thisChain.setBaseboneConnectionAbsoluteConstraintUV(relativeConstraintUV);					
+					// ...which we then update.
+					thisChain.setBaseboneRelativeConstraintUV(relativeConstraintUV);					
 				}
 				
-				// NOTE: If the basebone constraint type is NONE then we don't do anything with the base bone constraint of the connected chain.
+				// NOTE: If the basebone constraint type is NONE then we don't do anything with the basebone constraint of the connected chain.
 				
 			} // End of if chain is connected to another chain section
 			
@@ -202,7 +204,7 @@ public class FabrikStructure2D
 			throw new IllegalArgumentException("Cannot connect to bone " + boneNumber + " of chain " + chainNumber + " - no such bone (remember that bones are zero indexed).");
 		}
 				
-		// Note: Any base bone constraint type is fine for a connected chain
+		// Note: Any basebone constraint type is fine for a connected chain
 		
 		// The chain as we were provided should be centred on the origin, so we must now make it
 		// relative to the connection point in the given chain.		

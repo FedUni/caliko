@@ -329,13 +329,13 @@ public class CalikoDemo2D extends CalikoDemo
 				
 				// Create our basebone and add it to the chain
 				FabrikBone2D basebone = new FabrikBone2D( new Vec2f(0.0f, -100.0f), UP, boneLength);
-				basebone.setClockwiseConstraintDegs(15.0f);
-				basebone.setAnticlockwiseConstraintDegs(15.0f);
+				basebone.setClockwiseConstraintDegs(45.0f);
+				basebone.setAnticlockwiseConstraintDegs(45.0f);
 				
 				// Add the basebone and two additional bones to the chain
 				verticalChain.addBone(basebone);
-				verticalChain.addConsecutiveConstrainedBone(UP, boneLength, 15.0f, 15.0f);
-				verticalChain.addConsecutiveConstrainedBone(UP, boneLength, 15.0f, 15.0f);
+				verticalChain.addConsecutiveConstrainedBone(UP, boneLength, 1.0f, 1.0f);
+				verticalChain.addConsecutiveConstrainedBone(UP, boneLength, 1.0f, 1.0f);
 				
 				// Add chain to structure
 				mStructure.addChain(verticalChain);
@@ -344,7 +344,7 @@ public class CalikoDemo2D extends CalikoDemo
 				boneLength = 30.0f;
 				
 				// Create the base bone
-				basebone = new FabrikBone2D( new Vec2f(), new Vec2f(-boneLength, 0.0f) );
+				/*basebone = new FabrikBone2D( new Vec2f(), new Vec2f(-boneLength, 0.0f) );
 				basebone.setClockwiseConstraintDegs(15.0f);
 				basebone.setAnticlockwiseConstraintDegs(15.0f);
 				basebone.setColour(Utils.MID_GREEN);
@@ -364,7 +364,7 @@ public class CalikoDemo2D extends CalikoDemo
 				leftChain.updateTarget(new Vec2f(100.0f, 100.0f) );
 										
 				// Add the chain to the structure, connecting at the end of bone 0 in chain 0
-				mStructure.addConnectedChain(leftChain, 0, 0, BoneConnectionPoint2D.END);
+				mStructure.addConnectedChain(leftChain, 0, 0, BoneConnectionPoint2D.END);*/
 				
 				// ----- Right branch chain -----				
 				// Create the base bone
@@ -386,7 +386,7 @@ public class CalikoDemo2D extends CalikoDemo
 				rightChain.addConsecutiveConstrainedBone(RIGHT, boneLength, 90.0f, 90.0f, Utils.GREY);
 				
 				// Add the chain to the structure, connecting at the end of bone 1 in chain 0
-				mStructure.addConnectedChain(rightChain, 0, 1, BoneConnectionPoint2D.END);
+				mStructure.addConnectedChain(rightChain, 0, 0, BoneConnectionPoint2D.END);
 				
 				break;
 			}

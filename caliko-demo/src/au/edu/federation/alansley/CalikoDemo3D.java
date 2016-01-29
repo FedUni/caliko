@@ -4,6 +4,7 @@ import au.edu.federation.caliko.FabrikBone3D;
 import au.edu.federation.caliko.FabrikBone3D.BoneConnectionPoint3D;
 import au.edu.federation.caliko.FabrikChain3D;
 import au.edu.federation.caliko.FabrikChain3D.BaseboneConstraintType3D;
+import au.edu.federation.caliko.FabrikJoint3D;
 import au.edu.federation.caliko.FabrikStructure3D;
 import au.edu.federation.caliko.FabrikJoint3D.JointType;
 import au.edu.federation.caliko.utils.Colour4f;
@@ -56,7 +57,7 @@ public class CalikoDemo3D extends CalikoDemo
 	static FabrikConstraint3D constraint = new FabrikConstraint3D();
 		
 	// A simple Wavefront .OBJ format model of a pyramid to display around each bone (set to draw with a 1.0f line width)
-	static FabrikModel3D model = new FabrikModel3D("/pyramid.obj", 1.0f);
+	static FabrikModel3D model = new FabrikModel3D("pyramid.obj", 1.0f);
 
 	// Setup moving target. Params: location, extents, interpolation frames, grid height for vertical bar
 	static MovingTarget3D target = new MovingTarget3D(new Vec3f(), new Vec3f(60.0f), 200, gridLevel);
@@ -314,7 +315,7 @@ public class CalikoDemo3D extends CalikoDemo
 			}
 				
 			case 6: {
-				demoName      = "Demo 6 - Freely Rotating Local Hinges";
+				demoName      = "Demo 6 - Local Hinges";
 				mStructure    = new FabrikStructure3D(demoName);
 				int numChains = 3;
 				
@@ -586,7 +587,7 @@ public class CalikoDemo3D extends CalikoDemo
 			}
 			
 			case 11: {
-				demoName            = "Demo 11 - Connected Chains with Freely-Rotating Global Hinged Basebone Constraints";
+				demoName            = "Demo 7 - Connected Chains";
 				mStructure          = new FabrikStructure3D(demoName);
 				Colour4f boneColour = new Colour4f(Utils.GREEN);
 				
@@ -617,7 +618,9 @@ public class CalikoDemo3D extends CalikoDemo
 				
 				// Set this second chain to have a freely rotating global hinge which rotates about the Y axis
 				// Note: We MUST add the basebone to the chain before we can set the basebone constraint on it.
-				secondChain.setFreelyRotatingGlobalHingedBasebone(Y_AXIS);				
+				//secondChain.setFreelyRotatingGlobalHingedBasebone(Y_AXIS);
+				//secondChain.setFreelyRotatingLocalHingedBasebone(Z_AXIS);
+				secondChain.setLocalHingedBasebone(Z_AXIS, 30.0f, 60.0f, Y_AXIS);
 				
 				// Add some additional bones
 				secondChain.addConsecutiveBone(X_AXIS, 15.0f);
@@ -627,6 +630,10 @@ public class CalikoDemo3D extends CalikoDemo
 				
 				// Connect this second chain to the start point of bone 3 in chain 0 of the structure
 				mStructure.connectChain(secondChain, 0, 3, BoneConnectionPoint3D.START);
+				
+				secondChain.setColour(Utils.MID_BLUE);
+				secondChain.setRotorBaseboneConstraint(BaseboneConstraintType3D.GLOBAL_ROTOR, Y_AXIS, 45.0f);
+				mStructure.connectChain(secondChain, 1, 2, BoneConnectionPoint3D.START);
 				break;
 			}
 			
@@ -666,7 +673,7 @@ public class CalikoDemo3D extends CalikoDemo
 				// Note: We MUST add the basebone to the chain before we can set the basebone constraint on it, and our
 				// reference axis MUST lie in the plane of the Y-axis. If using an arbitrary hinge rotation axis then you
 				// might consider using one of the Utils.genPerpendicularVector() methods to generate a valid reference axis.
-				secondChain.setGlobalHingeBaseboneConstraint(Y_AXIS, 90.0f, 45.0f, X_AXIS);
+				secondChain.setHingeBaseboneConstraint(BaseboneConstraintType3D.GLOBAL_HINGE, Y_AXIS, 90.0f, 45.0f, X_AXIS);
 				
 				// Add some additional bones
 				secondChain.addConsecutiveBone(X_AXIS, 15.0f);

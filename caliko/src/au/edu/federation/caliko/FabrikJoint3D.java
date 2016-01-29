@@ -201,8 +201,16 @@ public class FabrikJoint3D
 		mJointType = JointType.BALL;
 	}
 	
-	// Internal method to set up a hinge joint
-	private void setHinge(JointType jointType, Vec3f rotationAxis, float clockwiseConstraintDegs, float anticlockwiseConstraintDegs, Vec3f referenceAxis)
+	/**
+	 * Specify this joint to be a hinge with the provided settings.
+	 * 
+	 * @param jointType						The type of joint, this may be either BALL, GLOBAL_HINGE or LOCAL_HINGE.
+	 * @param rotationAxis					The rotation axis of the hinge.
+	 * @param clockwiseConstraintDegs		The clockwise constraint angle about the reference axis.
+	 * @param anticlockwiseConstraintDegs	The anticlockwise constraint angle about the reference axis.
+	 * @param referenceAxis					The reference axis itself, which must fall within the plane of the hinge rotation axis.
+	 */
+	public void setHinge(JointType jointType, Vec3f rotationAxis, float clockwiseConstraintDegs, float anticlockwiseConstraintDegs, Vec3f referenceAxis)
 	{
 		// Ensure the reference axis falls within the plane of the rotation axis (i.e. they are perpendicular, so their dot product is zero)		
 		if ( !Utils.approximatelyEquals( Vec3f.dotProduct(rotationAxis, referenceAxis), 0.0f, 0.01f) )

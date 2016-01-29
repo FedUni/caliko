@@ -139,10 +139,20 @@ public class FabrikLine2D
 			if (loop == 0)
 			{
 				// ...and if the base bone is constrained...
-				if ( !(chain.getBaseboneConstraintType() == BaseboneConstraintType2D.NONE) )
+				BaseboneConstraintType2D constraintType = chain.getBaseboneConstraintType();
+				if (constraintType != BaseboneConstraintType2D.NONE)
 				{					
-					// ...then get the base bone constraint unit vector
-					Vec2f baseboneConstraintUV = chain.getBaseboneConstraintUV();
+					// If the basebone constraint type LOCAL_ABSOLUTE i.e. a direction in the host bone's local space...
+					Vec2f baseboneConstraintUV;
+					if (constraintType == BaseboneConstraintType2D.LOCAL_ABSOLUTE)					
+					{
+						// ...then get that relative constraint unit vector.
+						baseboneConstraintUV = chain.getBaseboneRelativeConstraintUV();
+					}
+					else // Otherwise, if we have a GLOBAL_ABSOLUTE or LOCAL_RELATIVE constraint type we use the standard chain constraint UV.
+					{
+						baseboneConstraintUV = chain.getBaseboneConstraintUV();
+					}
 					
 					// Draw the anticlockwise constraint in red
 					// Note: To the user and internally, anticlockwise rotation angles are positive.

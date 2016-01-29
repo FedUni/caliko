@@ -111,65 +111,26 @@ public class FabrikStructure3D
 					case GLOBAL_HINGE: // Nothing to do because the basebone constraint is not relative to bones in other chains in this structure
 						break;
 						
-					// If we have a local rotor constraint then we must calculate the local / relative base bone bone constraint
-					case LOCAL_ROTOR: {
-						// To do this, we'll get the direction of the bone this chain is connected to and create a rotation matrix from it.
+					// If we have a local rotor or hinge constraint then we must calculate the relative basebone constraint before calling updateTarget
+					case LOCAL_ROTOR:
+					case LOCAL_HINGE: {
+						// Get the direction of the bone this chain is connected to and create a rotation matrix from it.
 						Mat3f connectionBoneMatrix = Mat3f.createRotationMatrix( hostBone.getDirectionUV() );
 						
 						// We'll then get the basebone constraint UV and multiply it by the rotation matrix of the connected bone 
 						// to make the basebone constraint UV relative to the direction of bone it's connected to.
-						Vec3f thisChainBaseBoneConstraintUV = thisChain.getBaseboneConstraintUV();
-						Vec3f relativeBaseBoneConstraintUV = connectionBoneMatrix.times( thisChainBaseBoneConstraintUV ).normalised();
+						Vec3f relativeBaseboneConstraintUV = connectionBoneMatrix.times( thisChain.getBaseboneConstraintUV() ).normalised();
 							
 						// Update our basebone relative constraint UV property
-						thisChain.setBaseboneRelativeConstraintUV(relativeBaseBoneConstraintUV);
+						thisChain.setBaseboneRelativeConstraintUV(relativeBaseboneConstraintUV);
 						
-						// Get this bone and its direction and find the angle between it and our newly calculated relative basebone constraint UV
-						FabrikBone3D thisBone = thisChain.getBone(0);
-						Vec3f thisBoneInnerToOuterUV = thisBone.getDirectionUV();			
-						float angleBetweenDegs  = Vec3f.getAngleBetweenDegs(relativeBaseBoneConstraintUV, thisBoneInnerToOuterUV);
-						
-						// If the angle is greater than the allowed constraint angle then constrain it
-						float constraintAngleDegs = thisBone.getBallJointConstraintDegs();
-						if (angleBetweenDegs > constraintAngleDegs)
+						// Updat the relative reference constraint UV if we hav a local hinge
+						if (constraintType == BaseboneConstraintType3D.LOCAL_HINGE)
 						{
-							thisBoneInnerToOuterUV = Vec3f.getAngleLimitedUnitVectorDegs(thisBoneInnerToOuterUV, relativeBaseBoneConstraintUV, constraintAngleDegs);
+							thisChain.setBaseboneRelativeReferenceConstraintUV( connectionBoneMatrix.times( thisChain.getBone(0).getJoint().getHingeReferenceAxis() ) );
 						}
-						
-						// Calculate and set the new (constrained) end location of this bone
-						Vec3f newEndLocation = thisBone.getStartLocation().plus( thisBoneInnerToOuterUV.times( thisBone.length() ) );
-						thisBone.setEndLocation( newEndLocation );
-						
-						// Also, set the start location of the next bone to be the end location of this bone
-						if (thisChain.getNumBones() > 0) { thisChain.getBone(1).setStartLocation(newEndLocation); }						
 						break;
-					}
-						
-					case LOCAL_HINGE: {
-						
-						throw new RuntimeException("Local hinge basebone connections are not supported at this time.");
-
-						//FIXME: This!
-						
-//						// Get the direction of the bone this chain is connected to
-//						Vec3f connectedBoneUV = connectedBone.getDirectionUV();
-//						
-//						// Get the angle between 'up' and the bone direction
-//						float angleFromUpToBoneDirectionDegs = up.getSignedAngleDegsTo(connectedBoneUV);
-//						
-//						// Get the base bone absolute constraint UV
-//						Vec3f baseBoneConnectionAbsoluteConstraintUV = mChains.get(loop).getBaseBoneConnectionAbsoluteConstraintUV();
-//						
-//						// Get the signed angle between them
-//						float signedAngleBetween = connectedBoneUV.getSignedAngleDegsTo(baseBoneConnectionAbsoluteConstraintUV);
-//						
-//						// Rotate the bone direction UV the amount required for it to stay absolute with regard to the bone direction
-//						Vec3f relativeUV = Vec3f.rotateDegs(connectedBoneUV, signedAngleBetween + angleFromUpToBoneDirectionDegs);
-//						
-//						// Set the base bone constraint of this chain to be the direction of the bone we're connected to
-//						mChains.get(loop).setBaseBoneConstraintUV(relativeUV);
-						//break;
-					}
+					}	
 					
 					// No need for a default - constraint types are enums and we've covered them all.
 				}

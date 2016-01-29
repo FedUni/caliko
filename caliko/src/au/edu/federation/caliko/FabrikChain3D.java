@@ -157,6 +157,12 @@ public class FabrikChain3D
 	private Vec3f mBaseboneRelativeConstraintUV = new Vec3f();
 	
 	/**
+	 * mBaseboneRelativeReferenceConstraintUV	The basebone referencen constraint in the coordinate space of the bone in another chain
+	 * that this chain is connected to.
+	 */
+	private Vec3f mBaseboneRelativeReferenceConstraintUV = new Vec3f();
+	
+	/**
 	 * mTargetLocation	The target location for the end effector of this IK chain.
 	 * <p>
 	 * The target location can be updated via the {@link updateTargtet(Vec3f)} or (@link updateTarget(float, float)}  methods, which in turn
@@ -762,70 +768,107 @@ public class FabrikChain3D
 	 * chain, and is hence able to calculate and update this relative basebone constraint direction for us.
 	 **/
 	void setBaseboneRelativeConstraintUV(Vec3f constraintUV)	{ mBaseboneRelativeConstraintUV = constraintUV;	}
+	/** 
+	 * Set the relative basebone reference constraint UV - this direction should be relative to the coordinate space of the basebone.
+	 *
+	 * This function is deliberately made package-private as it should not be used by the end user - instead, the 
+	 * FabrikStructure3D.updateTarget() method will update this mBaseboneRelativeConstraintUV property FOR USE BY this
+	 * chain as required.
+	 * 
+	 * This property is required when we have a LOCAL_HINGE basebone constraint with reference axes - we must maintain the
+	 * hinge's own rotation and reference axes, and then the FabrikStructure3D.updateTarget() method updates the
+	 * mBaseboneRelativeConstraintUV and mBaseboneRelativeReferenceConstraintUV as required.
+	 **/
+	void setBaseboneRelativeReferenceConstraintUV(Vec3f constraintUV)	{ mBaseboneRelativeReferenceConstraintUV = constraintUV; }
+	
+	/** Return the relative basebone reference constraint unit vector. */
+	Vec3f getBaseboneRelativeReferenceConstraintUV()	{ return mBaseboneRelativeReferenceConstraintUV;}
 	
 	/**
-	 * Set the basebone of this chain to be constrained to the given angle in degrees about the provided axis.
+	 * Set this chain to have a rotor basebone constraint.
 	 * <p>
 	 * Depending on whether the constraint type is GLOBAL_ROTOR or LOCAL_ROTOR the constraint will be applied
 	 * about global space or about the local coordinate system of a bone in another chain that this chain is
 	 * attached to.
-	 * 	 * <p>
+	 * <p>
 	 * The angle provided should be between the range of 0.0f (completely constrained) to 180.0f (completely free to
 	 * rotate). Values outside of this range will be clamped to the relevant minimum or maximum.
 	 * <p>
 	 * If this chain does not contain a basebone then a RuntimeException is thrown.
-	 * If the constraint axis is a zero vector then an IllegalArgumentException is thrown.
+	 * If the constraint axis is a zero vector or the rotor type is not GLOBAL_ROTOR or LOCAL_ROTOR then then an
+	 * IllegalArgumentException is thrown.
 	 * 
-	 * @param	constraintType	The type of constraint to apply, this may be GLOBAL_ROTOR or LOCAL_ROTOR.
+	 * @param	rotorType		The type of constraint to apply, this may be GLOBAL_ROTOR or LOCAL_ROTOR.
 	 * @param	constraintAxis	The axis about which the rotor applies.
 	 * @param	angleDegs		The angle about the constraint axis to limit movement in degrees. 
 	 */
-	public void setRotorBaseboneConstraint(BaseboneConstraintType3D constraintType, Vec3f constraintAxis, float angleDegs)
+	public void setRotorBaseboneConstraint(BaseboneConstraintType3D rotorType, Vec3f constraintAxis, float angleDegs)
 	{
 		// Sanity checking
 		if (mNumBones == 0)	                     { throw new RuntimeException("Chain must contain a basebone before we can specify the basebone constraint type."); }		
 		if ( !(constraintAxis.length() > 0.0f) ) { throw new IllegalArgumentException("Constraint axis cannot be zero.");                                             }
 		if (angleDegs < 0.0f  )                  { angleDegs = 0.0f;                                                                                                  }
-		if (angleDegs > 180.0f)                  { angleDegs = 180.0f;                                                                                                }
+		if (angleDegs > 180.0f)                  { angleDegs = 180.0f;                                                                                                }		
+		if ( !(rotorType == BaseboneConstraintType3D.GLOBAL_ROTOR || rotorType == BaseboneConstraintType3D.LOCAL_ROTOR) )
+		{
+			throw new IllegalArgumentException("The only valid rotor types for this method are GLOBAL_ROTOR and LOCAL_ROTOR.");
+		}
 				
 		// Set the constraint type, axis and angle
-		mBaseboneConstraintType = constraintType;
+		mBaseboneConstraintType = rotorType;
 		mBaseboneConstraintUV   = constraintAxis.normalised();
 		mBaseboneRelativeConstraintUV.set(mBaseboneConstraintUV);
-		getBone(0).setBallJointConstraintDegs(angleDegs);
+		//getBone(0).setBallJointConstraintDegs(angleDegs);
+		getBone(0).getJoint().setAsBallJoint(angleDegs);
 	}	
 	
 	/**
-	 * Set this chain to have a globally hinged basebone constraint when attached to a bone in another chain.
+	 * Set this chain to have a hinged basebone constraint.
 	 * <p>
 	 * If the number of bones in this chain is zero (i.e. it does not contain a basebone) then a RuntimeException is thrown.
 	 * If the hinge rotation or reference axes are zero vectors then an IllegalArgumentException is thrown.
 	 * If the hinge reference axis does not lie in the plane of the hinge rotation axis (that is, they are not perpendicular)
 	 * then an IllegalArgumentException is thrown.
 	 * 
+	 * @param hingeType				The type of constraint to apply, this may be GLOBAL_HINGE or LOCAL_HINGE.
 	 * @param hingeRotationAxis		The axis about which the global hinge rotates.
 	 * @param cwConstraintDegs		The clockwise constraint angle about the hinge reference axis in degrees.
 	 * @param acwConstraintDegs		The clockwise constraint angle about the hinge reference axis in degrees.
 	 * @param hingeReferenceAxis	The axis (perpendicular to the hinge rotation axis) about which the constraint angles apply.
 	 */
-	public void setGlobalHingeBaseboneConstraint(Vec3f hingeRotationAxis, float cwConstraintDegs, float acwConstraintDegs, Vec3f hingeReferenceAxis)
+	public void setHingeBaseboneConstraint(BaseboneConstraintType3D hingeType, Vec3f hingeRotationAxis, float cwConstraintDegs, float acwConstraintDegs, Vec3f hingeReferenceAxis)
 	{
 		// Sanity checking
 		if (mNumBones == 0)	{ throw new RuntimeException("Chain must contain a basebone before we can specify the basebone constraint type."); }		
-		if ( !( hingeRotationAxis.length() > 0.0f) )  { throw new IllegalArgumentException("Hinge rotation axis cannot be zero.");		         }
-		if ( !( hingeReferenceAxis.length() > 0.0f) ) { throw new IllegalArgumentException("Hinge reference axis cannot be zero.");		         }
+		if ( !( hingeRotationAxis.length() > 0.0f) )  { throw new IllegalArgumentException("Hinge rotation axis cannot be zero.");		       }
+		if ( !( hingeReferenceAxis.length() > 0.0f) ) { throw new IllegalArgumentException("Hinge reference axis cannot be zero.");		       }
 		if ( !( Vec3f.perpendicular(hingeRotationAxis, hingeReferenceAxis) ) ) 
 		{
 			throw new IllegalArgumentException("The hinge reference axis must be in the plane of the hinge rotation axis, that is, they must be perpendicular.");
 		}
+		if ( !(hingeType == BaseboneConstraintType3D.GLOBAL_HINGE || hingeType == BaseboneConstraintType3D.LOCAL_HINGE) )
+		{		
+			System.out.println("WANG!");
+
+			
+			throw new IllegalArgumentException("The only valid hinge types for this method are GLOBAL_HINGE and LOCAL_HINGE.");
+		}
 		
 		// Set the constraint type, axis and angle
-		mBaseboneConstraintType = BaseboneConstraintType3D.GLOBAL_HINGE;
+		mBaseboneConstraintType = hingeType;
 		mBaseboneConstraintUV.set( hingeRotationAxis.normalised() );
 		
-		FabrikJoint3D globalHinge = new FabrikJoint3D();
-		globalHinge.setAsGlobalHinge(hingeRotationAxis, cwConstraintDegs, acwConstraintDegs, hingeReferenceAxis);
-		getBone(0).setJoint(globalHinge);
+		FabrikJoint3D hinge = new FabrikJoint3D();
+		
+		if (hingeType == BaseboneConstraintType3D.GLOBAL_HINGE)
+		{
+			hinge.setHinge(JointType.GLOBAL_HINGE, hingeRotationAxis, cwConstraintDegs, acwConstraintDegs, hingeReferenceAxis);
+		}
+		else
+		{
+			hinge.setHinge(JointType.LOCAL_HINGE, hingeRotationAxis, cwConstraintDegs, acwConstraintDegs, hingeReferenceAxis);
+		}
+		getBone(0).setJoint(hinge);
 	}
 	
 	/**
@@ -841,7 +884,42 @@ public class FabrikChain3D
 	 */
 	public void setFreelyRotatingGlobalHingedBasebone(Vec3f hingeRotationAxis)
 	{
-		setGlobalHingeBaseboneConstraint(hingeRotationAxis, 180.0f, 180.0f,  Vec3f.genPerpendicularVectorQuick(hingeRotationAxis) );
+		setHingeBaseboneConstraint(BaseboneConstraintType3D.GLOBAL_HINGE, hingeRotationAxis, 180.0f, 180.0f, Vec3f.genPerpendicularVectorQuick(hingeRotationAxis) );
+	}
+	
+	/**
+	 * Set this chain to have a freely rotating globally hinged basebone.
+	 * <p>
+	 * The clockwise and anticlockwise constraint angles are automatically set to 180 degrees and the hinge reference axis
+	 * is generated to be any vector perpendicular to the hinge rotation axis.
+	 * <p>
+	 * If the number of bones in this chain is zero (i.e. it does not contain a basebone) then a RuntimeException is thrown.
+	 * If the hinge rotation axis are zero vectors then an IllegalArgumentException is thrown.
+	 * 
+	 * @param hingeRotationAxis		The world-space axis about which the global hinge rotates.
+	 */
+	public void setFreelyRotatingLocalHingedBasebone(Vec3f hingeRotationAxis)
+	{
+		setHingeBaseboneConstraint(BaseboneConstraintType3D.LOCAL_HINGE, hingeRotationAxis, 180.0f, 180.0f, Vec3f.genPerpendicularVectorQuick(hingeRotationAxis) );
+	}
+	
+	/**
+	 * Set this chain to have a freely rotating globally hinged basebone.
+	 * <p>
+	 * The clockwise and anticlockwise constraint angles are automatically set to 180 degrees and the hinge reference axis
+	 * is generated to be any vector perpendicular to the hinge rotation axis.
+	 * <p>
+	 * If the number of bones in this chain is zero (i.e. it does not contain a basebone) then a RuntimeException is thrown.
+	 * If the hinge rotation axis are zero vectors then an IllegalArgumentException is thrown.
+	 * 
+	 * @param hingeRotationAxis		The local axis about which the hinge rotates.
+	 * @param cwDegs				The clockwise constraint angle in degrees.
+	 * @param acwDegs				The anticlockwise constraint angle in degrees.
+	 * @param hingeReferenceAxis	The local reference axis about which the hinge is constrained.
+	 * */
+	public void setLocalHingedBasebone(Vec3f hingeRotationAxis, float cwDegs, float acwDegs, Vec3f hingeReferenceAxis)
+	{
+		setHingeBaseboneConstraint(BaseboneConstraintType3D.LOCAL_HINGE, hingeRotationAxis, cwDegs, acwDegs, hingeReferenceAxis);
 	}
 	
 	/**
@@ -1231,11 +1309,20 @@ public class FabrikChain3D
 				}
 				else if (thisBoneJointType == JointType.LOCAL_HINGE)
 				{	
-					// Construct a rotation matrix based on the previous bones inner-to-to-inner direction...
-					Mat3f m = Mat3f.createRotationMatrix( mChain.get(loop-1).getDirectionUV() );
+					// Not a basebone? Then construct a rotation matrix based on the previous bones inner-to-to-inner direction...
+					Mat3f m;
+					Vec3f relativeHingeRotationAxis;
+					if (loop > 0) {
+						m = Mat3f.createRotationMatrix( mChain.get(loop-1).getDirectionUV() );
+						relativeHingeRotationAxis = m.times( thisBoneJoint.getHingeRotationAxis() ).normalise();
+					}
+					else // ...basebone? Need to construct matrix from the relative constraint UV.
+					{
+						relativeHingeRotationAxis = mBaseboneRelativeConstraintUV;
+					}
 					
 					// ...and transform the hinge rotation axis into the previous bones frame of reference.
-					Vec3f relativeHingeRotationAxis = m.times( thisBoneJoint.getHingeRotationAxis() ).normalise();
+					//Vec3f 
 										
 					// Project this bone's outer-to-inner direction onto the plane described by the relative hinge rotation axis
 					// Note: The returned vector is normalised.					
@@ -1379,6 +1466,7 @@ public class FabrikChain3D
 					// Transform the hinge rotation axis into the previous bone's frame of reference
 					Vec3f relativeHingeRotationAxis  = m.times(hingeRotationAxis).normalise();
 					
+					
 					// Project this bone direction onto the plane described by the hinge rotation axis
 					// Note: The returned vector is normalised.
 					thisBoneInnerToOuterUV = thisBoneInnerToOuterUV.projectOntoPlane(relativeHingeRotationAxis);
@@ -1390,6 +1478,7 @@ public class FabrikChain3D
 						 !( Utils.approximatelyEquals(acwConstraintDegs, FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGS, 0.001f) ) )
 					{
 						// Calc. the reference axis in local space
+						//Vec3f relativeHingeReferenceAxis = mBaseboneRelativeReferenceConstraintUV;//m.times( thisBoneJoint.getHingeReferenceAxis() ).normalise();
 						Vec3f relativeHingeReferenceAxis = m.times( thisBoneJoint.getHingeReferenceAxis() ).normalise();
 						
 						// Get the signed angle (about the hinge rotation axis) between the hinge reference axis and the hinge-rotation aligned bone UV
@@ -1419,10 +1508,7 @@ public class FabrikChain3D
 
 				// If we are not working on the end effector bone, then we set the start joint location of the next bone in
 				// the chain (i.e. the bone closer to the target) to be the new end joint location of this bone.
-				if (loop < mNumBones - 1)
-				{
-					mChain.get(loop+1).setStartLocation(newEndLocation);
-				}
+				if (loop < mNumBones - 1) { mChain.get(loop+1).setStartLocation(newEndLocation); }
 			}
 			else // If we ARE working on the basebone...
 			{	
@@ -1466,11 +1552,11 @@ public class FabrikChain3D
 						thisBone.setEndLocation( newEndLocation );
 						
 						// Also, set the start location of the next bone to be the end location of this bone
-						mChain.get(1).setStartLocation(newEndLocation);
+						if (mNumBones > 1) { mChain.get(1).setStartLocation(newEndLocation); }
 					}
 					else if (mBaseboneConstraintType == BaseboneConstraintType3D.LOCAL_ROTOR)
 					{
-						// Note: The mBaseBoneRelativeConstraintUV is updated in the FabrikStructure3D.updateTarget()
+						// Note: The mBaseboneRelativeConstraintUV is updated in the FabrikStructure3D.updateTarget()
 						// method BEFORE this FabrikChain3D.updateTarget() method is called. We no knowledge of the
 						// direction of the bone we're connected to in another chain and so cannot calculate this 
 						// relative basebone constraint direction on our own, but the FabrikStructure3D does it for
@@ -1529,11 +1615,44 @@ public class FabrikChain3D
 						thisBone.setEndLocation( newEndLocation );
 						
 						// Also, set the start location of the next bone to be the end location of this bone
-						mChain.get(1).setStartLocation(newEndLocation);
+						if (mNumBones > 1) { mChain.get(1).setStartLocation(newEndLocation); }
 					}
-					else
+					else if (mBaseboneConstraintType == BaseboneConstraintType3D.LOCAL_HINGE)
 					{
-						throw new RuntimeException("LOCAL_HINGE basebone constraints are not supported at this time.");
+						FabrikJoint3D thisJoint  =  thisBone.getJoint();
+						Vec3f hingeRotationAxis  =  mBaseboneRelativeConstraintUV;                   // Basebone relative constraint is our hinge rotation axis!
+						float cwConstraintDegs   = -thisJoint.getHingeClockwiseConstraintDegs();     // Clockwise rotation is negative!
+						float acwConstraintDegs  =  thisJoint.getHingeAnticlockwiseConstraintDegs();
+						
+						// Get the inner-to-outer direction of this bone and project it onto the global hinge rotation axis
+						Vec3f thisBoneInnerToOuterUV = thisBone.getDirectionUV().projectOntoPlane(hingeRotationAxis);
+						
+						//If we have a local hinge which is not freely rotating then we must constrain about the reference axis
+						if ( !( Utils.approximatelyEquals(cwConstraintDegs , FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGS, 0.01f) &&
+							    Utils.approximatelyEquals(acwConstraintDegs, FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGS, 0.01f) ) )
+						{
+							// Grab the hinge reference axis and calculate the current signed angle between it and our bone direction (about the hinge
+							// rotation axis). Note: ACW rotation is positive, CW rotation is negative.
+							Vec3f hingeReferenceAxis = mBaseboneRelativeReferenceConstraintUV; //thisJoint.getHingeReferenceAxis();
+							float signedAngleDegs    = Vec3f.getSignedAngleBetweenDegs(hingeReferenceAxis, thisBoneInnerToOuterUV, hingeRotationAxis);
+							
+							// Constrain as necessary
+				        	if (signedAngleDegs > acwConstraintDegs)
+				        	{	
+				        		thisBoneInnerToOuterUV = Vec3f.rotateAboutAxisDegs(hingeReferenceAxis, acwConstraintDegs, hingeRotationAxis).normalise();		        		
+				        	}
+				        	else if (signedAngleDegs < cwConstraintDegs)
+				        	{	
+				        		thisBoneInnerToOuterUV = Vec3f.rotateAboutAxisDegs(hingeReferenceAxis, cwConstraintDegs, hingeRotationAxis).normalise();			        		
+				        	}
+						}
+						
+						// Calc and set the end location of this bone
+						Vec3f newEndLocation = thisBone.getStartLocation().plus( thisBoneInnerToOuterUV.times(thisBoneLength) );						
+						thisBone.setEndLocation( newEndLocation );
+						
+						// Also, set the start location of the next bone to be the end location of this bone
+						if (mNumBones > 1) { mChain.get(1).setStartLocation(newEndLocation); }
 					}
 					
 				} // End of basebone constraint handling section
