@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Caliko by FedUni</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Caliko</h1>
+      <h2 class="project-tagline">The Caliko library is an implementation of the FABRIK inverse kinematics algorithm in Java.</h2>
+      <a href="https://github.com/FedUni/caliko" class="btn">View on GitHub</a>
+      <a href="https://github.com/FedUni/caliko/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/FedUni/caliko/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="caliko" class="anchor" href="#caliko" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Caliko</h1>
+
+<p>The Caliko library is an implementation of the FABRIK inverse kinematics (IK) algorithm in the Java programming language, and is released under the MIT software license. See LICENSE.txt for further details.</p>
+
+<p>The FABRIK algorithm is explained in the following research paper:
+Aristidou, A., &amp; Lasenby, J. (2011). FABRIK: a fast, iterative solver for the inverse kinematics problem. Graphical Models, 73(5), 243-260.</p>
+
+<h2>
+<a id="structure" class="anchor" href="#structure" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Structure</h2>
+
+<p>The library itself can be built into two separate .JAR files (one mandatory, one optional) suitable for inclusion in your IK projects:</p>
+
+<ul>
+<li>
+<strong>caliko.jar</strong>, and</li>
+<li>
+<strong>caliko-visualisation.jar</strong>.</li>
+</ul>
+
+<p>The <strong>caliko</strong> folder contains source code for core IK portion of the library and is capable of running without any visualisation or external dependencies. </p>
+
+<p>The <strong>caliko-visualisation</strong> folder contains source code for the optional visualisation component of the library which provides the ability to draw various IK structures/chains/bones and depends on the 
+core caliko functionality as well as the LWJGL3 library.</p>
+
+<p>The <strong>caliko-demo</strong> folder contains source code for a demonstration of the library utilising both 2D and 3D IK chains in various configurations. It requires the caliko, caliko-visualisation and LWJGL3 
+libraries.</p>
+
+<h2>
+<a id="build-and-setup" class="anchor" href="#build-and-setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build and Setup</h2>
+
+<p>You do not need to build the Caliko library yourself to use it, and may instead simply download a caliko release from this github location. </p>
+
+<p>Then, it's simply a matter of creating a new project, linking in the library .jars (and optionally the source code and javadoc archives) and using the library functionality. If you're using the 
+visualisation component, then the LWJGL3 library must also be configured for your project.</p>
+
+<p>Alternatively, rather than using the caliko / caliko-visualisation .jar files, you could just copy the <strong>au.edu.federation.*</strong> source files into your project, but you may then need to replace them with 
+newer versions as changes/fixes are applied to Caliko - so using the latest .jar versions is a cleaner and more hassle-free solution.</p>
+
+<p>If you wish to build the Caliko library yourself, then it's configured to use maven for project / dependency management and the entire library can be built by calling:
+mvn package</p>
+
+<p>This will create a file called <strong>caliko.zip</strong> in the top level directory, the contents of which are those from the created <strong>RELEASE</strong> folder.</p>
+
+<h2>
+<a id="demo-controls" class="anchor" href="#demo-controls" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Demo controls</h2>
+
+<ul>
+<li>Left mouse button sets target in 2D mode and enables mouse-look in 3D mode.</li>
+<li>Up/Down cursors - Toggle 2D/3D mode.</li>
+<li>Left/Right cursors - Prev/Next demo.</li>
+<li>Space - Pause/Resume target movement (3D).</li>
+<li>L - Toggle display lines.</li>
+<li>M - Toggle display models (3D).</li>
+<li>X - Toggle display axes (3D).</li>
+<li>F - Toggle fixed base mode.</li>
+<li>P - Toggle perspective / orthographic projection (3D)</li>
+<li>R - Toggle rotating base locations (3D)</li>
+<li>Esc - Quit.</li>
+</ul>
+
+<h2>
+<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>TODO</h2>
+
+<h3>
+<a id="high-priority" class="anchor" href="#high-priority" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>High priority</h3>
+
+<ul>
+<li>Create and link to a high quality video demonstration of the library.</li>
+</ul>
+
+<h3>
+<a id="medium-priority" class="anchor" href="#medium-priority" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Medium priority</h3>
+
+<ul>
+<li>Add mechanism for individual IK chains in a structure to be updated to individual target locations (i.e. each chain holds a reference to a Vec2f/Vec3f which can be updated) so that a single call to 
+structure.updateEmbeddedTargets() can then update each chain in the structure for its own specific target locations.</li>
+</ul>
+
+<h3>
+<a id="low-priority" class="anchor" href="#low-priority" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Low priority</h3>
+
+<ul>
+<li>Refactor entire library to use quaternions.</li>
+<li>Add parabolic constraint types.</li>
+<li>Streamline Model class object copying.</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/FedUni/caliko">Caliko</a> is maintained by <a href="https://github.com/FedUni">FedUni</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
