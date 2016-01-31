@@ -11,7 +11,7 @@ import au.edu.federation.caliko.utils.Vec2f;
  * Class to represent a 2D Inverse Kinematics (IK) chain that can be solved for a given target using the FABRIK algorithm.
  *  
  * @author Al Lansley
- * @version 0.9.9 - 29/12/2015
+ * @version 1.0 - 31/01/2016
  */
 public class FabrikChain2D
 {	
@@ -1107,14 +1107,20 @@ public class FabrikChain2D
 		return mCurrentSolveDistance;
 	}
 	
-	/** Return the relative constraint UV about which this bone connects to a bone in another chain. */
+	/**
+	 * Return the relative constraint UV about which this bone connects to a bone in another chain.
+	 *
+	 * @return	The relative constraint UV about which this bone connects to a bone in another chain.
+	 */
 	public Vec2f getBaseboneRelativeConstraintUV() { return mBaseboneRelativeConstraintUV; }
 	
 	/**
 	 * Set the constraint UV about which this bone connects to a bone in another chain.
 	 * <p>
-	 * This method is used internally by the FabrikStructure2D.updateTarget() method.
+	 * This method is used by the FabrikStructure2D.updateTarget() method.
+	 *
+	 * @param	constraintUV	The basebone relative constraint unit vector to set.
 	 */
-	public void setBaseboneRelativeConstraintUV(Vec2f constraintUV) { mBaseboneRelativeConstraintUV.set(constraintUV);	}
+	public void setBaseboneRelativeConstraintUV(Vec2f constraintUV) { mBaseboneRelativeConstraintUV.set(constraintUV); }
 
 } // End of FabrikChain2D class

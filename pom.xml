@@ -5,7 +5,7 @@
   <groupId>au.edu.federation.caliko</groupId>
   <artifactId>caliko-aggregate</artifactId>
   <packaging>pom</packaging>
-  <version>1.0</version>                     <!-- This is the version of the library as a while, which should match with build.txt -->
+  <version>1.1</version>                     <!-- This is the version of the library as a while, which should match with build.txt -->
   <name>Caliko library Aggregate POM</name>
   <description>POM to build the Caliko library including the visualisation component, demo application, source and documentation archives.</description>
   <url>https://github.com/FedUni/caliko</url>
@@ -165,6 +165,7 @@
             </configuration>
           </execution>
 
+          <!-- Place user documentation into doc folder -->
           <execution>
             <id>copy-user-docs</id>
             <phase>validate</phase>
@@ -172,12 +173,12 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.outputDirectory}/docs</outputDirectory>
+              <outputDirectory>${project.build.outputDirectory}/doc</outputDirectory>
               <resources>
                 <resource>
-                  <directory>.</directory>
+                  <directory>${basedir}</directory>
                   <includes>
-                    <include>**/*.pdf</include>
+                    <include>caliko-user-guide.pdf</include>
                   </includes>
                 </resource>
               </resources>
