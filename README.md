@@ -20,7 +20,7 @@ libraries.
 
 ## Build and Setup
 
-You do not need to build the Caliko library yourself to use it, and may instead simply download a caliko release from this github location. 
+You do not need to build the Caliko library yourself to use it, and may instead simply download a caliko release from: (https://github.com/FedUni/caliko/releases) 
 
 Then, it's simply a matter of creating a new project, linking in the library .jars (and optionally the source code and javadoc archives) and using the library functionality. If you're using the 
 visualisation component, then the LWJGL3 library must also be configured for your project.
@@ -29,7 +29,7 @@ Alternatively, rather than using the caliko / caliko-visualisation .jar files, y
 newer versions as changes/fixes are applied to Caliko - so using the latest .jar versions is a cleaner and more hassle-free solution.
 
 If you wish to build the Caliko library yourself, then it's configured to use maven for project / dependency management and the entire library can be built by calling:
-mvn package
+`mvn package`
 
 This will create a file called **caliko.zip** in the top level directory, the contents of which are those from the created **RELEASE** folder.
 
