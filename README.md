@@ -20,7 +20,7 @@ libraries.
 
 ## Build and Setup
 
-You do not need to build the Caliko library yourself to use it, and may instead simply download a caliko release from: 
+You do not need to build the Caliko library yourself to use it, and may instead simply download a release from: 
 [https://github.com/FedUni/caliko/releases](https://github.com/FedUni/caliko/releases)
 
 Then, it's simply a matter of creating a new project, linking in the library .jars (and optionally the source code and javadoc archives) and using the library functionality. If you're using the 
