@@ -15,7 +15,7 @@ import static org.lwjgl.opengl.GL11.*;
  * See the README.txt for further documentation and controls.
  *
  * @author	Al Lansley
- * @version 0.9.9 - 09/01/2016
+ * @version 1.0 - 31/01/2016
  */
 public class Application
 {
@@ -39,8 +39,8 @@ public class Application
 	static boolean paused              = true;
 
 	// Create our window and OpenGL context
-	static int windowWidth     = 400;
-	static int windowHeight    = 300;
+	static int windowWidth     = 800;
+	static int windowHeight    = 600;
 	static OpenGLWindow window = new OpenGLWindow(Application.windowWidth, Application.windowHeight);
 
 	// Declare a CalikoDemo object which can run our 3D and 2D demonstration scenarios

@@ -449,11 +449,11 @@ public class Model
 		// Counter to keep track of what line we're on
 		int lineCount = 0;
 
+		//try (BufferedReader br = new BufferedReader( new InputStreamReader(is)) ) // Use this for loading from file in Eclipse or such
+		
 		// Try with resources (automagically closes the file on completion or failure)
-		try (BufferedReader br = new BufferedReader(new FileReader(filename)) )
-
-		//InputStream is = this.getClass().getResourceAsStream(filename);
-		//try (BufferedReader br = new BufferedReader( new InputStreamReader(is)) )
+		InputStream is = this.getClass().getResourceAsStream(filename);
+		try (BufferedReader br = new BufferedReader( new InputStreamReader(is) ) ) // This version loads from within jar archive, required for caliko-demo-jar-with-resources.jar
 		{
 			// We'll read through the file one line at a time - this will hold the current line we're working on
 			String line;
