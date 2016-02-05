@@ -5,7 +5,7 @@
   <groupId>au.edu.federation.caliko</groupId>
   <artifactId>caliko-aggregate</artifactId>
   <packaging>pom</packaging>
-  <version>1.1</version>                     <!-- This is the version of the library as a while, which should match with build.txt -->
+  <version>1.1.1</version>                     <!-- This is the version of the library as a whole - build.txt is updated from this. -->
   <name>Caliko library Aggregate POM</name>
   <description>POM to build the Caliko library including the visualisation component, demo application, source and documentation archives.</description>
   <url>https://github.com/FedUni/caliko</url>
@@ -14,7 +14,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <skipTests>true</skipTests>
     <javaVersion>1.8</javaVersion>
-    <calikoVersion>1.0</calikoVersion>
+    <calikoVersion>1.1</calikoVersion>
     <calikoVisVersion>1.0</calikoVisVersion>
     <calikoDemoVersion>1.0</calikoDemoVersion>
   </properties>
