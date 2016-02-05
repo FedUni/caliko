@@ -4,6 +4,9 @@ The Caliko library is an implementation of the FABRIK inverse kinematics (IK) al
 The FABRIK algorithm is explained in the following research paper:
 Aristidou, A., & Lasenby, J. (2011). FABRIK: a fast, iterative solver for the inverse kinematics problem. Graphical Models, 73(5), 243-260.
 
+You can watch a short video outlining the setup and functionality of the Caliko library here:
+[https://www.youtube.com/watch?v=wEtp4P2ucYk](https://www.youtube.com/watch?v=wEtp4P2ucYk)
+
 ## Structure
 
 The library itself can be built into two separate .JAR files (one mandatory, one optional) suitable for inclusion in your IK projects:
@@ -51,7 +54,7 @@ This will create a file called **caliko.zip** in the top level directory, the co
 ## TODO
 
 ### High priority
-- Create and link to a high quality video demonstration of the library.
+- Nil.
 
 ### Medium priority
 - Add mechanism for individual IK chains in a structure to be updated to individual target locations (i.e. each chain holds a reference to a Vec2f/Vec3f which can be updated) so that a single call to 
