@@ -4,9 +4,9 @@ import au.edu.federation.caliko.FabrikBone2D;
 import au.edu.federation.caliko.FabrikChain2D;
 import au.edu.federation.caliko.FabrikChain2D.BaseboneConstraintType2D;
 import au.edu.federation.caliko.FabrikStructure2D;
-import au.edu.federation.caliko.utils.Colour4f;
-import au.edu.federation.caliko.utils.Mat4f;
-import au.edu.federation.caliko.utils.Vec2f;
+import au.edu.federation.utils.Colour4f;
+import au.edu.federation.utils.Mat4f;
+import au.edu.federation.utils.Vec2f;
 
 /**
  * A static class used to draw a 2D lines to represent FabrikBone2D, FabrikChain2D or FabrickStructure2D objects.
@@ -16,7 +16,7 @@ import au.edu.federation.caliko.utils.Vec2f;
  * The GLSL shaders used to draw the lines require a minimum OpenGL version of 3.3 (i.e. GLSL #version 330).
  * 
  * @author  Al Lansley
- * @version  0.5 - 12/01/2016
+ * @version  0.5.1 - 20/07/2016
  */
 public class FabrikLine2D
 {

@@ -5,8 +5,8 @@ import java.util.List;
 
 import au.edu.federation.caliko.FabrikChain2D.BaseboneConstraintType2D;
 import au.edu.federation.caliko.FabrikChain2D.BoneConnectionPoint2D;
-import au.edu.federation.caliko.utils.Utils;
-import au.edu.federation.caliko.utils.Vec2f;
+import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec2f;
 
 /** 
  * A FabrikStructure2D contains one or more FabrikChain2D objects, which we can solve using the FABRIK (Forward And
@@ -19,7 +19,7 @@ import au.edu.federation.caliko.utils.Vec2f;
  * Chains in a structure may be connected to other chains in the same structure in a variety of ways, if desired.
  * 
  * @author Al Lansley
- * @version 0.9.1 - 29/12/2015
+ * @version 0.9.1 - 20/07/2016
  **/
 public class FabrikStructure2D
 {	

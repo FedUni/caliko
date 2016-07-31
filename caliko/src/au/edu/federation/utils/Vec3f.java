@@ -1,10 +1,10 @@
-package au.edu.federation.caliko.utils;
+package au.edu.federation.utils;
 
 import java.text.DecimalFormat;
 
 //FIXME: Need to incorporate the following into Vec2f / FabrikChain2D:
 // - Correct mNumBones (doesn't always get inc'd when adding bones)
-// - NORMALISE corrected constraint angle to stop jitter / spaz-out
+// - NORMALISE corrected constraint angle to stop jitter / flip-out
 // - Stop Vec2f dot product producing NAN by capping to -1..+1
 
 /**

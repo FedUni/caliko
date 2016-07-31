@@ -1,4 +1,4 @@
-package au.edu.federation.caliko.utils;
+package au.edu.federation.utils;
 
 import java.text.DecimalFormat;
 

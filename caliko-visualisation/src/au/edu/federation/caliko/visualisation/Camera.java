@@ -1,7 +1,7 @@
 package au.edu.federation.caliko.visualisation;
 
-import au.edu.federation.caliko.utils.Mat4f;
-import au.edu.federation.caliko.utils.Vec3f;
+import au.edu.federation.utils.Mat4f;
+import au.edu.federation.utils.Vec3f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -13,7 +13,7 @@ import static org.lwjgl.glfw.GLFW.*;
  * of comparing the cursor location to the center of the screen we simply compare it to the last value.
  * 
  * @author Al Lansley
- * @version 0.5 - 07/01/2016
+ * @version 0.5.1 - 20/07/2016
  */
 public class Camera
 {

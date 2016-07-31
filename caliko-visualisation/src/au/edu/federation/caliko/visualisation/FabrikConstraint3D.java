@@ -3,17 +3,17 @@ package au.edu.federation.caliko.visualisation;
 import au.edu.federation.caliko.FabrikBone3D;
 import au.edu.federation.caliko.FabrikChain3D;
 import au.edu.federation.caliko.FabrikStructure3D;
-import au.edu.federation.caliko.utils.Colour4f;
-import au.edu.federation.caliko.utils.Mat3f;
-import au.edu.federation.caliko.utils.Mat4f;
-import au.edu.federation.caliko.utils.Utils;
-import au.edu.federation.caliko.utils.Vec3f;
+import au.edu.federation.utils.Colour4f;
+import au.edu.federation.utils.Mat3f;
+import au.edu.federation.utils.Mat4f;
+import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec3f;
 
 /**
  * A class to draw various constraints for ball and hinge joints on FabrikBone3D objects.
  * 
  * @author Al Lansley
- * @version 0.3 - 09/12/2015
+ * @version 0.3.1 - 20/07/2016
  */
 public class FabrikConstraint3D
 {

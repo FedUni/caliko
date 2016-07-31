@@ -2,10 +2,10 @@ package au.edu.federation.caliko.visualisation;
 
 import java.nio.FloatBuffer;
 
-import au.edu.federation.caliko.utils.Colour4f;
-import au.edu.federation.caliko.utils.Mat4f;
-import au.edu.federation.caliko.utils.Utils;
-import au.edu.federation.caliko.utils.Vec2f;
+import au.edu.federation.utils.Colour4f;
+import au.edu.federation.utils.Mat4f;
+import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec2f;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -16,7 +16,7 @@ import static org.lwjgl.opengl.GL30.*;
  * Class to draw a point in 2D space.
  * 
  * @author Al Lansley
- * @version 0.6 - 06/08/2015
+ * @version 0.6.1 - 20/07/2016
  */
 public class Point2D
 {

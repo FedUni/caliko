@@ -6,10 +6,6 @@ import au.edu.federation.caliko.FabrikChain3D;
 import au.edu.federation.caliko.FabrikChain3D.BaseboneConstraintType3D;
 import au.edu.federation.caliko.FabrikStructure3D;
 import au.edu.federation.caliko.FabrikJoint3D.JointType;
-import au.edu.federation.caliko.utils.Colour4f;
-import au.edu.federation.caliko.utils.Mat4f;
-import au.edu.federation.caliko.utils.Utils;
-import au.edu.federation.caliko.utils.Vec3f;
 import au.edu.federation.caliko.visualisation.Axis;
 import au.edu.federation.caliko.visualisation.Camera;
 import au.edu.federation.caliko.visualisation.FabrikConstraint3D;
@@ -17,12 +13,16 @@ import au.edu.federation.caliko.visualisation.FabrikLine3D;
 import au.edu.federation.caliko.visualisation.FabrikModel3D;
 import au.edu.federation.caliko.visualisation.Grid;
 import au.edu.federation.caliko.visualisation.MovingTarget3D;
+import au.edu.federation.utils.Colour4f;
+import au.edu.federation.utils.Mat4f;
+import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec3f;
 
 /**
  * Class to demonstrate some of the features of the Caliko library in 3D.
  * 
  * @author Al Lansley
- * @version 0.7 - 09/01/2016
+ * @version 0.7.1 - 20/07/2016
  */
 public class CalikoDemo3D extends CalikoDemo
 {
@@ -56,7 +56,8 @@ public class CalikoDemo3D extends CalikoDemo
 	static FabrikConstraint3D constraint = new FabrikConstraint3D();
 		
 	// A simple Wavefront .OBJ format model of a pyramid to display around each bone (set to draw with a 1.0f line width)
-	static FabrikModel3D model = new FabrikModel3D("/pyramid.obj", 1.0f);
+	//static FabrikModel3D model = new FabrikModel3D("pyramid.obj", 1.0f); // USE THIS FOR ECLIPSE!
+	static FabrikModel3D model = new FabrikModel3D("/pyramid.obj", 1.0f);  // USE THIS TO LOAD FROM JAR!
 
 	// Setup moving target. Params: location, extents, interpolation frames, grid height for vertical bar
 	static MovingTarget3D target = new MovingTarget3D(new Vec3f(), new Vec3f(60.0f), 200, gridLevel);

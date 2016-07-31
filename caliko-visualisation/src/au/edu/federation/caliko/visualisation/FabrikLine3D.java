@@ -3,8 +3,8 @@ package au.edu.federation.caliko.visualisation;
 import au.edu.federation.caliko.FabrikBone3D;
 import au.edu.federation.caliko.FabrikChain3D;
 import au.edu.federation.caliko.FabrikStructure3D;
-import au.edu.federation.caliko.utils.Colour4f;
-import au.edu.federation.caliko.utils.Mat4f;
+import au.edu.federation.utils.Colour4f;
+import au.edu.federation.utils.Mat4f;
 
 /**
  * A static class used to draw a 3D lines to represent FabrikBone3D, FabrikChain3D or FabrikStructure3D objects.
@@ -14,7 +14,7 @@ import au.edu.federation.caliko.utils.Mat4f;
  * The GLSL shaders used to draw the lines require a minimum OpenGL version of 3.3 (i.e. GLSL #version 330).
  * 
  * @author  Al Lansley
- * @version 0.4 - 11/01/2016
+ * @version 0.4.1 - 11/01/2016
  */
 public class FabrikLine3D
 {	

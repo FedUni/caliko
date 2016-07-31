@@ -3,15 +3,15 @@ package au.edu.federation.caliko;
 import java.util.ArrayList;
 import java.util.List;
 
-import au.edu.federation.caliko.utils.Colour4f;
-import au.edu.federation.caliko.utils.Utils;
-import au.edu.federation.caliko.utils.Vec2f;
+import au.edu.federation.utils.Colour4f;
+import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec2f;
 
 /**
  * Class to represent a 2D Inverse Kinematics (IK) chain that can be solved for a given target using the FABRIK algorithm.
  *  
  * @author Al Lansley
- * @version 1.0 - 31/01/2016
+ * @version 1.0.1 - 20/07/2016
  */
 public class FabrikChain2D
 {	

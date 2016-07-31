@@ -1,10 +1,10 @@
 package au.edu.federation.caliko;
 
 import au.edu.federation.caliko.FabrikJoint3D.JointType;
-import au.edu.federation.caliko.utils.Colour4f;
-import au.edu.federation.caliko.utils.Mat4f;
-import au.edu.federation.caliko.utils.Utils;
-import au.edu.federation.caliko.utils.Vec3f;
+import au.edu.federation.utils.Colour4f;
+import au.edu.federation.utils.Mat4f;
+import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec3f;
 
 /**
  * A class to represent a FabrikBone3D object.
@@ -13,7 +13,7 @@ import au.edu.federation.caliko.utils.Vec3f;
  * the rotation of the bone with regard to a previous bone in an IK chain either as a ball joint or as
  * a hinge joint constrained about a local or global axis.
  * 
- * @version 0.3 - 29/12/2015
+ * @version 0.3.1 - 20/07/2016
  * @see FabrikJoint3D
  */
 public class FabrikBone3D

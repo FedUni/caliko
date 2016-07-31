@@ -2,10 +2,10 @@ package au.edu.federation.caliko.visualisation;
 
 import java.nio.FloatBuffer;
 
-import au.edu.federation.caliko.utils.Colour4f;
-import au.edu.federation.caliko.utils.Mat4f;
-import au.edu.federation.caliko.utils.Utils;
-import au.edu.federation.caliko.utils.Vec3f;
+import au.edu.federation.utils.Colour4f;
+import au.edu.federation.utils.Mat4f;
+import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec3f;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -16,7 +16,7 @@ import static org.lwjgl.opengl.GL30.*;
  * Class to draw a circle in 3D space.
  * 
  * @author Al Lansley
- * @version 0.3 - 07/01/2016
+ * @version 0.3.1 - 20/07/2016
  */
 public class Circle3D
 {

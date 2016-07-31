@@ -1,9 +1,9 @@
 package au.edu.federation.caliko.visualisation;
 
-import au.edu.federation.caliko.utils.Colour4f;
-import au.edu.federation.caliko.utils.Mat4f;
-import au.edu.federation.caliko.utils.Utils;
-import au.edu.federation.caliko.utils.Vec3f;
+import au.edu.federation.utils.Colour4f;
+import au.edu.federation.utils.Mat4f;
+import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec3f;
 
 /**
  * Class to move a target around in 3D.
@@ -11,7 +11,7 @@ import au.edu.federation.caliko.utils.Vec3f;
  * The location can be used as the to solve FabrikChain3D / FabrikStructure3D objects.
  * 
  * @author Al Lansley
- * @version 0.3 - 09/01/2016
+ * @version 0.3.1 - 20/07/2016
  */
 public class MovingTarget3D
 {

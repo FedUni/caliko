@@ -1,6 +1,6 @@
 package au.edu.federation.alansley;
 
-import au.edu.federation.caliko.utils.Vec3f;
+import au.edu.federation.utils.Vec3f;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;

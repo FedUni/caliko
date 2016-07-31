@@ -5,9 +5,9 @@ import java.nio.FloatBuffer;
 import au.edu.federation.caliko.FabrikBone3D;
 import au.edu.federation.caliko.FabrikChain3D;
 import au.edu.federation.caliko.FabrikStructure3D;
-import au.edu.federation.caliko.utils.Mat3f;
-import au.edu.federation.caliko.utils.Mat4f;
-import au.edu.federation.caliko.utils.Utils;
+import au.edu.federation.utils.Mat3f;
+import au.edu.federation.utils.Mat4f;
+import au.edu.federation.utils.Utils;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -21,7 +21,7 @@ import static org.lwjgl.opengl.GL30.*;
  * convenient way to visualise a coordinate system.
  *  
  * @author  Al Lansley
- * @version  0.4 - 15/10/2015
+ * @version  0.4.1 - 20/07/2016
  */
 public class Axis
 {

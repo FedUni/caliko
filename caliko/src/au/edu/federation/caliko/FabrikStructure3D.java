@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import au.edu.federation.caliko.FabrikChain3D.BaseboneConstraintType3D;
-import au.edu.federation.caliko.utils.Mat3f;
-import au.edu.federation.caliko.utils.Utils;
-import au.edu.federation.caliko.utils.Vec3f;
+import au.edu.federation.utils.Mat3f;
+import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec3f;
 import static au.edu.federation.caliko.FabrikBone3D.BoneConnectionPoint3D;
 
 /** 

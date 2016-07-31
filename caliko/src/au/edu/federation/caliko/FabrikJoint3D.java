@@ -1,7 +1,7 @@
 package au.edu.federation.caliko;
 
-import au.edu.federation.caliko.utils.Utils;
-import au.edu.federation.caliko.utils.Vec3f;
+import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec3f;
 
 /** 
  * A joint used to constrain the relative angle between FabrikBone3D objects in an IK chain.
@@ -39,7 +39,7 @@ import au.edu.federation.caliko.utils.Vec3f;
  * during the 'backward pass', the correct constraints are enforced between the relative angles
  * of any pair of adjacent bones.
  * 
- * @version 0.4 - 29/12/2015
+ * @version 0.4.1 - 20/07/2016
  */
 public class FabrikJoint3D
 {
@@ -142,8 +142,8 @@ public class FabrikJoint3D
 	 * <p>
 	 * By default, a FabrikJoint3D cannot be used until the type of joint that it represents has
 	 * been specified. This may be done via the {@link #setAsBallJoint(float)}, 
-	 * {@link #setAsGlobalHinge(au.edu.federation.caliko.utils.Vec3f, float, float, Vec3f)} or
-	 * {@link #setAsLocalHinge(au.edu.federation.caliko.utils.Vec3f, float, float, Vec3f)} methods.
+	 * {@link #setAsGlobalHinge(au.edu.federation.utils.Vec3f, float, float, Vec3f)} or
+	 * {@link #setAsLocalHinge(au.edu.federation.utils.Vec3f, float, float, Vec3f)} methods.
 	 */
 	public FabrikJoint3D() { }
 	

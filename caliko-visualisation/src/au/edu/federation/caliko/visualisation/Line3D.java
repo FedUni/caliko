@@ -2,10 +2,11 @@ package au.edu.federation.caliko.visualisation;
 
 import java.nio.FloatBuffer;
 
-import au.edu.federation.caliko.utils.Colour4f;
-import au.edu.federation.caliko.utils.Mat4f;
-import au.edu.federation.caliko.utils.Utils;
-import au.edu.federation.caliko.utils.Vec3f;
+import au.edu.federation.utils.Colour4f;
+import au.edu.federation.utils.Mat4f;
+import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec3f;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
@@ -15,7 +16,7 @@ import static org.lwjgl.opengl.GL30.*;
  * Class to draw a lines as well as circles and cones made from lines in 3D space.
  * 
  * @author Al Lansley
- * @version 0.7 - 25/09/2015
+ * @version 0.7.1 - 20/07/2016
  */
 public class Line3D
 {

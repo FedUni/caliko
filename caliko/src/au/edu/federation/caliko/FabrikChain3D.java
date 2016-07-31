@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import au.edu.federation.caliko.FabrikJoint3D.JointType;
-import au.edu.federation.caliko.utils.Colour4f;
-import au.edu.federation.caliko.utils.Mat3f;
-import au.edu.federation.caliko.utils.Utils;
-import au.edu.federation.caliko.utils.Vec3f;
+import au.edu.federation.utils.Colour4f;
+import au.edu.federation.utils.Mat3f;
+import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec3f;
 
 /** Class to represent a 3D Inverse Kinematics (IK) chain that can be solved for a given target using the FABRIK algorithm.
  * <p>
@@ -15,7 +15,7 @@ import au.edu.federation.caliko.utils.Vec3f;
  * keep track of settings related to how we go about solving the IK chain.
  * 
  * @author Al Lansley
- * @version 0.4 - 29/12/2015
+ * @version 0.4.1 - 20/07/2016
  */
 public class FabrikChain3D
 {	

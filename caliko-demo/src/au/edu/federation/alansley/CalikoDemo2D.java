@@ -5,17 +5,17 @@ import au.edu.federation.caliko.FabrikChain2D;
 import au.edu.federation.caliko.FabrikChain2D.BaseboneConstraintType2D;
 import au.edu.federation.caliko.FabrikChain2D.BoneConnectionPoint2D;
 import au.edu.federation.caliko.FabrikStructure2D;
-import au.edu.federation.caliko.utils.Colour4f;
-import au.edu.federation.caliko.utils.Utils;
-import au.edu.federation.caliko.utils.Vec2f;
 import au.edu.federation.caliko.visualisation.FabrikLine2D;
 import au.edu.federation.caliko.visualisation.Point2D;
+import au.edu.federation.utils.Colour4f;
+import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec2f;
 
 /**
  * Class to demonstrate some of the features of the Caliko library in 2D.
  * 
  * @author Al Lansley
- * @version 0.7 - 09/01/2016
+ * @version 0.7.1 - 28/07/2016
  */
 public class CalikoDemo2D extends CalikoDemo
 {	

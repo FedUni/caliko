@@ -1,8 +1,8 @@
 package au.edu.federation.caliko;
 
-import au.edu.federation.caliko.utils.Colour4f;
-import au.edu.federation.caliko.utils.Utils;
-import au.edu.federation.caliko.utils.Vec2f;
+import au.edu.federation.utils.Colour4f;
+import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec2f;
 
 /**
  * A class to represent a FabrikBone2D object.
@@ -12,7 +12,7 @@ import au.edu.federation.caliko.utils.Vec2f;
  * to the direction of a bone in another chain which this bone is connected to.
  * 
  * @author Al Lansley
- * @version 0.9 - 11/12/2015
+ * @version 0.9.1 - 20/07/2016
  */
 public class FabrikBone2D
 {
