@@ -57,8 +57,7 @@ This will create a file called **caliko.zip** in the top level directory, the co
 - Nil.
 
 ### Medium priority
-- Add mechanism for individual IK chains in a structure to be updated to individual target locations (i.e. each chain holds a reference to a Vec2f/Vec3f which can be updated) so that a single call to 
-structure.updateEmbeddedTargets() can then update each chain in the structure for its own specific target locations.
+- Nil.
 
 ### Low priority
 - Refactor entire library to use quaternions.
