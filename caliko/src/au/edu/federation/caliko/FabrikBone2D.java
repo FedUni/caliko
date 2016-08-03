@@ -103,7 +103,7 @@ public class FabrikBone2D
 	// ---------- Constructors ----------
 
 	/** Default constructor */
-	FabrikBone2D() { }
+	public FabrikBone2D() { }
 
 	/**
 	 * Constructor to create a new FabrikBone2D from a start and end location as provided by a pair of Vec2fs.

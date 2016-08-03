@@ -6,6 +6,7 @@ import au.edu.federation.caliko.FabrikChain2D.BaseboneConstraintType2D;
 import au.edu.federation.caliko.FabrikStructure2D;
 import au.edu.federation.utils.Colour4f;
 import au.edu.federation.utils.Mat4f;
+import au.edu.federation.utils.Utils;
 import au.edu.federation.utils.Vec2f;
 
 /**
@@ -16,7 +17,7 @@ import au.edu.federation.utils.Vec2f;
  * The GLSL shaders used to draw the lines require a minimum OpenGL version of 3.3 (i.e. GLSL #version 330).
  * 
  * @author  Al Lansley
- * @version  0.5.1 - 20/07/2016
+ * @version  0.6 - 02/08/2016
  */
 public class FabrikLine2D
 {
@@ -28,6 +29,9 @@ public class FabrikLine2D
 	
 	/** A static Line2D object used to draw all lines. */
 	private static Line2D line = new Line2D();
+	
+	/** A point to draw the 2D target if chains use embedded targets. */
+	private static Point2D point = new Point2D();
 	
 	// ---------- FabrikBone2D Drawing Methods ----------
 	
@@ -93,6 +97,12 @@ public class FabrikLine2D
 		{
 			draw(chain.getBone(loop), mvpMatrix);
 		}
+		
+		// Chain has an embedded target? Draw it.
+		if ( chain.getEmbeddedTargetMode() )
+		{
+			point.draw(chain.getEmbeddedTarget(), Utils.YELLOW, 4.0f, mvpMatrix);
+		}
 	}
 
 	/**
@@ -111,6 +121,12 @@ public class FabrikLine2D
 		for (int loop = 0; loop < numBones; ++loop)
 		{
 			FabrikLine2D.draw(chain.getBone(loop), lineWidth, mvpMatrix);
+		}
+
+		// Chain has an embedded target? Draw it.
+		if ( chain.getEmbeddedTargetMode() )
+		{
+			point.draw(chain.getEmbeddedTarget(), Utils.YELLOW, 4.0f, mvpMatrix);
 		}
 	}	
 	
@@ -192,7 +208,7 @@ public class FabrikLine2D
 			
 		} // End of loop over bones
 		
-	} // End of drawConstraintAngles method	
+	} // End of drawChainConstraintAngles method	
 
 	// ---------- FabrikStructure2D Drawing Methods ----------
 		

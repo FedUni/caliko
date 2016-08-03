@@ -11,7 +11,7 @@ import au.edu.federation.utils.Vec2f;
  * Class to represent a 2D Inverse Kinematics (IK) chain that can be solved for a given target using the FABRIK algorithm.
  *  
  * @author Al Lansley
- * @version 1.0.1 - 20/07/2016
+ * @version 1.1 - 02/08/2016
  */
 public class FabrikChain2D
 {	
@@ -185,31 +185,52 @@ public class FabrikChain2D
 	 * The (internally used) constraint unit vector when this chain is connected to another chain in either
 	 * LOCAL_ABSOLUTE or LOCAL_RELATIVE modes.
 	 * <p>
-	 * This property cannot be accessed by users and is updated in the FabrikStructure2D.updateTarget() method.
+	 * This property cannot be accessed by users and is updated in the FabrikStructure2D.updateForTarget() method.
 	 */
 	private Vec2f mBaseboneRelativeConstraintUV = new Vec2f();
 	
 	/**
-	 * mTargetLocation	The target location for the end effector of this IK chain.
+	 * mLastTargetLocation	The last target location for the end effector of this IK chain.
 	 * <p>
-	 * The target location can be updated via the {@link updateTargtet(Vec2f)} or (@link updateTarget(float, float)}  methods, which in turn
-	 * will call the solveIK(Vec2f) method to attempt to solve the IK chain, resulting in an updated chain configuration.
+	 * The last target location is used during the solve attempt and is specified as a property of the chain to avoid
+	 * memory allocation at runtime.
 	 */
 	private Vec2f mLastTargetLocation = new Vec2f(Float.MAX_VALUE, Float.MAX_VALUE);
 	
 	/** 
-	 * The previous base location of the chain from the last solve attempt.
+	 * mLastBaseLocation - The previous base location of the chain from the last solve attempt.
 	 * 
 	 * @default Vec2f(Float.MAX_VALUE, Float.MAX_VALUE)
 	 * @see {@link setFixedBaseLocation}
 	 */	
 	private Vec2f mLastBaseLocation = new Vec2f(Float.MAX_VALUE, Float.MAX_VALUE);
-
+	
+	/**
+	 * mEmbeddedTarget	An embedded target location which can be used to solve this chain.
+	 * <p>
+	 * Embedded target locations allow structures to be solved for multiple targets (one per chain in the structure)
+	 * rather than all chains being solved for the same target. To use embedded targets, the mUseEmbeddedTargets flag
+	 * must be true (which is not the default) - this flag can be set via a call to setEmbeddedTarget(true).
+	 * 
+	 * @see {@link useEmbeddedTarget(boolean) }
+	 */
+	private Vec2f mEmbeddedTarget = new Vec2f();
+	
+	/**
+	 * mUseEmbeddedTarget	Whether or not to use the mEmbeddedTarget location when solving this chain.
+	 * <p>
+	 * This flag may be toggled by calling the setEmbeddedTargetMode(boolean) method on the chain.
+	 * 
+	 * @default false
+	 * @see {@link setEmbeddedTargetMode(boolean) }
+	 */
+	private boolean mUseEmbeddedTarget = false;
+	
 	/**
 	 * mCurrentSolveDistance	The current distance between the end effector and the target location for this IK chain.
 	 * <p>
 	 * The current solve distance is updated when an attempt is made to solve IK chain as triggered by a call to the
-	 * {@link updateTargtet(Vec2f)} or (@link updateTarget(float, float) methods.
+	 * {@link updateForTarget(Vec2f)} or (@link updateForTarget(float, float) methods.
 	 */
 	private float mCurrentSolveDistance = Float.MAX_VALUE;
 	
@@ -257,6 +278,7 @@ public class FabrikChain2D
 		mLastBaseLocation.set(source.mLastBaseLocation);
 		mBaseboneConstraintUV.set(source.mBaseboneConstraintUV);
 		mBaseboneRelativeConstraintUV.set(source.mBaseboneRelativeConstraintUV);	
+		mEmbeddedTarget.set(source.mEmbeddedTarget);
 		
 		// Native copy by value for primitive members
 		mChainLength            = source.mChainLength;
@@ -266,7 +288,8 @@ public class FabrikChain2D
 		mConnectedBoneNumber    = source.mConnectedBoneNumber;
 		mBaseboneConstraintType = source.mBaseboneConstraintType;
 		mBoneConnectionPoint    = source.mBoneConnectionPoint;
-		mName = source.mName;
+		mName                   = source.mName;
+		mUseEmbeddedTarget      = source.mUseEmbeddedTarget;
 	}
 
 	// ---------- Public Methods ------------
@@ -495,6 +518,22 @@ public class FabrikChain2D
 			throw new RuntimeException("Cannot get effector location as there are zero bones in the chain.");
 		}
 	}
+	
+	/**
+	 * Return whether or not this chain uses an embedded target.
+	 * 
+	 * Embedded target mode may be enabled or disabled using setEmbeddededTargetMode(boolean).
+	 * 
+	 * @return whether or not this chain uses an embedded target.
+	 */
+	public boolean getEmbeddedTargetMode() { return mUseEmbeddedTarget; }
+	
+	/**
+	 * Return the embedded target location.
+	 * 
+	 * @return the embedded target location.
+	 */
+	public Vec2f getEmbeddedTarget() { return mEmbeddedTarget; }
 	
 	/**
 	 * Return the last target location for which we  attempted to solve this IK chain.
@@ -812,7 +851,7 @@ public class FabrikChain2D
 				mChain.get(loop).setStartLocation(newStartLocation);
 
 				// ...and set the end joint location of the bone further in to also be at the new start location.
-				mChain.get(loop-1).setEndLocation(newStartLocation);
+				if (loop > 0) mChain.get(loop-1).setEndLocation(newStartLocation);
 			}
 
 		} // End of forward-pass loop over all bones
@@ -884,7 +923,7 @@ public class FabrikChain2D
 					mChain.get(0).setEndLocation(newEndLocation);
 	
 					// Also, set the start location of the next bone to be the end location of this bone
-					mChain.get(1).setStartLocation(newEndLocation);
+					if (mChain.size() > 1) mChain.get(1).setStartLocation(newEndLocation);
 				}
 				else // ...otherwise we must constrain it to the base bone constraint unit vector
 				{	
@@ -945,6 +984,13 @@ public class FabrikChain2D
 		// ...and calculate and return the distance between the current effector location and the target.
 		return Vec2f.distanceBetween(currentEffectorLocation, target);
 	}
+	
+	/**
+	 * Specify whether we should use the embedded target location when solving the IK chain.
+	 * 
+	 * @param	value	Whether we should use the embedded target location when solving the IK chain.
+	 */
+	public void setEmbeddedTargetMode(boolean value) { mUseEmbeddedTarget = value; }
 	
 	/**
 	 * Return a concise, human-readable of the IK chain.
@@ -1015,26 +1061,82 @@ public class FabrikChain2D
 		}
 	}
 	
+	
 	/**
-	 * Update the target location of this FabrikChain2D and attempt to solve the IK chain for the new target location.
-	 * <p>
-	 * The end result of running this method is that the IK chain configuration is updated.
-	 * </p>
-	 * <p>
-	 * This method simply constructs a Vec2f from the provided arguments and calls the {@link Vec2f} version of the updateTarget method.
-	 * By making this available, the user does not need to use our custom {@link Vec2f} class in their application.
-	 * </p>
-	 * @param targetX	(float)	The x location of the target.
-	 * @param targetY	(float) The y location of the target.
-	 * @return	float	The resulting distance between the end effector and the new target location after solving the IK chain.
+	 * Update the embedded target for this chain.
+	 * 
+	 * The internal mEmbeddedTarget object is updated with the location of the provided parameter.
+	 * If the chain is not in useEmbeddedTarget mode then a RuntimeException is thrown.
+	 * Embedded target mode can be enabled by calling setEmbeddedTargetMode(true) on the chain.
+	 * 
+	 * @param newEmbeddedTarget	The location of the embedded target.
 	 */
-	public float updateTarget(float targetX, float targetY)
+	public void updateEmbeddedTarget(Vec2f newEmbeddedTarget)
 	{
-		return updateTarget( new Vec2f(targetX, targetY) );
+		// Using embedded target mode? Overwrite embedded target with provided location
+		if (mUseEmbeddedTarget) { mEmbeddedTarget.set(newEmbeddedTarget);                                                                                  }
+		else                    { throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); }
 	}
 	
 	/**
-	 * Update the target location and solve the IK chain for this target to the best of our ability.
+	 * Update the embedded target for this chain.
+	 * 
+	 * The internal mEmbeddedTarget object is updated with the location of the provided parameter.
+	 * If the chain is not in useEmbeddedTarget mode then a RuntimeException is thrown.
+	 * Embedded target mode can be enabled by calling setEmbeddedTargetMode(true) on the chain.
+	 * 
+	 * @param x	The x location of the embedded target.
+	 * @param y	The y location of the embedded target.
+	 */
+	public void updateEmbeddedTarget(float x, float y)
+	{
+		// Using embedded target mode? Overwrite embedded target with provided location
+		if (mUseEmbeddedTarget) { mEmbeddedTarget.set( new Vec2f(x, y) );                                                                                  }
+		else                    { throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); }
+	}
+	
+	/**
+	 * Solve this IK chain for the current embedded target location.
+	 * 
+	 * The embedded target location can be updated by calling updateEmbeddedTarget(Vec2f).
+	 * 
+	 * @return The distance between the end effector and the chain's embedded target location for our best solution.
+	 */
+	public float solveForEmbeddedTarget()
+	{
+		if (mUseEmbeddedTarget) { return solveForTarget(mEmbeddedTarget);                                                                                     }
+		else                    { throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); }
+	}
+	
+	/**
+	 * Solve the IK chain for this target to the best of our ability.
+	 * <p>
+	 * We will iteratively attempt up to solve the chain up to a maximum of mMaxIterationAttempts.
+	 * 
+	 * This method may return early if any of the following conditions are met:
+	 * <ul>
+	 * <li>We've already solved for this target location,</li>
+	 * <li>We successfully solve for distance, or</li>
+	 * <li>We grind to a halt (i.e. low iteration change compared to previous solution).</li>
+	 * </ul>
+	 * <p>
+	 * This method simply constructs a Vec2f from the provided arguments and calls the {@link Vec2f} version of the updateForTarget method.
+	 * By making this available, the user does not need to use our custom {@link Vec2f} class in their application.
+	 * 
+	 * @param targetX	(float)	The x location of the target.
+	 * @param targetY	(float) The y location of the target.
+	 * @see 	mMaxIterationAttempts
+	 * @see 	mSolveDistanceThreshold
+	 * @see 	mMinIterationChange
+	 * @return	The distance between the end effector and the target for our best solution
+	 */
+	public float solveForTarget(float targetX, float targetY)
+	{
+		return solveForTarget( new Vec2f(targetX, targetY) );
+	}
+	
+	/**
+	 * Solve the IK chain for this target to the best of our ability.
 	 * <p>
 	 * We will iteratively attempt up to solve the chain up to a maximum of mMaxIterationAttempts.
 	 * 
@@ -1050,10 +1152,10 @@ public class FabrikChain2D
 	 * @see 	mMaxIterationAttempts
 	 * @see 	mSolveDistanceThreshold
 	 * @see 	mMinIterationChange
-	 * @return	The distance between the end effector and the target of our best solution
+	 * @return	The distance between the end effector and the target for our best solution
 	 */
-	public float updateTarget(Vec2f newTarget)
-	{	
+	public float solveForTarget(Vec2f newTarget)
+	{		
 		// Same target as before? Abort immediately and save ourselves some cycles
 		if ( mLastTargetLocation.approximatelyEquals(newTarget, 0.001f) && mLastBaseLocation.approximatelyEquals(mBaseLocation, 0.001f) )
 		{
@@ -1117,7 +1219,7 @@ public class FabrikChain2D
 	/**
 	 * Set the constraint UV about which this bone connects to a bone in another chain.
 	 * <p>
-	 * This method is used by the FabrikStructure2D.updateTarget() method.
+	 * This method is used by the FabrikStructure2D.updateForTarget() method.
 	 *
 	 * @param	constraintUV	The basebone relative constraint unit vector to set.
 	 */

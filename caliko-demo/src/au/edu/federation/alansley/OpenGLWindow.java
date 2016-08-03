@@ -339,7 +339,7 @@ public class OpenGLWindow
 					worldSpaceMousePos.set(  Utils.convertRange(screenSpaceMousePos.x, 0.0f,  mWindowWidth, -mOrthoExtent, mOrthoExtent),
                                              -Utils.convertRange(screenSpaceMousePos.y, 0.0f, mWindowHeight, -mOrthoExtent, mOrthoExtent) );
 					
-					CalikoDemo2D.mStructure.updateTarget(worldSpaceMousePos);
+					CalikoDemo2D.mStructure.solveForTarget(worldSpaceMousePos);
         		}
         	}    		
         }));
@@ -380,7 +380,7 @@ public class OpenGLWindow
 					worldSpaceMousePos.set(  Utils.convertRange(screenSpaceMousePos.x, 0.0f,  mWindowWidth, -mOrthoExtent, mOrthoExtent),
                                              -Utils.convertRange(screenSpaceMousePos.y, 0.0f, mWindowHeight, -mOrthoExtent, mOrthoExtent) );
 					
-					CalikoDemo2D.mStructure.updateTarget(worldSpaceMousePos);
+					CalikoDemo2D.mStructure.solveForTarget(worldSpaceMousePos);
 				}
 				
 				// Nothing needs be done in 2D demo mode - the Application.leftMouseButtonDown flag plus the mouse cursor handler take care of it.				

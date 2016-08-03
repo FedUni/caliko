@@ -6,6 +6,7 @@ import java.util.List;
 import au.edu.federation.caliko.FabrikChain3D.BaseboneConstraintType3D;
 import au.edu.federation.utils.Mat3f;
 import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec2f;
 import au.edu.federation.utils.Vec3f;
 import static au.edu.federation.caliko.FabrikBone3D.BoneConnectionPoint3D;
 
@@ -65,14 +66,16 @@ public class FabrikStructure3D
 	}
 
 	/**
-	 * Update the target location for this FabrikStructure3D, and hence the target of all chains attached to this structure.
+	 * Solve the structure for the given target location.
 	 * <p>
-	 * The result of running this method is that each FabrikChain3D has its updateTarget method called, which in turn calls
-	 * the chain's solveIK method to attempt to solve the IK chain for the new target location.
-	 * 
+	 * All chains in this structure are solved for the given target location EXCEPT those which have embedded targets enabled, which are
+	 * solved for the target location embedded in the chain.
+	 * <p>
+	 * After this method has been executed, the configuration of all IK chains attached to this structure will have been updated.
+	 *  
 	 * @param   newTargetLocation	The location of the target for which we will attempt to solve all chains attached to this structure.
 	 */
-	public void updateTarget(Vec3f newTargetLocation)
+	public void solveForTarget(Vec3f newTargetLocation)
 	{
 		int numChains = mChains.size();
 		int connectedChainNumber;
@@ -87,7 +90,7 @@ public class FabrikStructure3D
 			// If this chain isn't connected to another chain then update as normal...
 			if (connectedChainNumber == -1)
 			{	
-				thisChain.updateTarget(newTargetLocation);
+				thisChain.solveForTarget(newTargetLocation);
 			}
 			else // ...however, if this chain IS connected to another chain...
 			{	
@@ -138,7 +141,15 @@ public class FabrikStructure3D
 				// NOTE: If the base bone constraint type is NONE then we don't do anything with the base bone constraint of the connected chain.
 				
 				// Finally, update the target and solve the chain
-				mChains.get(loop).updateTarget(newTargetLocation);
+				// Update the target and solve the chain
+				if ( !thisChain.getEmbeddedTargetMode() )
+				{
+					thisChain.solveForTarget(newTargetLocation);	
+				}
+				else
+				{
+					thisChain.solveForEmbeddedTarget();
+				}
 				
 			} // End of if chain is connected to another chain section
 			
@@ -147,21 +158,22 @@ public class FabrikStructure3D
 	} // End of updateTarget method
 
 	/**
-	 * Method to update the target location for a FabrikStructure3D, and hence all the target of all chains attached to this structure.
+	 * Solve the structure for the given target location.
 	 * <p>
-	 * After this method has been executed, the state of all IK chains attached to this structure will have been updated.
+	 * All chains in this structure are solved for the given target location EXCEPT those which have embedded targets enabled, which are
+	 * solved for the target location embedded in the chain.
 	 * <p>
-	 * Internally, this method simply constructs a Vec3f from the provided x/y/z values and calls the Vec3f version of this method.
+	 * After this method has been executed, the configuration of all IK chains attached to this structure will have been updated.
 	 * 
 	 * @param  targetX	The target x location.
 	 * @param  targetY	The target y location.
 	 * @param  targetZ	The target z location.
 	 **/
-	public void updateTarget(float targetX, float targetY, float targetZ)
+	public void solveForTarget(float targetX, float targetY, float targetZ)
 	{
 		// Call our Vec3f version of updateTarget using a constructed Vec3f target location
 		// Note: This will loop over all chains, attempting to solve each for the same target location
-		updateTarget( new Vec3f(targetX, targetY, targetZ) );
+		solveForTarget( new Vec3f(targetX, targetY, targetZ) );
 	}
 	
 	/**
@@ -391,8 +403,6 @@ public class FabrikStructure3D
 		sb.append("----- FabrikStructure3D: " + mName + " -----" + NEW_LINE);
 		
 		sb.append("Number of chains: " + mNumChains + NEW_LINE);
-		
-		//TODO: Number of linked chains? Number of effectors?
 
 		for (int loop = 0; loop < mNumChains; ++loop)
 		{

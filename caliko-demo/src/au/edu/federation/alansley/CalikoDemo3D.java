@@ -13,9 +13,12 @@ import au.edu.federation.caliko.visualisation.FabrikLine3D;
 import au.edu.federation.caliko.visualisation.FabrikModel3D;
 import au.edu.federation.caliko.visualisation.Grid;
 import au.edu.federation.caliko.visualisation.MovingTarget3D;
+import au.edu.federation.caliko.visualisation.Point2D;
+import au.edu.federation.caliko.visualisation.Point3D;
 import au.edu.federation.utils.Colour4f;
 import au.edu.federation.utils.Mat4f;
 import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec2f;
 import au.edu.federation.utils.Vec3f;
 
 /**
@@ -49,6 +52,9 @@ public class CalikoDemo3D extends CalikoDemo
 	static Grid  lowerGrid    = new Grid(extent, extent, -gridLevel, subdivisions);
 	static Grid  upperGrid    = new Grid(extent, extent,  gridLevel, subdivisions);
 	
+	/** The target is drawn at the mouse cursor location and is updated to the cursor location when the LMB is held down. */
+	private static Point3D mTargetPoint = new Point3D();
+	
 	// An axis to show the X/Y/Z orientation of each bone. Params: Axis length, axis line width
 	static Axis axis = new Axis(3.0f, 1.0f);
 		
@@ -56,20 +62,31 @@ public class CalikoDemo3D extends CalikoDemo
 	static FabrikConstraint3D constraint = new FabrikConstraint3D();
 		
 	// A simple Wavefront .OBJ format model of a pyramid to display around each bone (set to draw with a 1.0f line width)
-	//static FabrikModel3D model = new FabrikModel3D("pyramid.obj", 1.0f); // USE THIS FOR ECLIPSE!
-	static FabrikModel3D model = new FabrikModel3D("/pyramid.obj", 1.0f);  // USE THIS TO LOAD FROM JAR!
+	static FabrikModel3D model = new FabrikModel3D("/pyramid.obj", 1.0f); // USE THE FORWARD SLASH FOR .JAR LOADING!
+	//static FabrikModel3D model = new FabrikModel3D("pyramid.obj", 1.0f);  // DON'T USE THE FORWARD SLASH FOR ECLIPSE LOADING!
 
 	// Setup moving target. Params: location, extents, interpolation frames, grid height for vertical bar
 	static MovingTarget3D target = new MovingTarget3D(new Vec3f(), new Vec3f(60.0f), 200, gridLevel);
 	
+	/** Targets and offsets for chains with embedded targets in demo 12. */
+	private Vec3f mSecondChainTarget = new Vec3f(20.0f, 0.0f, 20.0f);
+	private Vec3f mSecondChainRotatingOffset = new Vec3f(20.0f, 0.0f, 0.0f);
+	
 	public static FabrikStructure3D mStructure;
+	
+	// Keep track of the demo we're displaying
+	private int mDemoNumber; 
 		
 	/**
 	 * Constructor.
 	 * 
 	 * @param	demoNumber	The number of the demo to set up.
 	 */
-	public CalikoDemo3D(int demoNumber) { setup(demoNumber); }
+	public CalikoDemo3D(int demoNumber)
+	{
+		mDemoNumber = demoNumber;
+		setup(demoNumber);
+	}
 	
 	/**
 	 * Set up a demo consisting of an arrangement of 3D IK chains with a given configuration.
@@ -78,6 +95,7 @@ public class CalikoDemo3D extends CalikoDemo
 	 */
 	public void setup(int demoNumber)
 	{
+		mDemoNumber = demoNumber;
 		String demoName = new String();
 		
 		switch (demoNumber)
@@ -632,7 +650,7 @@ public class CalikoDemo3D extends CalikoDemo
 			}
 			
 			case 12: {
-				demoName            = "Demo 12 - Connected Chains with Non-Freely-Rotating Global Hinge Basebone Constraints";
+				demoName            = "Demo 12 - Connected chains with embedded targets";
 				mStructure          = new FabrikStructure3D(demoName);
 				Colour4f boneColour = new Colour4f(Utils.GREEN);
 				
@@ -658,6 +676,7 @@ public class CalikoDemo3D extends CalikoDemo
 				
 				// Create a second chain which will have a relative (i.e. local) rotor basebone constraint about the X axis.
 				FabrikChain3D secondChain = new FabrikChain3D("Second Chain");
+				secondChain.setEmbeddedTargetMode(true);
 				FabrikBone3D base = new FabrikBone3D( new Vec3f(), new Vec3f(15.0f, 0.0f, 0.0f) );
 				secondChain.addBone(base);
 				
@@ -673,9 +692,9 @@ public class CalikoDemo3D extends CalikoDemo
 				//secondChain.setRotorBaseboneConstraint(BaseboneConstraintType3D.LOCAL_ROTOR, Z_AXIS, 30.0f, 60.0f, Y_AXIS);
 				
 				// Add some additional bones
-				secondChain.addConsecutiveBone(X_AXIS, 15.0f);
-				secondChain.addConsecutiveBone(X_AXIS, 10.0f);
-				secondChain.addConsecutiveBone(X_AXIS, 10.0f);
+				secondChain.addConsecutiveBone(X_AXIS, 20.0f);
+				secondChain.addConsecutiveBone(X_AXIS, 20.0f);
+				secondChain.addConsecutiveBone(X_AXIS, 20.0f);
 				secondChain.setColour(Utils.GREY);
 				
 				// Connect this second chain to the start point of bone 3 in chain 0 of the structure
@@ -715,7 +734,23 @@ public class CalikoDemo3D extends CalikoDemo
         if (!Application.paused)
         {
         	target.step();
-        	mStructure.updateTarget( target.getCurrentLocation() );
+        	
+        	if (mDemoNumber == 12)
+            {
+        		// Specify a secondary target for connected chain which rotates on the Y axis
+            	//Vec3f secondChainTarget = new Vec3f(20.0f, 20.0f, 20.0f);            	
+            	mSecondChainRotatingOffset = Vec3f.rotateYDegs(mSecondChainRotatingOffset, 1.0f);
+            	mSecondChainRotatingOffset = Vec3f.rotateXDegs(mSecondChainRotatingOffset, 0.5f);
+            	
+            	// Update the embedded target on that chain
+            	mStructure.getChain(1).updateEmbeddedTarget( mSecondChainTarget.plus(mSecondChainRotatingOffset) );
+            	
+            	// Draw the target
+            	mTargetPoint.draw( mSecondChainTarget.plus(mSecondChainRotatingOffset), Utils.YELLOW,  4.0f,  mvpMatrix);
+            }
+        	
+        	// Solve the structure (chains with embedded targets will use those, otherwise the provided target is used)
+        	mStructure.solveForTarget( target.getCurrentLocation() );
         }
         
         // If we're in rotate base mode then rotate the base location(s) of all chains in the structure

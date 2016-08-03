@@ -12,7 +12,7 @@ import java.util.List;
 import au.edu.federation.utils.Vec3f;
 import au.edu.federation.utils.Vec3i;
 
-//TODO: This is pretty ineficient - change all the for..each loops to be normals loops to stop Java leaking memory.
+//TODO: This is pretty ineficient - change all the for..each loops to be normals loops to stop Java allocating memory.
 //TODO: Also provide a proper copy-constructor rather than a clone method - they should do the same thing.
 
 /**
@@ -25,7 +25,7 @@ import au.edu.federation.utils.Vec3i;
  * There is no support for textures, texture coordinates, or grouped objects at this time.
  * 
  * @author Al Lansley
- * @version 0.5 - 07/01/2016
+ * @version 0.5.1 - 07/01/2016
  */
 public class Model
 {
@@ -448,12 +448,11 @@ public class Model
 
 		// Counter to keep track of what line we're on
 		int lineCount = 0;
-
-		//try (BufferedReader br = new BufferedReader( new InputStreamReader(is)) ) // Use this for loading from file in Eclipse or such
 		
-		// Try with resources (automagically closes the file on completion or failure)
+		// Use this for jar packaged resources
 		InputStream is = this.getClass().getResourceAsStream(filename);
 		try (BufferedReader br = new BufferedReader( new InputStreamReader(is) ) ) // This version loads from within jar archive, required for caliko-demo-jar-with-resources.jar
+		//try (BufferedReader br = new BufferedReader( new FileReader(filename) ) )  // Use this for loading from file in Eclipse or such
 		{
 			// We'll read through the file one line at a time - this will hold the current line we're working on
 			String line;

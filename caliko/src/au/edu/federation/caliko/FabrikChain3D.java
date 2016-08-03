@@ -7,6 +7,7 @@ import au.edu.federation.caliko.FabrikJoint3D.JointType;
 import au.edu.federation.utils.Colour4f;
 import au.edu.federation.utils.Mat3f;
 import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec2f;
 import au.edu.federation.utils.Vec3f;
 
 /** Class to represent a 3D Inverse Kinematics (IK) chain that can be solved for a given target using the FABRIK algorithm.
@@ -15,7 +16,7 @@ import au.edu.federation.utils.Vec3f;
  * keep track of settings related to how we go about solving the IK chain.
  * 
  * @author Al Lansley
- * @version 0.4.1 - 20/07/2016
+ * @version 0.5 - 03/08/2016
  */
 public class FabrikChain3D
 {	
@@ -37,7 +38,7 @@ public class FabrikChain3D
 	
 	/**
 	 * The core of a FabrikChain3D is a list of FabrikBone3D objects. It is this chain that we attempt to solve for a specified
-	 * target location via the {@link updateTarget} method.
+	 * target location via the {@link solveForTarget} method.
 	 */
 	private List<FabrikBone3D> mChain = new ArrayList<FabrikBone3D>();
 
@@ -165,7 +166,7 @@ public class FabrikChain3D
 	/**
 	 * mTargetLocation	The target location for the end effector of this IK chain.
 	 * <p>
-	 * The target location can be updated via the {@link updateTargtet(Vec3f)} or (@link updateTarget(float, float)}  methods, which in turn
+	 * The target location can be updated via the {@link updateTargtet(Vec3f)} or (@link solveForTarget(float, float)}  methods, which in turn
 	 * will call the solveIK(Vec3f) method to attempt to solve the IK chain, resulting in an updated chain configuration.
 	 * 
 	 * @default Vec3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE)
@@ -198,7 +199,7 @@ public class FabrikChain3D
 	 * mCurrentSolveDistance	The current distance between the end effector and the target location for this IK chain.
 	 * <p>
 	 * The current solve distance is updated when an attempt is made to solve IK chain as triggered by a call to the
-	 * {@link updateTargtet(Vec3f)} or (@link updateTarget(float, float) methods.
+	 * {@link updateTargtet(Vec3f)} or (@link solveForTarget(float, float) methods.
 	 */
 	private float mCurrentSolveDistance = Float.MAX_VALUE;
 	
@@ -219,6 +220,27 @@ public class FabrikChain3D
 	 * @default -1
 	 */ 
 	private int mConnectedBoneNumber  = -1;
+	
+	/**
+	 * mEmbeddedTarget	An embedded target location which can be used to solve this chain.
+	 * <p>
+	 * Embedded target locations allow structures to be solved for multiple targets (one per chain in the structure)
+	 * rather than all chains being solved for the same target. To use embedded targets, the mUseEmbeddedTargets flag
+	 * must be true (which is not the default) - this flag can be set via a call to setEmbeddedTargetMode(true).
+	 * 
+	 * @see {@link setEmbeddedTargetMode(boolean) }
+	 */
+	private Vec3f mEmbeddedTarget = new Vec3f();
+	
+	/**
+	 * mUseEmbeddedTarget	Whether or not to use the mEmbeddedTarget location when solving this chain.
+	 * <p>
+	 * This flag may be toggled by calling the setEmbeddedTargetMode(true) on the chain.
+	 * 
+	 * @default false
+	 * @see {@link setEmbeddedTargetMode(boolean) }
+	 */
+	private boolean mUseEmbeddedTarget = false;
 
 	// ---------- Constructors ----------
 
@@ -238,6 +260,7 @@ public class FabrikChain3D
 		mFixedBaseLocation.set( source.getBaseLocation() );
 		mLastTargetLocation.set(source.mLastTargetLocation);
 		mLastBaseLocation.set(source.mLastBaseLocation);
+		mEmbeddedTarget.set(source.mEmbeddedTarget);
 				
 		// Copy the basebone constraint UV if there is one to copy
 		if (source.mBaseboneConstraintType != BaseboneConstraintType3D.NONE)
@@ -255,6 +278,7 @@ public class FabrikChain3D
 		mBaseboneConstraintType = source.mBaseboneConstraintType;			
 		mName                   = source.mName;
 		mConstraintLineWidth    = source.mConstraintLineWidth;
+		mUseEmbeddedTarget      = source.mUseEmbeddedTarget;
 	}
 	
 	/**
@@ -686,6 +710,22 @@ public class FabrikChain3D
 	public Vec3f getEffectorLocation() { return mChain.get(mNumBones-1).getEndLocation(); }
 
 	/**
+	 * Return whether or not this chain uses an embedded target.
+	 * 
+	 * Embedded target mode may be enabled or disabled using setEmbeddededTargetMode(boolean).
+	 * 
+	 * @return whether or not this chain uses an embedded target.
+	 */
+	public boolean getEmbeddedTargetMode() { return mUseEmbeddedTarget; }
+	
+	/**
+	 * Return the embedded target location.
+	 * 
+	 * @return the embedded target location.
+	 */
+	public Vec3f getEmbeddedTarget() { return mEmbeddedTarget; }
+	
+	/**
 	 * Return the target of the last solve attempt.
 	 * <p>
 	 * The target location and the effector location are not necessarily at the same location unless the chain has been solved
@@ -759,7 +799,7 @@ public class FabrikChain3D
 	 * Set the relative basebone constraint UV - this direction should be relative to the coordinate space of the basebone.
 	 *
 	 * This function is deliberately made package-private as it should not be used by the end user - instead, the 
-	 * FabrikStructure3D.updateTarget() method will update this mBaseboneRelativeConstraintUV property FOR USE BY this
+	 * FabrikStructure3D.solveForTarget() method will update this mBaseboneRelativeConstraintUV property FOR USE BY this
 	 * chain as required.
 	 * 
 	 * The reason for this is that this chain on its own cannot calculate the relative constraint
@@ -772,11 +812,11 @@ public class FabrikChain3D
 	 * Set the relative basebone reference constraint UV - this direction should be relative to the coordinate space of the basebone.
 	 *
 	 * This function is deliberately made package-private as it should not be used by the end user - instead, the 
-	 * FabrikStructure3D.updateTarget() method will update this mBaseboneRelativeConstraintUV property FOR USE BY this
+	 * FabrikStructure3D.solveForTarget() method will update this mBaseboneRelativeConstraintUV property FOR USE BY this
 	 * chain as required.
 	 * 
 	 * This property is required when we have a LOCAL_HINGE basebone constraint with reference axes - we must maintain the
-	 * hinge's own rotation and reference axes, and then the FabrikStructure3D.updateTarget() method updates the
+	 * hinge's own rotation and reference axes, and then the FabrikStructure3D.solveForTarget() method updates the
 	 * mBaseboneRelativeConstraintUV and mBaseboneRelativeReferenceConstraintUV as required.
 	 **/
 	void setBaseboneRelativeReferenceConstraintUV(Vec3f constraintUV) { mBaseboneRelativeReferenceConstraintUV = constraintUV; }
@@ -787,6 +827,13 @@ public class FabrikChain3D
 	* @return	The relative basebone reference constraint unit vector.
 	*/
 	public Vec3f getBaseboneRelativeReferenceConstraintUV()	{ return mBaseboneRelativeReferenceConstraintUV;}
+	
+	/**
+	 * Specify whether we should use the embedded target location when solving the IK chain.
+	 * 
+	 * @param	value	Whether we should use the embedded target location when solving the IK chain.
+	 */
+	public void setEmbeddedTargetMode(boolean value) { mUseEmbeddedTarget = value; }
 	
 	/**
 	 * Set this chain to have a rotor basebone constraint.
@@ -1138,6 +1185,19 @@ public class FabrikChain3D
 	}
 	
 	/**
+	 * Solve this IK chain for the current embedded target location.
+	 * 
+	 * The embedded target location can be updated by calling updateEmbeddedTarget(Vec3f).
+	 * 
+	 * @return The distance between the end effector and the chain's embedded target location for our best solution.
+	 */
+	public float solveForEmbeddedTarget()
+	{
+		if (mUseEmbeddedTarget) { return solveForTarget(mEmbeddedTarget);                                                                                     }
+		else                    { throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); }
+	}
+	
+	/**
 	 * Method to solve this IK chain for the given target location.
 	 * <p>
 	 * The end result of running this method is that the IK chain configuration is updated.
@@ -1152,9 +1212,9 @@ public class FabrikChain3D
 	 * @param	targetZ	The z location of the target
 	 * @return			The resulting distance between the end effector and the new target location after solving the IK chain.
 	 */
-	public float updateTarget(float targetX, float targetY, float targetZ)
+	public float solveForTarget(float targetX, float targetY, float targetZ)
 	{
-		return updateTarget( new Vec3f(targetX, targetY, targetZ) );
+		return solveForTarget( new Vec3f(targetX, targetY, targetZ) );
 	}
 
 	/**
@@ -1170,7 +1230,7 @@ public class FabrikChain3D
 	 * @param	newTarget	The location of the target for which we will solve this IK chain.
 	 * @return	float		The resulting distance between the end effector and the new target location after solving the IK chain.
 	 */
-	public float updateTarget(Vec3f newTarget)
+	public float solveForTarget(Vec3f newTarget)
 	{	
 		// If we have both the same target and base location as the last run then do not solve
 		if ( mLastTargetLocation.approximatelyEquals(newTarget, 0.001f) &&
@@ -1573,8 +1633,8 @@ public class FabrikChain3D
 					}
 					else if (mBaseboneConstraintType == BaseboneConstraintType3D.LOCAL_ROTOR)
 					{
-						// Note: The mBaseboneRelativeConstraintUV is updated in the FabrikStructure3D.updateTarget()
-						// method BEFORE this FabrikChain3D.updateTarget() method is called. We no knowledge of the
+						// Note: The mBaseboneRelativeConstraintUV is updated in the FabrikStructure3D.solveForTarget()
+						// method BEFORE this FabrikChain3D.solveForTarget() method is called. We no knowledge of the
 						// direction of the bone we're connected to in another chain and so cannot calculate this 
 						// relative basebone constraint direction on our own, but the FabrikStructure3D does it for
 						// us so we are now free to use it here.
@@ -1715,6 +1775,40 @@ public class FabrikChain3D
 		{
 			mChainLength += mChain.get(loop).length();
 		}
+	}
+	
+	/**
+	 * Update the embedded target for this chain.
+	 * 
+	 * The internal mEmbeddedTarget object is updated with the location of the provided parameter.
+	 * If the chain is not in useEmbeddedTarget mode then a RuntimeException is thrown.
+	 * Embedded target mode can be enabled by calling setEmbeddedTargetMode(true) on the chain.
+	 * 
+	 * @param newEmbeddedTarget	The location of the embedded target.
+	 */
+	public void updateEmbeddedTarget(Vec3f newEmbeddedTarget)
+	{
+		// Using embedded target mode? Overwrite embedded target with provided location
+		if (mUseEmbeddedTarget) { mEmbeddedTarget.set(newEmbeddedTarget);                                                                                  }
+		else                    { throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); }
+	}
+	
+	/**
+	 * Update the embedded target for this chain.
+	 * 
+	 * The internal mEmbeddedTarget object is updated with the location of the provided parameter.
+	 * If the chain is not in useEmbeddedTarget mode then a RuntimeException is thrown.
+	 * Embedded target mode can be enabled by calling setEmbeddedTargetMode(true) on the chain.
+	 * 
+	 * @param x	The x location of the embedded target.
+	 * @param y	The y location of the embedded target.
+	 * @param z	The z location of the embedded target.
+	 */
+	public void updateEmbeddedTarget(float x, float y, float z)
+	{
+		// Using embedded target mode? Overwrite embedded target with provided location
+		if (mUseEmbeddedTarget) { mEmbeddedTarget.set( new Vec3f(x, y, z) );                                                                                  }
+		else                    { throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); }
 	}
 	
 	/**

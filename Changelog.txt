@@ -1,0 +1,13 @@
+1.2
+- [MAJOR] Added embedded targets for 2D/3D chains so that chains in the same structure do not have to all use/be-solved-for the same target location.
+  By enabling embedded target mode for a chain, when it's time to solve it the embedded target is used rather than any provided target. See
+  the user documentation and 2D demo 7 and 3D demo 12 for worked examples.
+- All calls to "updateTarget" are now "solveForTarget", and there are additional "setEmbeddedTargetMode" and "updateEmbeddedTarget" methods for chains.
+- Made FabrikBone2D default constructor public [FabrikBone2D]
+- Fix for crash when solving chain with a single bone (2D and 3D) [FabrikChain3D]
+
+1.1.2
+- Moved utils package from au.edu.federation.caliko.utils to au.edu.federation.utils as the classes within are generic
+- Modified source to import new Vec/Mat classes
+- Added performance metrics test (source code in perf-test folder)
+- Updated user documentation with details of the above.

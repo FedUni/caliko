@@ -19,7 +19,7 @@ import au.edu.federation.utils.Vec2f;
  * Chains in a structure may be connected to other chains in the same structure in a variety of ways, if desired.
  * 
  * @author Al Lansley
- * @version 0.9.1 - 20/07/2016
+ * @version 1.0 - 02/08/2016
  **/
 public class FabrikStructure2D
 {	
@@ -61,14 +61,16 @@ public class FabrikStructure2D
 	public void setName(String name) { mName = Utils.getValidatedName(name); }
 	
 	/**
-	 * Update the target location for this FabrikStructure2D, and hence the target of all chains attached to this structure.
+	 * Solve the structure for the given target location.
 	 * <p>
-	 * The result of running this method is that each FabrikChain2D has its updateTarget method called, which in turn calls
-	 * the chain's solveIK method to attempt to solve the IK chain for the new target location.
-	 * 
+	 * All chains in this structure are solved for the given target location EXCEPT those which have embedded targets enabled, which are
+	 * solved for the target location embedded in the chain.
+	 * <p>
+	 * After this method has been executed, the configuration of all IK chains attached to this structure will have been updated.
+	 *  
 	 * @param   newTargetLocation	The location of the target for which we will attempt to solve all chains attached to this structure.
 	 */
-	public void updateTarget(Vec2f newTargetLocation)
+	public void solveForTarget(Vec2f newTargetLocation)
 	{
 		int numChains = mChains.size();
 		int hostChainNumber;
@@ -132,17 +134,27 @@ public class FabrikStructure2D
 				
 			} // End of if chain is connected to another chain section
 			
-			// Udate the target and solve the chain
-			thisChain.updateTarget(newTargetLocation);
+			// Update the target and solve the chain
+			if ( !thisChain.getEmbeddedTargetMode() )
+			{
+				thisChain.solveForTarget(newTargetLocation);	
+			}
+			else
+			{
+				thisChain.solveForEmbeddedTarget();
+			}			
 			
 		} // End of loop over chains
 		
 	} // End of updateTarget method
 
 	/**
-	 * Method to update the target location for a FabrikStructure2D, and hence all the target of all chains attached to this structure.
+	 * Solve the structure for the given target location.
 	 * <p>
-	 * After this method has been executed, the state of all IK chains attached to this structure will have been updated.
+	 * All chains in this structure are solved for the given target location EXCEPT those which have embedded targets enabled, which are
+	 * solved for the target location embedded in the chain.
+	 * <p>
+	 * After this method has been executed, the configuration of all IK chains attached to this structure will have been updated.
 	 * <p>
 	 * Internally, this method simply constructs a Vec2f from the provided x and y values and calls the Vec2f version of this method.
 	 * 
@@ -153,7 +165,7 @@ public class FabrikStructure2D
 	{
 		// Call our Vec2f version of updateTarget using this constructed target location
 		// Note: This will loop over all chains, attempting to solve each for the same target location
-		updateTarget( new Vec2f(targetXLocation, targetYLocation) );
+		solveForTarget( new Vec2f(targetXLocation, targetYLocation) );
 	}
 	
 	/**

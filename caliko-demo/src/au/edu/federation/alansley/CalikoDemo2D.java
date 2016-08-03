@@ -15,7 +15,7 @@ import au.edu.federation.utils.Vec2f;
  * Class to demonstrate some of the features of the Caliko library in 2D.
  * 
  * @author Al Lansley
- * @version 0.7.1 - 28/07/2016
+ * @version 0.8 - 02/08/2016
  */
 public class CalikoDemo2D extends CalikoDemo
 {	
@@ -45,7 +45,13 @@ public class CalikoDemo2D extends CalikoDemo
 	private float mConstraintLineWidth  = 2.0f;
 	
 	/** Offset amount used by demos 7 and 8. */
-	private Vec2f mRotatingOffset   = new Vec2f(50.0f, 0.0f);
+	private Vec2f mRotatingOffset       = new Vec2f(30.0f, 0.0f);
+	
+	/** Targets and offsets for chains with embedded targets in demo 7. */
+	private Vec2f mSmallRotatingTargetLeft  = new Vec2f(-70.0f, 40.0f);
+	private Vec2f mSmallRotatingTargetRight = new Vec2f( 50.0f, 20.0f);
+	private Vec2f mSmallRotatingOffsetLeft  = new Vec2f( 25.0f, 0.0f);
+	private Vec2f mSmallRotatingOffsetRight = new Vec2f(  0.0f, 30.0f);
 	
 	/** Base location used by demos 7 and 8. */
 	private Vec2f mOrigBaseLocation = new Vec2f(0.0f, -80.0f);
@@ -360,8 +366,6 @@ public class CalikoDemo2D extends CalikoDemo
 				// Add consecutive constrained bones
 				leftChain.addConsecutiveConstrainedBone(LEFT, boneLength, 90.0f, 90.0f, Utils.MID_GREEN);
 				leftChain.addConsecutiveConstrainedBone(LEFT, boneLength, 90.0f, 90.0f, Utils.MID_GREEN);
-				
-				leftChain.updateTarget(new Vec2f(100.0f, 100.0f) );
 										
 				// Add the chain to the structure, connecting at the end of bone 0 in chain 0
 				mStructure.addConnectedChain(leftChain, 0, 0, BoneConnectionPoint2D.END);
@@ -394,7 +398,7 @@ public class CalikoDemo2D extends CalikoDemo
 			case 7:
 			{
 				// Update the window title
-				String demoName = "Demo 7 - Varying-offset 'fixed' chain with GLOBAL_ABSOLUTE base-bone constraint";
+				String demoName = "Demo 7 - Varying-offset 'fixed' chains with embedded targets";
 				Application.window.setWindowTitle(demoName);
 				
 				// Instantiate our FabrikStructure2D. We're only drawing a single chain in this instance, but because
@@ -407,11 +411,12 @@ public class CalikoDemo2D extends CalikoDemo
 				float boneLength = 50.0f;
 				float startY     = -100.0f;
 				
+				// ----- Central white chain ------
 				// Create the first bone, configure it, and add it to the chain
 				FabrikBone2D basebone;
 				basebone = new FabrikBone2D(new Vec2f(0.0f, startY), new Vec2f(0.0f, startY + boneLength) );
-				basebone.setClockwiseConstraintDegs(45.0f);
-				basebone.setAnticlockwiseConstraintDegs(45.0f);
+				basebone.setClockwiseConstraintDegs(65.0f);
+				basebone.setAnticlockwiseConstraintDegs(65.0f);
 				chain.addBone(basebone);
 				
 				// Fix the base bone to its current location, and constrain it to the positive Y-axis
@@ -419,14 +424,53 @@ public class CalikoDemo2D extends CalikoDemo
 				chain.setBaseboneConstraintType(BaseboneConstraintType2D.GLOBAL_ABSOLUTE);
 				chain.setBaseboneConstraintUV(UP);
 		
-				// Create and add the second bone - 50 clockwise, 90 anti-clockwise
-				chain.addConsecutiveConstrainedBone(UP, boneLength, 120.0f, 120.0f);
-				
-				// Create and add the third bone - 75 clockwise, 90 anti-clockwise
-				chain.addConsecutiveConstrainedBone(UP, boneLength, 120.0f, 120.0f);
+				// Add second and third bones
+				chain.addConsecutiveBone(UP, boneLength);
+				chain.addConsecutiveBone(UP, boneLength);
 				
 				// Finally, add the chain to the structure
 				mStructure.addChain(chain);
+				
+				// ----- Left green chain with embedded target -----		
+				FabrikChain2D leftChain = new FabrikChain2D();				
+				leftChain.setEmbeddedTargetMode(true); // Enable embedded targets - we actually set the embedded target location in the demo loop
+				basebone = new FabrikBone2D(new Vec2f(), new Vec2f(-boneLength / 6.0f, 0.0f) );
+						
+				// Add fifteen bones
+				leftChain.addBone(basebone);
+				for (int boneLoop = 0; boneLoop < 14; ++boneLoop)
+				{	
+					leftChain.addConsecutiveConstrainedBone(RIGHT, boneLength / 6.0f, 25.0f, 25.0f);
+				}
+				
+				// Set chain colour and basebone constraint type
+				leftChain.setColour(Utils.MID_GREEN);
+				
+				// Add the left chain to the structure, connected to the start of bone 1 in chain 0
+				mStructure.addConnectedChain(leftChain, 0, 1, BoneConnectionPoint2D.START);
+				
+				// ----- Right grey chain with embedded target -----
+				FabrikChain2D rightChain = new FabrikChain2D();				
+				rightChain.setEmbeddedTargetMode(true); // Enable embedded targets - we actually set the embedded target location in the demo loop
+				basebone = new FabrikBone2D(new Vec2f(), new Vec2f(boneLength / 5.0f, 0.0f) );
+				basebone.setClockwiseConstraintDegs(60.0f);
+				basebone.setAnticlockwiseConstraintDegs(60.0f);
+						
+				// Add ten bones
+				rightChain.addBone(basebone);
+				for (int boneLoop = 0; boneLoop < 9; ++boneLoop)
+				{
+					rightChain.addConsecutiveBone(RIGHT, boneLength / 5.0f);
+				}
+				
+				// Set chain colour and basebone constraint type
+				rightChain.setColour(Utils.GREY);
+				rightChain.setBaseboneConstraintType(BaseboneConstraintType2D.LOCAL_ABSOLUTE);
+				rightChain.setBaseboneRelativeConstraintUV(RIGHT);
+				
+				// Add the right chain to the structure, connected to the start of bone 2 in chain 0
+				mStructure.addConnectedChain(rightChain, 0, 2, BoneConnectionPoint2D.START);
+				
 				break;
 			}
 			
@@ -511,16 +555,28 @@ public class CalikoDemo2D extends CalikoDemo
 		// Demo 7 or 8? Offset the base location...
 		if (Application.demoNumber == 7 || Application.demoNumber == 8)
 		{
-			mRotatingOffset = Vec2f.rotateDegs(mRotatingOffset, 1.0f);
+			// Rotate offset and apply to base location of first chain
+			mRotatingOffset = Vec2f.rotateDegs(mRotatingOffset, 1.0f);			
 			mStructure.getChain(0).setBaseLocation( mOrigBaseLocation.plus(mRotatingOffset) );
+			
+			if (Application.demoNumber == 7)
+			{
+				// Rotate offsets for left and right chains
+				mSmallRotatingOffsetLeft  = Vec2f.rotateDegs(mSmallRotatingOffsetLeft, -1.0f);
+				mSmallRotatingOffsetRight = Vec2f.rotateDegs(mSmallRotatingOffsetRight, 2.0f);
+				
+				Vec2f newEmbeddedTargetLoc = new Vec2f();
+				newEmbeddedTargetLoc.set(mStructure.getChain(1).getEmbeddedTarget() );				
+				mStructure.getChain(1).updateEmbeddedTarget( mSmallRotatingTargetLeft.plus(mSmallRotatingOffsetLeft)   );
+				mStructure.getChain(2).updateEmbeddedTarget( mSmallRotatingTargetRight.plus(mSmallRotatingOffsetRight) );
+			}
 
 			// Update the structure. Even though we're not moving the target, we ARE moving the 
 			// base location, so this forces the IK chain to be resolved for the new base location.
-			mStructure.updateTarget( OpenGLWindow.worldSpaceMousePos );
+			mStructure.solveForTarget( OpenGLWindow.worldSpaceMousePos );
 		}
 		
 		// Draw our structure
-		//FabrikLine2D.draw( mStructure, 4.0f, Application.window.getProjectionMatrixMatrix() );
 		FabrikLine2D.draw( mStructure, 4.0f, Application.window.getMvpMatrix() );
 		
 		// Draw bone constraints if the draw constraints flag is true

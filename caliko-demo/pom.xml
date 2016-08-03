@@ -8,8 +8,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <skipTests>true</skipTests>
     <javaVersion>1.8</javaVersion>
-    <calikoVersion>1.2</calikoVersion>
-    <calikoVisVersion>1.0</calikoVisVersion>
+    <calikoVersion>1.3</calikoVersion>
+    <calikoVisVersion>1.1</calikoVisVersion>
     <lwjgl.version>3.0.0b</lwjgl.version>
   </properties>
 
@@ -24,7 +24,7 @@
   <groupId>au.edu.federation.caliko.alansley</groupId>
   <artifactId>caliko-demo</artifactId>
   <packaging>jar</packaging>
-  <version>1.0</version>    <!-- *** Change this version number on new release *** -->
+  <version>1.2</version>    <!-- *** Change this version number on new release *** -->
   <name>caliko-demo</name>
   <url>https://github.com/FedUni/caliko</url>
 
