@@ -6,3 +6,6 @@ target/
 .project
 .settings/
 
+BUILD/
+RELEASE/
+
