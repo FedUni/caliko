@@ -62,8 +62,7 @@ public class CalikoDemo3D extends CalikoDemo
 	static FabrikConstraint3D constraint = new FabrikConstraint3D();
 		
 	// A simple Wavefront .OBJ format model of a pyramid to display around each bone (set to draw with a 1.0f line width)
-	static FabrikModel3D model = new FabrikModel3D("/pyramid.obj", 1.0f); // USE THE FORWARD SLASH FOR .JAR LOADING!
-	//static FabrikModel3D model = new FabrikModel3D("pyramid.obj", 1.0f);  // DON'T USE THE FORWARD SLASH FOR ECLIPSE LOADING!
+	static FabrikModel3D model = new FabrikModel3D("/pyramid.obj", 1.0f);
 
 	// Setup moving target. Params: location, extents, interpolation frames, grid height for vertical bar
 	static MovingTarget3D target = new MovingTarget3D(new Vec3f(), new Vec3f(60.0f), 200, gridLevel);
