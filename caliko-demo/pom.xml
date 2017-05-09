@@ -7,14 +7,13 @@
   <groupId>au.edu.federation.caliko.alansley</groupId>
   <artifactId>caliko-demo</artifactId>
   <packaging>jar</packaging>
-  <version>1.2</version>    <!-- *** Change this version number on new release *** -->
   <name>caliko-demo</name>
   <url>https://github.com/FedUni/caliko</url>  
   
   <parent>
     <groupId>au.edu.federation.caliko</groupId>
     <artifactId>caliko-aggregate</artifactId>
-    <version>1.2</version>
+    <version>1.3.1-SNAPSHOT</version>
   </parent>  
 
   <!-- Configure settings & version numbers and specify license -->
@@ -81,14 +80,12 @@
     <dependency>
       <groupId>au.edu.federation.caliko</groupId>
       <artifactId>caliko</artifactId>
-      <version>${calikoVersion}</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>au.edu.federation.caliko.visualisation</groupId>
       <artifactId>caliko-visualisation</artifactId>
-      <version>${calikoVisVersion}</version>
       <scope>compile</scope>
     </dependency>
 
