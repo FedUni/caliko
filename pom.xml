@@ -5,7 +5,7 @@
   <groupId>au.edu.federation.caliko</groupId>
   <artifactId>caliko-aggregate</artifactId>
   <packaging>pom</packaging>
-  <version>1.3.1-SNAPSHOT</version>                     <!-- This is the version of the library as a whole - build.txt is updated from this. -->
+  <version>1.3.1-SNAPSHOT</version>
   <name>Caliko library Aggregate POM</name>
   <description>POM to build the Caliko library including the visualisation component, demo application, source and documentation archives.</description>
   <url>https://github.com/FedUni/caliko</url>
@@ -47,7 +47,11 @@
 	        <groupId>org.apache.maven.plugins</groupId>
 	        <artifactId>maven-compiler-plugin</artifactId>
 	        <version>3.3</version>
-	      </plugin>    	
+	      </plugin>
+	      <plugin>
+	        <artifactId>maven-jar-plugin</artifactId>
+	        <version>3.0.2</version>
+	      </plugin>	          	
       </plugins>
     </pluginManagement>
    
@@ -143,100 +147,100 @@
 <!--       </plugin> -->
 
       <!-- Copy resources to final RELEASE folder -->
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.7</version>
-        <executions>
+<!--       <plugin> -->
+<!--         <artifactId>maven-resources-plugin</artifactId> -->
+<!--         <version>3.0.2</version> -->
+<!--         <executions> -->
 
-          <!-- Copy library jars to RELEASE/jar -->
-          <execution>
-            <id>copy-library-jars</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.outputDirectory}/jar</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>caliko/target</directory>
-                  <includes>
-                    <include>**/*.jar</include>
-                  </includes>
-                </resource>
-                <resource>
-                  <directory>caliko-visualisation/target</directory>
-                  <includes>
-                    <include>**/*.jar</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
+<!--           Copy library jars to RELEASE/jar -->
+<!--           <execution> -->
+<!--             <id>copy-library-jars</id> -->
+<!--             <phase>compile</phase> -->
+<!--             <goals> -->
+<!--               <goal>copy-resources</goal> -->
+<!--             </goals> -->
+<!--             <configuration> -->
+<!--               <outputDirectory>${project.build.outputDirectory}/jar</outputDirectory> -->
+<!--               <resources> -->
+<!--                 <resource> -->
+<!--                   <directory>caliko/target</directory> -->
+<!--                   <includes> -->
+<!--                     <include>**/*.jar</include> -->
+<!--                   </includes> -->
+<!--                 </resource> -->
+<!--                 <resource> -->
+<!--                   <directory>caliko-visualisation/target</directory> -->
+<!--                   <includes> -->
+<!--                     <include>**/*.jar</include> -->
+<!--                   </includes> -->
+<!--                 </resource> -->
+<!--               </resources> -->
+<!--             </configuration> -->
+<!--           </execution> -->
 
-          <!-- Copy demo jars to RELEASE/demo -->
-          <execution>
-            <id>copy-demo-jar</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.outputDirectory}/demo</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>caliko-demo/target</directory>
-                  <includes>
-                    <include>**/*.jar</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
+<!--           Copy demo jars to RELEASE/demo -->
+<!--           <execution> -->
+<!--             <id>copy-demo-jar</id> -->
+<!--             <phase>validate</phase> -->
+<!--             <goals> -->
+<!--               <goal>copy-resources</goal> -->
+<!--             </goals> -->
+<!--             <configuration> -->
+<!--               <outputDirectory>${project.build.outputDirectory}/demo</outputDirectory> -->
+<!--               <resources> -->
+<!--                 <resource> -->
+<!--                   <directory>caliko-demo/target</directory> -->
+<!--                   <includes> -->
+<!--                     <include>**/*.jar</include> -->
+<!--                   </includes> -->
+<!--                 </resource> -->
+<!--               </resources> -->
+<!--             </configuration> -->
+<!--           </execution> -->
 
-          <!-- Place user documentation into doc folder -->
-          <execution>
-            <id>copy-user-docs</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.outputDirectory}/doc</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${basedir}</directory>
-                  <includes>
-                    <include>caliko-user-guide.pdf</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
+<!--           Place user documentation into doc folder -->
+<!--           <execution> -->
+<!--             <id>copy-user-docs</id> -->
+<!--             <phase>validate</phase> -->
+<!--             <goals> -->
+<!--               <goal>copy-resources</goal> -->
+<!--             </goals> -->
+<!--             <configuration> -->
+<!--               <outputDirectory>${project.build.outputDirectory}/doc</outputDirectory> -->
+<!--               <resources> -->
+<!--                 <resource> -->
+<!--                   <directory>${basedir}</directory> -->
+<!--                   <includes> -->
+<!--                     <include>caliko-user-guide.pdf</include> -->
+<!--                   </includes> -->
+<!--                 </resource> -->
+<!--               </resources> -->
+<!--             </configuration> -->
+<!--           </execution> -->
 
-          <!-- Update the build.txt stamp from the version of this POM -->
-          <execution>
-            <id>update-build-stamp</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-              <resources>
-                <resource>
-                  <filtering>true</filtering>
-                  <directory>.</directory>
-                  <includes>
-                    <include>build.txt</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
+<!--           Update the build.txt stamp from the version of this POM -->
+<!--           <execution> -->
+<!--             <id>update-build-stamp</id> -->
+<!--             <phase>compile</phase> -->
+<!--             <goals> -->
+<!--               <goal>resources</goal> -->
+<!--             </goals> -->
+<!--             <configuration> -->
+<!--               <outputDirectory>${project.build.outputDirectory}</outputDirectory> -->
+<!--               <resources> -->
+<!--                 <resource> -->
+<!--                   <filtering>true</filtering> -->
+<!--                   <directory>.</directory> -->
+<!--                   <includes> -->
+<!--                     <include>build.txt</include> -->
+<!--                   </includes> -->
+<!--                 </resource> -->
+<!--               </resources> -->
+<!--             </configuration> -->
+<!--           </execution> -->
 
-        </executions>
-      </plugin>
+<!--         </executions> -->
+<!--       </plugin> -->
 
     </plugins>
   </build>
