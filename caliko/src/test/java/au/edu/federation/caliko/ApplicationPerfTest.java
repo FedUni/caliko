@@ -1,13 +1,15 @@
-package au.edu.federation.caliko.perf_test;
+package au.edu.federation.caliko;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
-import au.edu.federation.caliko.*;
-import au.edu.federation.utils.*;
+import org.junit.Test;
 
-public class Application
+import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec3f;
+
+public class ApplicationPerfTest
 {	
 	// We'll run this many cycles, where each cycle is
 	static int totalCycles = 20;
@@ -21,13 +23,14 @@ public class Application
 	// Dump results to textfile for import into excel
 	static PrintWriter writer;
 	
-	public static void main(String[] args)
+	@Test
+	public void runTests()
 	{	
 		System.out.println("---------- Caliko CPU Performance Analysis ----------");
 		
 		try
 		{
-			writer = new PrintWriter("caliko-performance-test.txt", "UTF-8");
+			writer = new PrintWriter("target/caliko-performance-test.txt", "UTF-8");
 		}
 		catch (FileNotFoundException e)        { e.printStackTrace(); }
 		catch (UnsupportedEncodingException e) { e.printStackTrace(); }		
@@ -144,7 +147,7 @@ public class Application
 			startNanos = System.nanoTime();
 			
 				// Solve for target
-				chain.updateTarget(target);
+				chain.solveForTarget(target);
 			
 			// Get end time
 			endNanos = System.nanoTime();

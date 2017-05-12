@@ -11,11 +11,15 @@
   <url>https://github.com/FedUni/caliko</url>
 
   <properties>
-		<maven-compiler-plugin.source>1.8</maven-compiler-plugin.source>
-		<maven-compiler-plugin.target>1.8</maven-compiler-plugin.target>  
+	<maven-compiler-plugin.source>1.8</maven-compiler-plugin.source>
+	<maven-compiler-plugin.target>1.8</maven-compiler-plugin.target>  
+    <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
+    <maven-failsafe-plugin.version>2.20</maven-failsafe-plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <skipTests>true</skipTests>
     <lwjgl.version>3.0.0b</lwjgl.version>
+    
+    <lib.version.junit>4.12</lib.version.junit>
+    <lib.version.mockito>1.8.5</lib.version.mockito>
   </properties>
 
   <!-- Build these modules in this specific order - the order is important because 'caliko' is
@@ -43,9 +47,34 @@
         <groupId>au.edu.federation.caliko.alansley</groupId>
         <artifactId>caliko-demo</artifactId>
         <version>${project.version}</version>
-      </dependency>            
+      </dependency>
+      
+      <!-- Test dependencies -->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${lib.version.junit}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-all</artifactId>
+        <version>${lib.version.mockito}</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
+  
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+    </dependency>
+  </dependencies>
     
   <build>
     <pluginManagement>
@@ -89,7 +118,17 @@
 	            </goals>
 	          </execution>
 	         </executions>                   
-        </plugin>	     
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven-surefire-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>${maven-failsafe-plugin.version}</version>
+        </plugin>        	     
       </plugins>
     </pluginManagement>
    
@@ -102,6 +141,14 @@
           <target>${maven-compiler-plugin.target}</target>
         </configuration>
       </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+        </plugin>
     </plugins>
   </build>
 
