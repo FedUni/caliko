@@ -5,18 +5,21 @@
   <groupId>au.edu.federation.caliko</groupId>
   <artifactId>caliko-aggregate</artifactId>
   <packaging>pom</packaging>
-  <version>1.2</version>                     <!-- This is the version of the library as a whole - build.txt is updated from this. -->
+  <version>1.3.1</version>
   <name>Caliko library Aggregate POM</name>
   <description>POM to build the Caliko library including the visualisation component, demo application, source and documentation archives.</description>
   <url>https://github.com/FedUni/caliko</url>
 
   <properties>
+	<maven-compiler-plugin.source>1.8</maven-compiler-plugin.source>
+	<maven-compiler-plugin.target>1.8</maven-compiler-plugin.target>  
+    <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
+    <maven-failsafe-plugin.version>2.20</maven-failsafe-plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <skipTests>true</skipTests>
-    <javaVersion>1.8</javaVersion>
-    <calikoVersion>1.3</calikoVersion>
-    <calikoVisVersion>1.1</calikoVisVersion>
-    <calikoDemoVersion>1.2</calikoDemoVersion>
+    <lwjgl.version>3.0.0b</lwjgl.version>
+    
+    <lib.version.junit>4.12</lib.version.junit>
+    <lib.version.mockito>1.8.5</lib.version.mockito>
   </properties>
 
   <!-- Build these modules in this specific order - the order is important because 'caliko' is
@@ -25,190 +28,127 @@
     <module>caliko</module>
     <module>caliko-visualisation</module>
     <module>caliko-demo</module>
+    <module>caliko-distribution</module>
   </modules>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>au.edu.federation.caliko</groupId>
+        <artifactId>caliko</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>au.edu.federation.caliko.visualisation</groupId>
+        <artifactId>caliko-visualisation</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>au.edu.federation.caliko.alansley</groupId>
+        <artifactId>caliko-demo</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      
+      <!-- Test dependencies -->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${lib.version.junit}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-all</artifactId>
+        <version>${lib.version.mockito}</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+    </dependency>
+  </dependencies>
+    
   <build>
-    <directory>BUILD</directory>
-    <outputDirectory>RELEASE</outputDirectory>
+    <pluginManagement>
+   	  <plugins>
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <version>3.3</version>
+	      </plugin>
+	      <plugin>
+	        <artifactId>maven-jar-plugin</artifactId>
+	        <version>3.0.2</version>
+	      </plugin>
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-source-plugin</artifactId>
+	        <version>3.0.1</version>
+	        <executions>
+	          <execution>
+	            <id>bundle-sources</id>
+	            <phase>package</phase>
+	            <goals>
+	              <!-- produce source artifact for main project sources -->
+	              <goal>jar-no-fork</goal>
+	              <!-- produce source artifact for project test sources -->
+	              <goal>test-jar-no-fork</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+	      </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>2.10.4</version>
+	        <executions>
+	          <execution>
+	            <phase>package</phase>            
+	            <id>aggregate</id>
+	            <goals>
+	              <goal>jar</goal>              
+	            </goals>
+	          </execution>
+	         </executions>                   
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven-surefire-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>${maven-failsafe-plugin.version}</version>
+        </plugin>        	     
+      </plugins>
+    </pluginManagement>
    
     <plugins>
-
-      <!-- Build aggregated javadoc -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.10.3</version>   
+        <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <quiet>true</quiet>
-          <reportOutputDirectory>${project.build.directory}</reportOutputDirectory>          
-        </configuration>     
-        <executions>
-          <execution>
-            <phase>compile</phase>            
-            <id>aggregate-javadocs</id>
-            <goals>
-              <goal>aggregate</goal>              
-            </goals>
-          </execution>
-        </executions>
+          <source>${maven-compiler-plugin.source}</source>
+          <target>${maven-compiler-plugin.target}</target>
+        </configuration>
       </plugin>
-
-      <!-- Assemble items into zip files -->
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.6</version>
-        <executions>
-
-          <!-- Javadoc into zip  -->
-          <execution>
-            <id>docs-assemble</id>
-            <phase>compile</phase>
-            <configuration>
-              <finalName>javadoc</finalName>
-              <appendAssemblyId>false</appendAssemblyId>
-              <descriptors>
-                <descriptor>doc-bin.xml</descriptor>
-              </descriptors>
-            <outputDirectory>${project.build.outputDirectory}/doc</outputDirectory>
-            </configuration>
-            <goals>
-              <goal>single</goal>
-            </goals>            
-          </execution>
-
-          <!-- Source code into zip -->
-          <execution>
-            <id>source-assemble</id>
-            <phase>compile</phase>
-            <configuration>
-              <finalName>src</finalName>
-              <appendAssemblyId>false</appendAssemblyId>
-              <descriptors>
-                <descriptor>src-bin.xml</descriptor>
-              </descriptors>
-            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-            </configuration>
-            <goals>
-              <goal>single</goal>
-            </goals>            
-          </execution>
-
-          <!-- Entire RELEASE folder into final caliko.zip -->
-          <execution>
-            <id>create-release-zip-archive</id>
-            <phase>package</phase>
-            <configuration>
-              <finalName>caliko</finalName>
-              <appendAssemblyId>false</appendAssemblyId>
-              <outputDirectory>${project.basedir}</outputDirectory>
-              <descriptors>
-                <descriptor>lib-bin.xml</descriptor>
-              </descriptors>
-            </configuration>
-            <goals>
-              <goal>single</goal>
-            </goals>            
-          </execution>
-
-        </executions>        
-      </plugin>
-
-      <!-- Copy resources to final RELEASE folder -->
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.7</version>
-        <executions>
-
-          <!-- Copy library jars to RELEASE/jar -->
-          <execution>
-            <id>copy-library-jars</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.outputDirectory}/jar</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>caliko/target</directory>
-                  <includes>
-                    <include>**/*.jar</include>
-                  </includes>
-                </resource>
-                <resource>
-                  <directory>caliko-visualisation/target</directory>
-                  <includes>
-                    <include>**/*.jar</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-
-          <!-- Copy demo jars to RELEASE/demo -->
-          <execution>
-            <id>copy-demo-jar</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.outputDirectory}/demo</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>caliko-demo/target</directory>
-                  <includes>
-                    <include>**/*.jar</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-
-          <!-- Place user documentation into doc folder -->
-          <execution>
-            <id>copy-user-docs</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.outputDirectory}/doc</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${basedir}</directory>
-                  <includes>
-                    <include>caliko-user-guide.pdf</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-
-          <!-- Update the build.txt stamp from the version of this POM -->
-          <execution>
-            <id>update-build-stamp</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-              <resources>
-                <resource>
-                  <filtering>true</filtering>
-                  <directory>.</directory>
-                  <includes>
-                    <include>build.txt</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-
-        </executions>
-      </plugin>
-
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+        </plugin>
     </plugins>
   </build>
 

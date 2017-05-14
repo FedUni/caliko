@@ -1,0 +1,77 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>au.edu.federation.caliko</groupId>
+    <artifactId>caliko-aggregate</artifactId>
+    <version>1.3.1</version>
+  </parent>
+  <artifactId>caliko-distribution</artifactId>
+  <packaging>jar</packaging>
+  <name>caliko-distribution</name>
+  <dependencies>
+    <!-- maven-javadoc-plugin 2.10.4 is supposed to do perform transivite dependencies to generate an aggregated Javadoc
+         as per maven-javadoc-plugin as per https://maven.apache.org/plugins/maven-javadoc-plugin/examples/aggregate-dependency-sources.html,
+         via includeDependencySources, then limiting the Javadoc dependencies via dependencySourceIncludes.
+         
+         But could not get that to work. It seems that the plugin only aggregate Javadocs on modules that are explicitly defined as a direct dependency.
+         Therefore, I have listed all the modules that we want to generate aggregated Javadocs for. -->
+    <dependency>
+      <groupId>au.edu.federation.caliko.visualisation</groupId>
+      <artifactId>caliko-visualisation</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>au.edu.federation.caliko</groupId>
+      <artifactId>caliko</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>au.edu.federation.caliko.alansley</groupId>
+      <artifactId>caliko-demo</artifactId>
+    </dependency>
+  </dependencies>
+   <build>
+     <plugins>
+       <plugin>
+         <artifactId>maven-assembly-plugin</artifactId>
+         <version>3.0.0</version>
+         <executions>
+           <execution>
+             <id>assemble</id>
+             <phase>package</phase>
+             <goals>
+                 <goal>single</goal>
+             </goals>
+						 <configuration>
+						   <descriptors>
+						     <descriptor>src/assembly/src-bin.xml</descriptor>
+						   </descriptors>
+						 </configuration>             
+           </execution>
+         </executions>
+       </plugin>
+              
+	     <!-- Build aggregated javadoc -->
+	     <plugin>
+	       <groupId>org.apache.maven.plugins</groupId>
+	       <artifactId>maven-javadoc-plugin</artifactId>
+	       <configuration>
+	         <includeDependencySources>true</includeDependencySources>
+	         <dependencySourceIncludes>
+	           <dependencySourceInclude>au.edu.federation.caliko:*</dependencySourceInclude>
+	           <dependencySourceInclude>au.edu.federation.caliko.visualisation:*</dependencySourceInclude>
+	           <dependencySourceInclude>au.edu.federation.caliko.alansley:*</dependencySourceInclude>
+	         </dependencySourceIncludes>
+	         <reportOutputDirectory>${project.build.directory}</reportOutputDirectory>          
+	       </configuration>     
+	       <executions>
+	         <execution>
+             <id>javadoc-jar</id>
+	           <phase>package</phase>            
+	           <goals>
+	             <goal>aggregate-jar</goal>
+	           </goals>
+	          </execution>
+	        </executions>
+	     </plugin>       
+     </plugins>
+   </build>  
+</project>

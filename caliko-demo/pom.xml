@@ -2,16 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
-  <!-- Configure settings & version numbers and specify license -->
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <skipTests>true</skipTests>
-    <javaVersion>1.8</javaVersion>
-    <calikoVersion>1.3</calikoVersion>
-    <calikoVisVersion>1.1</calikoVisVersion>
-    <lwjgl.version>3.0.0b</lwjgl.version>
-  </properties>
+  
+  <!-- What we're building... -->
+  <groupId>au.edu.federation.caliko.alansley</groupId>
+  <artifactId>caliko-demo</artifactId>
+  <packaging>jar</packaging>
+  <name>caliko-demo</name>
+  <url>https://github.com/FedUni/caliko</url>  
+  
+  <parent>
+    <groupId>au.edu.federation.caliko</groupId>
+    <artifactId>caliko-aggregate</artifactId>
+    <version>1.3.1</version>
+  </parent>  
 
   <licenses>
     <license>
@@ -20,24 +23,11 @@
     </license>
   </licenses>
 
-  <!-- What we're building... -->
-  <groupId>au.edu.federation.caliko.alansley</groupId>
-  <artifactId>caliko-demo</artifactId>
-  <packaging>jar</packaging>
-  <version>1.2</version>    <!-- *** Change this version number on new release *** -->
-  <name>caliko-demo</name>
-  <url>https://github.com/FedUni/caliko</url>
-
   <build>
-    <sourceDirectory>src</sourceDirectory>
-    <finalName>${project.artifactId}</finalName> 
-
     <plugins>
-
       <!-- Specify location of main() method and force compilation with a modern java version -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.3</version>
         <configuration>
           <archive>
             <manifest>
@@ -45,47 +35,6 @@
             </manifest>
           </archive>
         </configuration>
-        <executions>
-          <execution>
-            <id>default-compile</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-            <configuration>
-              <source>${javaVersion}</source>
-              <target>${javaVersion}</target>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <!-- Ensure our pyramid.obj WaveFront .OBJ model file is included in the demo jars -->
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.7</version>
-        <executions>
-
-          <!-- Package Wavefront .obj model(s) into jars -->
-          <execution>
-            <id>package-wavefront-model-data</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-               <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-               <resources>
-                 <resource>
-                   <directory>.</directory>
-                   <includes>
-                     <include>**/*.obj</include>
-                   </includes>
-                 </resource>
-               </resources>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
       <!-- Ensure all libraries are packaged into the created caliko-demo-jar-with-dependencies.jar -->
@@ -113,36 +62,16 @@
           </descriptorRefs>
         </configuration>
       </plugin>
-
-      <!-- Provide details of local 'core' and visualisation jars -->
+      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-install-plugin</artifactId>
-        <version>2.5.2</version>
-        <configuration>
-          <groupId>au.edu.federation.caliko</groupId>
-          <artifactId>caliko</artifactId>
-          <version>{$calikoVersion}</version>
-          <packaging>jar</packaging>
-          <file>../caliko/target/caliko.jar</file>
-
-          <groupId>au.edu.federation.caliko.visualisation</groupId>
-          <artifactId>caliko-visualisation</artifactId>
-          <version>${calikoVisVersion}</version>
-          <packaging>jar</packaging>
-          <file>../caliko-visualisation/target/caliko-visualisation.jar</file>
-        </configuration>
-        <executions>
-          <execution>
-            <id>install-jar-lib</id>
-            <goals>
-              <goal>install-file</goal>
-            </goals>
-            <phase>validate</phase>
-          </execution>
-        </executions>
-      </plugin>
-
+        <artifactId>maven-source-plugin</artifactId>
+      </plugin>    
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>      
+      </plugin>      
+      
     </plugins>
   </build>
 
@@ -152,14 +81,12 @@
     <dependency>
       <groupId>au.edu.federation.caliko</groupId>
       <artifactId>caliko</artifactId>
-      <version>${calikoVersion}</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>au.edu.federation.caliko.visualisation</groupId>
       <artifactId>caliko-visualisation</artifactId>
-      <version>${calikoVisVersion}</version>
       <scope>compile</scope>
     </dependency>
 
@@ -206,5 +133,5 @@
     <connection>git:https://github.com/FedUni/caliko</connection>
     <developerConnection>scm:git:https://github.com/FedUni/caliko</developerConnection>
   </scm>
-
+  
 </project>
