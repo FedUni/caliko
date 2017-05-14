@@ -388,6 +388,10 @@ public class FabrikStructure3D
 	 * @param	name	The name to set.
 	 */
 	public void setName(String name) { mName = Utils.getValidatedName(name); }
+	
+	public String getName() {
+		return this.mName;
+	}
 
 	/**
 	 * Return a concise, human readable description of this FabrikStructure3D. 
