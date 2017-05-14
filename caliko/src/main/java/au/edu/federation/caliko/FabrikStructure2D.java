@@ -306,6 +306,10 @@ public class FabrikStructure2D
 		mFixedBaseMode = fixedBaseMode;		
 		mChains.get(0).setFixedBaseMode(mFixedBaseMode);
 	}
+	
+	public String getName() {
+		return this.mName;
+	}
 
 	/**
 	 * Return a concise, human readable description of this FabrikStructure2D. 

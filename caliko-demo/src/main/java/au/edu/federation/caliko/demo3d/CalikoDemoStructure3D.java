@@ -2,7 +2,6 @@ package au.edu.federation.caliko.demo3d;
 
 import au.edu.federation.caliko.FabrikStructure3D;
 import au.edu.federation.caliko.demo.CalikoDemoStructure;
-import au.edu.federation.utils.Mat4f;
 import au.edu.federation.utils.Vec3f;
 
 /**
@@ -26,6 +25,5 @@ public abstract class CalikoDemoStructure3D implements CalikoDemoStructure {
 		return structure;
 	}
 	
-	public abstract void drawTarget(Mat4f mvpMatrix);
 
 }

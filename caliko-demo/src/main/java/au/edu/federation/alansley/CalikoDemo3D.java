@@ -20,7 +20,7 @@ import au.edu.federation.utils.Vec3f;
  * @author Al Lansley
  * @version 0.7.1 - 20/07/2016
  */
-public class CalikoDemo3D extends CalikoDemo
+public class CalikoDemo3D implements CalikoDemo
 {
 	static float defaultBoneLength      = 10.0f;
 	static float boneLineWidth          = 5.0f;
@@ -82,7 +82,7 @@ public class CalikoDemo3D extends CalikoDemo
 		}
 		
 		// Set the appropriate window title and make an initial solve pass of the structure
-		Application.window.setWindowTitle(mStructure.getName());
+		Application.window.setWindowTitle(this.mStructure.getName());
 		//structure.updateTarget( target.getCurrentLocation() );
 	}
 	
