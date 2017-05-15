@@ -9,33 +9,46 @@ You can watch a short video outlining the setup and functionality of the Caliko 
 
 ## Structure
 
-The library itself can be built into two separate .JAR files (one mandatory, one optional) suitable for inclusion in your IK projects:
-- **caliko.jar**, and
-- **caliko-visualisation.jar**.
+The library is a Maven multi-module project with the following modules:
 
-The **caliko** folder contains source code for core IK portion of the library and is capable of running without any visualisation or external dependencies. 
+The **caliko** module contains the core IK portion of the library and is capable of running without any visualisation or external dependencies. 
 
-The **caliko-visualisation** folder contains source code for the optional visualisation component of the library which provides the ability to draw various IK structures/chains/bones and depends on the 
+The **caliko-visualisation** module contains the optional visualisation component of the library which provides the ability to draw various IK structures/chains/bones and depends on the 
 core caliko functionality as well as the LWJGL3 library.
 
-The **caliko-demo** folder contains source code for a demonstration of the library utilising both 2D and 3D IK chains in various configurations. It requires the caliko, caliko-visualisation and LWJGL3 
+The **caliko-demo** module contains a demonstration of the library utilising both 2D and 3D IK chains in various configurations. It requires the caliko, caliko-visualisation and LWJGL3 
 libraries.
 
 ## Build and Setup
 
-You do not need to build the Caliko library yourself to use it, and may instead simply download a release from: 
+To build yourself:
+
+`git clone https://github.com/FedUni/caliko`
+
+`mvn clean package` or `mvn clean install`
+
+Alternatively, download a release from: 
 [https://github.com/FedUni/caliko/releases](https://github.com/FedUni/caliko/releases)
 
-Then, it's simply a matter of creating a new project, linking in the library .jars (and optionally the source code and javadoc archives) and using the library functionality. If you're using the 
-visualisation component, then the LWJGL3 library must also be configured for your project.
+## Usage
 
-Alternatively, rather than using the caliko / caliko-visualisation .jar files, you could just copy the __au.edu.federation.*__ source files into your project, but you may then need to replace them with 
-newer versions as changes/fixes are applied to Caliko - so using the latest .jar versions is a cleaner and more hassle-free solution.
+To use the library in your own Maven project, declare the following dependencies:
 
-If you wish to build the Caliko library yourself, then it's configured to use maven for project / dependency management and the entire library can be built by calling:
-`mvn package`
+1) If you only need the IK algorithm and do not need any visualisation:
 
-This will create a file called **caliko.zip** in the top level directory, the contents of which are those from the created **RELEASE** folder.
+    <dependency>
+      <groupId>au.edu.federation.caliko</groupId>
+      <artifactId>caliko</artifactId>
+      <version>1.3.2</version>
+    </dependency> 
+
+2) If you need the IK algorirthm and the visualisation:
+
+    <dependency>
+      <groupId>au.edu.federation.caliko.visualisation</groupId>
+      <artifactId>caliko-visualisation</artifactId>
+      <version>1.3.2</version>
+    </dependency> 
 
 ## Demo controls
 
