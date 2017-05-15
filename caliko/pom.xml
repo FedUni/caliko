@@ -10,7 +10,7 @@
   <parent>
     <groupId>au.edu.federation.caliko</groupId>
     <artifactId>caliko-aggregate</artifactId>
-    <version>1.3.2-SNAPSHOT</version>
+    <version>1.3.2</version>
   </parent>  
 
   <licenses>
