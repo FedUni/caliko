@@ -54,7 +54,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>au.edu.federation.alansley.Application</mainClass>
+              <mainClass>au.edu.federation.caliko.demo.Application</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
