@@ -58,7 +58,7 @@
 	         <dependencySourceIncludes>
 	           <dependencySourceInclude>au.edu.federation.caliko:*</dependencySourceInclude>
 	           <dependencySourceInclude>au.edu.federation.caliko.visualisation:*</dependencySourceInclude>
-	           <dependencySourceInclude>au.edu.federation.caliko.alansley:*</dependencySourceInclude>
+	           <dependencySourceInclude>au.edu.federation.caliko.demo:*</dependencySourceInclude>
 	         </dependencySourceIncludes>
 	         <reportOutputDirectory>${project.build.directory}</reportOutputDirectory>          
 	       </configuration>     
