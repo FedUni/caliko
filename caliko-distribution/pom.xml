@@ -24,7 +24,7 @@
       <artifactId>caliko</artifactId>
     </dependency>
     <dependency>
-      <groupId>au.edu.federation.caliko.alansley</groupId>
+      <groupId>au.edu.federation.caliko.demo</groupId>
       <artifactId>caliko-demo</artifactId>
     </dependency>
   </dependencies>

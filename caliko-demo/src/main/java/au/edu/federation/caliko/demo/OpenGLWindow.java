@@ -1,4 +1,4 @@
-package au.edu.federation.alansley;
+package au.edu.federation.caliko.demo;
 
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWErrorCallback;

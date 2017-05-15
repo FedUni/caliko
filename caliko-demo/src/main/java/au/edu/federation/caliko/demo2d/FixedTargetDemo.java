@@ -1,6 +1,6 @@
 package au.edu.federation.caliko.demo2d;
 
-import au.edu.federation.alansley.OpenGLWindow;
+import au.edu.federation.caliko.demo.OpenGLWindow;
 import au.edu.federation.utils.Mat4f;
 import au.edu.federation.utils.Vec2f;
 

@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   
   <!-- What we're building... -->
-  <groupId>au.edu.federation.caliko.alansley</groupId>
+  <groupId>au.edu.federation.caliko.demo</groupId>
   <artifactId>caliko-demo</artifactId>
   <packaging>jar</packaging>
   <name>caliko-demo</name>
@@ -31,7 +31,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>au.edu.federation.alansley.Application</mainClass>
+              <mainClass>au.edu.federation.caliko.demo.Application</mainClass>
             </manifest>
           </archive>
         </configuration>

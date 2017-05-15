@@ -1,4 +1,4 @@
-package au.edu.federation.alansley;
+package au.edu.federation.caliko.demo;
 
 /**
  * This abstract class is the parent of the CalikoDemo2D and CalikoDemo3D classes and is merely

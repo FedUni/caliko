@@ -1,4 +1,4 @@
-package au.edu.federation.alansley;
+package au.edu.federation.caliko.demo;
 
 import au.edu.federation.caliko.FabrikStructure3D;
 import au.edu.federation.caliko.demo3d.CalikoDemoStructure3D;
