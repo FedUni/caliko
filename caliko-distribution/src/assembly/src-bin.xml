@@ -19,7 +19,7 @@
         <includeModuleDirectory>false</includeModuleDirectory>
         <fileSets>
           <fileSet>
-            <outputDirectory>sources/${module.artifactId}</outputDirectory>
+            <outputDirectory>${module.artifactId}</outputDirectory>
             <excludes>
               <exclude>**/.project</exclude>
               <exclude>**/.settings/</exclude>

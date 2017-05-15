@@ -30,25 +30,6 @@
   </dependencies>
    <build>
      <plugins>
-       <plugin>
-         <artifactId>maven-assembly-plugin</artifactId>
-         <version>3.0.0</version>
-         <executions>
-           <execution>
-             <id>assemble</id>
-             <phase>package</phase>
-             <goals>
-                 <goal>single</goal>
-             </goals>
-						 <configuration>
-						   <descriptors>
-						     <descriptor>src/assembly/src-bin.xml</descriptor>
-						   </descriptors>
-						 </configuration>             
-           </execution>
-         </executions>
-       </plugin>
-              
 	     <!-- Build aggregated javadoc -->
 	     <plugin>
 	       <groupId>org.apache.maven.plugins</groupId>
@@ -71,7 +52,27 @@
 	           </goals>
 	          </execution>
 	        </executions>
-	     </plugin>       
+	     </plugin>
+	     
+       <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-assembly-plugin</artifactId>
+         <executions>
+           <execution>
+             <id>assemble</id>
+             <phase>package</phase>
+             <goals>
+                 <goal>single</goal>
+             </goals>
+             <configuration>
+               <descriptors>
+                 <descriptor>src/assembly/src-bin.xml</descriptor>
+                 <descriptor>src/assembly/dist-bin.xml</descriptor>
+               </descriptors>
+             </configuration>             
+           </execution>
+         </executions>
+       </plugin>	            
      </plugins>
    </build>  
 </project>

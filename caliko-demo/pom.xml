@@ -27,6 +27,7 @@
     <plugins>
       <!-- Specify location of main() method and force compilation with a modern java version -->
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <archive>
@@ -39,8 +40,8 @@
 
       <!-- Ensure all libraries are packaged into the created caliko-demo-jar-with-dependencies.jar -->
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.6</version>
         <executions>
           <execution>
             <id>make-assembly</id>
