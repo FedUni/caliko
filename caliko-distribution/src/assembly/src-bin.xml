@@ -13,13 +13,13 @@
       <includes>
         <include>au.edu.federation.caliko:caliko</include>
         <include>au.edu.federation.caliko.visualisation:caliko-visualisation</include>
-        <include>au.edu.federation.caliko.alansley:caliko-demo</include>
+        <include>au.edu.federation.caliko.demo:caliko-demo</include>
       </includes>
       <sources>
         <includeModuleDirectory>false</includeModuleDirectory>
         <fileSets>
           <fileSet>
-            <outputDirectory>sources/${module.artifactId}</outputDirectory>
+            <outputDirectory>${module.artifactId}</outputDirectory>
             <excludes>
               <exclude>**/.project</exclude>
               <exclude>**/.settings/</exclude>

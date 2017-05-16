@@ -5,16 +5,17 @@
   <groupId>au.edu.federation.caliko</groupId>
   <artifactId>caliko-aggregate</artifactId>
   <packaging>pom</packaging>
-  <version>1.3.1</version>
+  <version>1.3.2</version>
   <name>Caliko library Aggregate POM</name>
   <description>POM to build the Caliko library including the visualisation component, demo application, source and documentation archives.</description>
   <url>https://github.com/FedUni/caliko</url>
 
   <properties>
-	<maven-compiler-plugin.source>1.8</maven-compiler-plugin.source>
-	<maven-compiler-plugin.target>1.8</maven-compiler-plugin.target>  
+		<maven-compiler-plugin.source>1.8</maven-compiler-plugin.source>
+		<maven-compiler-plugin.target>1.8</maven-compiler-plugin.target>  
     <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.20</maven-failsafe-plugin.version>
+    <maven-assemply-plugin.version>3.0.0</maven-assemply-plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <lwjgl.version>3.0.0b</lwjgl.version>
     
@@ -22,8 +23,7 @@
     <lib.version.mockito>1.8.5</lib.version.mockito>
   </properties>
 
-  <!-- Build these modules in this specific order - the order is important because 'caliko' is
-       standalone, 'caliko-visualisation' depends on 'caliko', and 'caliko-demo' depends on both. -->
+  <!-- The order of the build is defined by the dependencies in each module -->
   <modules>
     <module>caliko</module>
     <module>caliko-visualisation</module>
@@ -44,7 +44,7 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>au.edu.federation.caliko.alansley</groupId>
+        <groupId>au.edu.federation.caliko.demo</groupId>
         <artifactId>caliko-demo</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -128,7 +128,28 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
           <version>${maven-failsafe-plugin.version}</version>
-        </plugin>        	     
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>${maven-assemply-plugin.version}</version>
+        </plugin>              	     
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>0.7.9</version>
+          <executions>
+            <execution>
+              <id>default-prepare-agent</id>
+              <goals><goal>prepare-agent</goal></goals>
+            </execution>
+            <execution>
+              <id>default-report</id>
+              <phase>prepare-package</phase>
+              <goals><goal>report</goal></goals>
+            </execution>
+          </executions>          
+        </plugin>        
       </plugins>
     </pluginManagement>
    
@@ -149,6 +170,10 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
         </plugin>
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+        </plugin>        
     </plugins>
   </build>
 
