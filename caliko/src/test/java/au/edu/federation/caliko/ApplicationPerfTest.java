@@ -148,6 +148,9 @@ public class ApplicationPerfTest
 			
 				// Solve for target
 				chain.solveForTarget(target);
+				
+			writer.println(chain.toString());
+			writer.flush();
 			
 			// Get end time
 			endNanos = System.nanoTime();

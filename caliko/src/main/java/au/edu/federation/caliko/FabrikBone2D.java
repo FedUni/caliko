@@ -1,6 +1,7 @@
 package au.edu.federation.caliko;
 
 import au.edu.federation.utils.Colour4f;
+import au.edu.federation.utils.Mat4f;
 import au.edu.federation.utils.Utils;
 import au.edu.federation.utils.Vec2f;
 
@@ -14,7 +15,7 @@ import au.edu.federation.utils.Vec2f;
  * @author Al Lansley
  * @version 0.9.1 - 20/07/2016
  */
-public class FabrikBone2D
+public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 {
 	/**
 	 * mJoint	The joint attached to this FabrikBone2D.
@@ -263,14 +264,9 @@ public class FabrikBone2D
 	// ---------- Methods ----------
 
 	/**
-	 * Return the length of this bone.
-	 * <p>
-	 * Once the length of a bone has been set, either implicitly by a constructor that takes the start
-	 * and end locations of the bone and calculates the distance between them, or by explicitly specifying
-	 * the bone length, then it typically remains unchanged for the lifetime of the bone.
-	 * 
-	 * @return	The length of the bone in world-space, as stored in the mLength property.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public float length() {	return mLength; }
 
 	/**
@@ -297,10 +293,9 @@ public class FabrikBone2D
 	public float getLineWidth()	{ return mLineWidth; }
 	
 	/**
-	 * Get the start location of this bone as a Vec2f.
-	 * 
-	 * @return  The start location of this bone in world-space.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public Vec2f getStartLocation() { return mStartLocation; }
 	
 	/**
@@ -311,10 +306,9 @@ public class FabrikBone2D
 	public float[] getStartLocationAsArray() { return new float[] { mStartLocation.x, mStartLocation.y }; }
 	
 	/**
-	 * Get the end location of this bone in world-space as a Vec2f.
-	 * 
-	 * @return  The end location of this bone.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public Vec2f getEndLocation() { return mEndLocation; }
 	
 	/** Get the end location of the bone in world-space as an array of two floats.
@@ -331,14 +325,9 @@ public class FabrikBone2D
 	public void setJoint(FabrikJoint2D joint) {	mJoint.set(joint); }
 
 	/**
-	 * Get the FabrikJoint2D associated with this bone.
-	 * <p>
-	 * Each FabrikBone2D has precisely one {@link au.edu.federation.caliko.FabrikJoint2D}. Although the joint does not
-	 * have a location, it can conceptually be thought of to be located at the start location
-	 * of the bone.
-	 * 
-	 * @return  The FabrikJoint2D associated with this bone.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public FabrikJoint2D getJoint() { return mJoint; }
 
 	/**
@@ -433,27 +422,17 @@ public class FabrikBone2D
 		return sb.toString();
 	}
 	
-	// ---------- Package-Private Methods ----------
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setStartLocation(Vec2f location) { mStartLocation.set(location); }
 	
 	/**
-	 * Set the start location of this bone from a provided Vec2f.
-	 * <p>
-	 * No validation is performed on the value of the start location - be aware
-	 * that adding a bone with identical start and end locations will result in
-	 * undefined behaviour. 
-	 * @param	location	The bone start location specified as a Vec2f.
+	 * {@inheritDoc}
 	 */
-	void setStartLocation(Vec2f location) { mStartLocation.set(location); }
-	
-	/**
-	 * Set the end location of this bone from a provided Vec2f.
-	 * <p>
-	 * No validation is performed on the value of the end location - be aware
-	 * that adding a bone with identical start and end locations will result in
-	 * undefined behaviour. 
-	 * @param	location	The bone end location specified as a Vec2f.
-	 */
-	void setEndLocation(Vec2f location) { mEndLocation.set(location); }
+	@Override
+	public void setEndLocation(Vec2f location) { mEndLocation.set(location); }
 	
 	/**
 	 * Set the length of the bone.

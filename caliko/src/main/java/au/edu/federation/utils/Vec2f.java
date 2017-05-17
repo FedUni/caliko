@@ -9,7 +9,7 @@ import java.text.DecimalFormat;
  *  @author Al Lansley
  *  @version 0.3 - 15/10/2014
  */
-public class Vec2f
+public class Vec2f implements Vectorf<Vec2f>
 {	
 	// Conversion constants to/from degrees and radians
 	private static final float DEGS_TO_RADS = (float)Math.PI / 180.0f;
@@ -50,14 +50,9 @@ public class Vec2f
 	// ---------- Methods ----------
 
 	/**
-	 * Check if this Vec2f is approximately equal to another Vec2f.
-	 * <p>
-	 * If a tolerance of less than zero is provided then an IllegalArgumentException is thrown.
-	 * 
-	 * @param	v			The Vec2f to compare to
-	 * @param   tolerance	The value which both components of each vector must be less than to be considered equal
-	 * @return				A true or false value indicating if the vectors are approximately equal.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean approximatelyEquals(Vec2f v, float tolerance)
 	{	
 		if (tolerance < 0.0f) {	throw new IllegalArgumentException("Equality threshold must be greater than or equal to 0.0f");	}
@@ -65,55 +60,39 @@ public class Vec2f
 	}
 	
 	/**
-	 * Add the provided Vec2f to this Vec2f and return the result in a new Vec2f.
-	 * <p>
-	 * The {@code plus} method does not modify 'this' Vec2f. 
-	 * @param	v	The Vec2f to add.
-	 * @return		A Vec2f which is the result of component-wise addition of this Vec2f and the provided Vec2f.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public Vec2f plus(Vec2f v) { return new Vec2f(x + v.x, y + v.y); }
 
 	/**
-	 * Subtract the provided Vec2f from this Vec2f and return the result in a new Vec2f.
-	 * <p>
-	 * The {@code minus} method does not modify 'this' Vec2f. 
-	 * @param	v	The Vec2f to subtract.
-	 * @return		A Vec2f which is the result of component-wise subtraction of the provided Vec2f from this Vec2f
+	 * {@inheritDoc}
 	 */
+	@Override
 	public Vec2f minus(Vec2f v) { return new Vec2f(x - v.x, y - v.y); }
 
 	/**
-	 * Component-wise multiply (i.e. scale) this vector by a float and return the result as a new vector.
-	 * <p>
-	 * This Vec2f remains unchanged so you cannot call {@code foo.times(2.0f);} to double it - you must call {@code foo = foo.times(2.0f);}
-	 *
-	 * @param	value	The value to scale this Vec2f by.
-	 * @return		A scaled version of this Vec2f.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public Vec2f times(float value) { return new Vec2f(x * value, y * value); }
 
 	/**
-	 * Component-wise divide this vector by a float and return the result as a new vector.
-	 * <p>
-	 * This Vec2f remains unchanged so you cannot call {@code foo.dividedBy(2.0f);} to halve it - you must call {@code foo = foo.dividedBy(2.0f);}
-	 *
-	 * @param	value	The value to divide this Vec2f by.
-	 * @return		A scaled version of this Vec2f.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public Vec2f dividedBy(float value) { return new Vec2f(x / value, y / value); }
 
 	/**
-	 * Negate this vector and return the result as a new Vec2f. The provided vector remains unchanged.
-	 *
-	 * @return	A negated version of this Vec2f.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public Vec2f negated() { return new Vec2f(-x, -y); }
 
 	/**
-	 * Set the x and y values of a given Vec2f object from a source Vec2f.
-
-	 * @param   source	The source Vec2f from which to copy the values.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void set(Vec2f source) { x = source.x; y = source.y; }
 
 	/**
@@ -127,19 +106,15 @@ public class Vec2f
 	public void set(float x, float y) { this.x = x; this.y = y; }
 
 	/**
-	 * Return the length (i.e. magnitude) of this vector.
-	 * 
-	 * @return	The length of this vector.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public float length() { return (float)Math.sqrt(x * x + y * y);	}	
 
 	/**
-	 * Normalise and return the provided vector.
-	 * <p>
-	 * If the magnitude of the vector is zero then the original vector is returned.
-	 * 
-	 * @return	A normalised version of this vector.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public Vec2f normalise()
 	{
 		float magnitude = (float)Math.sqrt(this.x * this.x + this.y * this.y);

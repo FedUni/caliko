@@ -41,7 +41,7 @@ import au.edu.federation.utils.Vec3f;
  * 
  * @version 0.4.1 - 20/07/2016
  */
-public class FabrikJoint3D
+public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 {
 	// A line separator for the current system running this code
 	private static final String NEW_LINE = System.lineSeparator();

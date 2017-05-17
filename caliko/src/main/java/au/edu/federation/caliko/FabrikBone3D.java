@@ -16,7 +16,7 @@ import au.edu.federation.utils.Vec3f;
  * @version 0.3.1 - 20/07/2016
  * @see FabrikJoint3D
  */
-public class FabrikBone3D
+public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 {
 	/** A line separator for the current system running this code. */
 	private static final String NEW_LINE = System.lineSeparator();
@@ -301,12 +301,9 @@ public class FabrikBone3D
 	// ---------- Methods ----------
 
 	/**
-	 * Return the length of this bone. This value is calculated when the bone is constructed
-	 * and used throughout the lifetime of the bone.
-	 * 
-	 * @return	The length of this bone, as stored in the mLength property.
-	 * @see mLength
+	 * {@inheritDoc}
 	 */
+	@Override
 	public float length() {	return mLength;	}
 	
 	/**
@@ -361,10 +358,9 @@ public class FabrikBone3D
 	public float getLineWidth()	{ return mLineWidth; }
 	
 	/**
-	 * Return the start location of this bone.
-	 *
-	 * @return	The start location of this bone.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public Vec3f getStartLocation() { return mStartLocation; }
 	
 	/**
@@ -375,10 +371,9 @@ public class FabrikBone3D
 	public float[] getStartLocationAsArray() { return new float[] { mStartLocation.x, mStartLocation.y, mStartLocation.z }; }
 	
 	/**
-	 * Return the end location of this bone.
-	 *
-	 * @return	The end location of this bone.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public Vec3f getEndLocation() { return mEndLocation; }
 	
 	/**
@@ -396,10 +391,9 @@ public class FabrikBone3D
 	public void setJoint(FabrikJoint3D joint) { mJoint.set(joint); }
 
 	/**
-	 * Return the FabrikJoint3D associated with this bone.
-	 *
-	 * @return	The FabrikJoint3D associated with this bone.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public FabrikJoint3D getJoint()	{ return mJoint; }
 	
 	/**
@@ -536,31 +530,20 @@ public class FabrikBone3D
 		return sb.toString();
 	}
 	
-	// ---------- Package-Private Methods ----------
-	
-	//TODO: This method being public is a problem - think about it and fix it.
 	/**
-	 * Set the start location of this bone from a provided Vec3f.
-	 * <p>
-	 * No validation is performed on the value of the start location - be aware
-	 * that adding a bone with identical start and end locations will result in
-	 * undefined behaviour. 
-	 * @param	location	The bone start location specified as a Vec3f.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void setStartLocation(Vec3f location)
 	{
 		mStartLocation.set(location);
 	}
 	
 	/**
-	 * Set the end location of this bone from a provided Vec3f.
-	 * <p>
-	 * No validation is performed on the value of the end location - be aware
-	 * that adding a bone with identical start and end locations will result in
-	 * undefined behaviour. 
-	 * @param	location	The bone end location specified as a Vec3f.
+	 * {@inheritDoc}
 	 */
-	void setEndLocation(Vec3f location)
+	@Override
+	public void setEndLocation(Vec3f location)
 	{
 		mEndLocation.set(location);               
 	}

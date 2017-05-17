@@ -13,7 +13,7 @@ import au.edu.federation.utils.Vec2f;
  * @author Al Lansley
  * @version 1.1 - 02/08/2016
  */
-public class FabrikChain2D
+public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 {	
 	/**
 	 * Basebone constraint types.

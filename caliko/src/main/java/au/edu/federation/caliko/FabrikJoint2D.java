@@ -33,7 +33,7 @@ package au.edu.federation.caliko;
  * @author Al Lansley
  * @version 0.8 - 16/12/2015
  */
-public class FabrikJoint2D
+public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 {
 	/** The minimum valid constraint angle for both clockwise and anticlockwise rotation is 0 degrees. */
 	public static final float MIN_2D_CONSTRAINT_ANGLE_DEGS = 0.0f;

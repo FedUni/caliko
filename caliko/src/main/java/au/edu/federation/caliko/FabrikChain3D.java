@@ -7,7 +7,6 @@ import au.edu.federation.caliko.FabrikJoint3D.JointType;
 import au.edu.federation.utils.Colour4f;
 import au.edu.federation.utils.Mat3f;
 import au.edu.federation.utils.Utils;
-import au.edu.federation.utils.Vec2f;
 import au.edu.federation.utils.Vec3f;
 
 /** Class to represent a 3D Inverse Kinematics (IK) chain that can be solved for a given target using the FABRIK algorithm.
@@ -18,7 +17,7 @@ import au.edu.federation.utils.Vec3f;
  * @author Al Lansley
  * @version 0.5 - 03/08/2016
  */
-public class FabrikChain3D
+public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 {	
 	private static final String NEW_LINE = System.lineSeparator();
 	

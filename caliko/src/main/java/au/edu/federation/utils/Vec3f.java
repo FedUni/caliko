@@ -14,7 +14,7 @@ import java.text.DecimalFormat;
  * Date   : 29/12/2015
  */
 
-public class Vec3f
+public class Vec3f implements Vectorf<Vec3f>
 {
 	// ----- Static Properties -----
 	
@@ -76,21 +76,16 @@ public class Vec3f
 	 */
 	public void set(float x, float y, float z) { this.x = x; this.y = y; this.z = z; }
 
-	/** Set this Vec3f to have identical values to a provided source Vec3f.
-	 *
-	 * @param	source	The source vector from which to get the x/y/z properties to set on this vector.
+	/**
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void set(Vec3f source) {	x = source.x; y = source.y; z = source.z; }
 
 	/**
-	 * Check if this Vec3f is approximately equal to another Vec3f.
-	 * <p>
-	 * If a tolerance of less than zero is provided then an IllegalArgumentException is thrown.
-	 * 
-	 * @param	v			The Vec3f to compare to
-	 * @param   tolerance	The value which both components of each vector must be less than to be considered equal
-	 * @return				A true or false value indicating if the vectors are approximately equal.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean approximatelyEquals(Vec3f v, float tolerance)
 	{	
 		if (tolerance < 0.0f)
@@ -163,10 +158,9 @@ public class Vec3f
 	}
 
 	/**
-	 * Return a negated version of this vector - no changes are made to this vector itself.
-	 * 
-	 * @return A negated version of this vector.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public Vec3f negated() { return new Vec3f(-x, -y, -z); }
 	
 	/**
@@ -190,12 +184,9 @@ public class Vec3f
 	}
 	
 	/**
-	 * Normalise and return this vector.
-	 * <p>
-	 * Note: This vector itself is normalised and returned, not a copy / clone.
-	 *
-	 * @return	A normalised version of this vector.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public Vec3f normalise()
 	{
 		// Calculate the magnitude of our vector
@@ -326,10 +317,9 @@ public class Vec3f
 	}
 	
 	/**
-	 * Return the length of this vector.
-	 *
-	 * @return	The length of this vector.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public float length() { return (float)Math.sqrt(x * x + y * y + z * z); }
 	
 	/**
@@ -693,19 +683,15 @@ public class Vec3f
 
 
 	/**
-	 * Return a vector which is the result of adding another vector to this vector. This vector remains unchanged.
-	 * 
-	 * @param	v	The vector to add to this vector
-	 * @return		The result of adding the 'v' vector to this vector.
-	 **/
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Vec3f plus(Vec3f v) { return new Vec3f(this.x + v.x, this.y + v.y, this.z + v.z); }
 
 	/**
-	 * Return a vector which is the result of subtracting the provided vector from this vector. This vector remains unchanged.
-	 * 
-	 * @param	v	The vector to add to this vector
-	 * @return		The result of subtracting the 'v' vector from this vector.
-	 **/
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Vec3f minus(Vec3f v) { return new Vec3f(this.x - v.x, this.y - v.y, this.z - v.z); }
 	
 	/**
@@ -716,11 +702,10 @@ public class Vec3f
 	 **/
 	public Vec3f times(Vec3f v) { return new Vec3f(this.x * v.x, this.y * v.y, this.z * v.z); }
 
-	/** Return a vector which is the result of multiplying this this vector by a scalar value. This vector remains unchanged.
-	 * 
-	 * @param	scale	The amount to scale each component of this vector.
-	 * @return			The result of scaling this vector by the providing argument.
-	 **/
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Vec3f times(float scale) { return new Vec3f(this.x * scale, this.y * scale, this.z * scale); }
 	
 	/**
@@ -752,14 +737,10 @@ public class Vec3f
 	public static void subtract(Vec3f source, Vec3f other) { source.x -= other.x; source.y -= other.y; source.z -= other.z; }
 
 	/**
-	 * Return a vector which is the result of component-wise division of by the given scalar value. This vector remains unchanged.
-	 * <p>
-	 * Attempting to divide by zero will, unsurprisingly, throw a DivideByZero exception.
-	 * 
-	 * @param	value	The value to divide each component of this vector by.
-	 * @return			A vector which is the result of dividing each component of this vector by the provided argument.
-	 **/
-	public Vec3f divideBy(float value) { return new Vec3f(this.x / value, this.y / value, this.z / value);	}
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Vec3f dividedBy(float value) { return new Vec3f(this.x / value, this.y / value, this.z / value);	}
 	
 	/**
 	 * Return a vector which is the result of projecting this vector onto a plane described by the provided surface normal.
