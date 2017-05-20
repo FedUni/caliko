@@ -370,7 +370,7 @@ public class Vec2f implements Vectorf<Vec2f>
 	@Override
 	public String toString()
 	{
-		return new String( df.format(x) + ", " + df.format(y) );
+		return df.format(x) + ", " + df.format(y);
 	}
 	
 } // End of Vec2f class

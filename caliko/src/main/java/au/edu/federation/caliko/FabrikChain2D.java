@@ -3,6 +3,7 @@ package au.edu.federation.caliko;
 import java.util.ArrayList;
 import java.util.List;
 
+import au.edu.federation.caliko.FabrikChain2D.BaseboneConstraintType2D;
 import au.edu.federation.utils.Colour4f;
 import au.edu.federation.utils.Utils;
 import au.edu.federation.utils.Vec2f;
@@ -13,7 +14,7 @@ import au.edu.federation.utils.Vec2f;
  * @author Al Lansley
  * @version 1.1 - 02/08/2016
  */
-public class FabrikChain2D implements FabrikChain<FabrikBone2D>
+public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint2D,BaseboneConstraintType2D>
 {	
 	/**
 	 * Basebone constraint types.
@@ -28,10 +29,10 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * 
 	 * @see #setBaseboneConstraintType(BaseboneConstraintType2D)
 	 */
-	public static enum BaseboneConstraintType2D	{ NONE,	GLOBAL_ABSOLUTE, LOCAL_RELATIVE, LOCAL_ABSOLUTE };
+	public enum BaseboneConstraintType2D	implements BaseboneConstraintType { NONE,	GLOBAL_ABSOLUTE, LOCAL_RELATIVE, LOCAL_ABSOLUTE };
 	
 	/** Bones may be connected together at either the start or end of the 'host' bone being connected to. */
-	public static enum BoneConnectionPoint2D { START, END };
+	public enum BoneConnectionPoint2D { START, END };
 			
 	// ---------- Private Properties ----------
 
@@ -39,7 +40,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * The core of a FabrikChain2D is a list of FabrikBone2D objects, where each bone contains a start and end location, and a joint
 	 * that stores any rotational constraints.
 	 */
-	private List<FabrikBone2D> mChain = new ArrayList<FabrikBone2D>();
+	private List<FabrikBone2D> mChain = new ArrayList<>();
 
 	/** 
 	 * The name of this FabrikChain2D object.
@@ -307,6 +308,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * @see		#mChainLength
 	 * @see		#mBaseLocation
 	 */
+	@Override
 	public void addBone(FabrikBone2D bone)
 	{
 		// Add the new bone to the end of the chain
@@ -404,6 +406,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * @param	directionUV			The initial direction of the new bone
 	 * @param	length				The length of the new bone
 	 */
+	@Override
 	public void addConsecutiveBone(Vec2f directionUV, float length)
 	{
 		addConsecutiveConstrainedBone( directionUV, length, 180.0f, 180.0f, new Colour4f() );
@@ -414,6 +417,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * 
 	 * @return The basebone constraint type of this chain.
 	 */
+	@Override
 	public BaseboneConstraintType2D getBaseboneConstraintType() { return mBaseboneConstraintType; }
 	
 	/**
@@ -421,6 +425,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * 
 	 * @return  The basebone constraint unit vector of this FabrikChain2D.
 	 */
+	@Override
 	public Vec2f getBaseboneConstraintUV() { return mBaseboneConstraintUV; }
 	
 	/**
@@ -432,6 +437,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * 
 	 * @return	The base location of this FabrikChain2D.
 	 */
+	@Override
 	public Vec2f getBaseLocation() 
 	{
 		if (mNumBones > 0)
@@ -452,6 +458,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * @param	boneNumber	The number of the bone to return from the Vector of FabrikBone2D objects.
 	 * @return	The FabrikBone2D at the given location in this chain. 
 	 */
+	@Override
 	public FabrikBone2D getBone(int boneNumber)
 	{
 		return mChain.get(boneNumber);
@@ -471,6 +478,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * 
 	 * @return		The IK chain of this FabrikChain2D as a List of FabrikBone2D objects.
 	 */
+	@Override
 	public List<FabrikBone2D> getChain() { return mChain; }
 
 	/**
@@ -481,6 +489,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * 
 	 * @return	The length of this IK chain as stored in the mChainLength property.
 	 */
+	@Override
 	public float getChainLength() { return mChainLength; }
 	
 	/**
@@ -488,6 +497,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 *
 	 * @return The connected bone number as stored in the mConnectedBoneNumber property.
 	 */
+	@Override
 	public int getConnectedBoneNumber() { return mConnectedBoneNumber; }
 	
 	/**
@@ -495,6 +505,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 *
 	 * @return The connected chain number as stored in the mConnectedChainNumber property.
 	 */
+	@Override
 	public int getConnectedChainNumber() { return mConnectedChainNumber; }
 	
 	/**
@@ -507,6 +518,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 *  
 	 * @return	Vec2f
 	 */
+	@Override
 	public Vec2f getEffectorLocation()
 	{
 		if (mNumBones > 0)
@@ -526,6 +538,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * 
 	 * @return whether or not this chain uses an embedded target.
 	 */
+	@Override
 	public boolean getEmbeddedTargetMode() { return mUseEmbeddedTarget; }
 	
 	/**
@@ -533,6 +546,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * 
 	 * @return the embedded target location.
 	 */
+	@Override
 	public Vec2f getEmbeddedTarget() { return mEmbeddedTarget; }
 	
 	/**
@@ -542,6 +556,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * 
 	 * @return	The last target location that we attempted to solve this chain for.
 	 */
+	@Override
 	public Vec2f getLastTargetLocation() { return mLastTargetLocation; }
 	
 	/**
@@ -552,6 +567,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * @see #setName(String)
 	 * @see #getName()
 	 */
+	@Override
 	public String getName() { return mName; }
 	
 	/**
@@ -561,6 +577,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * 
 	 * @return	The number of bones in the FabrikChain2D.
 	 */
+	@Override
 	public int getNumBones() { return mNumBones; }
 	
 	/**
@@ -576,6 +593,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * @see		#mChainLength
 	 * @see		#mBaseLocation
 	 */
+	@Override
 	public void removeBone(int boneNumber)
 	{
 		// If the bone number is a bone which exists...
@@ -610,6 +628,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * @see au.edu.federation.caliko.FabrikJoint2D#setClockwiseConstraintDegs
 	 * @see au.edu.federation.caliko.FabrikJoint2D#setAnticlockwiseConstraintDegs
 	 */
+	@Override
 	public void setBaseboneConstraintUV(Vec2f constraintUV)
 	{
 		// Sanity checking
@@ -695,14 +714,14 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 */
 	public void setFixedBaseMode(boolean value)
 	{	
-		if (value == false && mConnectedChainNumber != -1)
+		if (!value && mConnectedChainNumber != -1)
 		{
 			throw new RuntimeException("This chain is connected to another chain so must remain in fixed base mode.");
 		}
 		
 		// We cannot have a freely moving base location AND constrain the base bone - so if we have both
 		// enabled then we disable the base bone angle constraint here.
-		if (mBaseboneConstraintType == BaseboneConstraintType2D.GLOBAL_ABSOLUTE && value == false)
+		if (mBaseboneConstraintType == BaseboneConstraintType2D.GLOBAL_ABSOLUTE && !value)
 		{
 			throw new RuntimeException("Cannot set a non-fixed base mode when the chain's constraint type is BaseBoneConstraintType2D.GLOBAL_ABSOLUTE.");
 		}
@@ -1027,7 +1046,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 		int numBones = mChain.size();
 		
 		// Create a new Vector of FabrikBone2D objects large enough to contain all the bones in this chain
-		List<FabrikBone2D> clonedChain = new ArrayList<FabrikBone2D>(numBones);
+		List<FabrikBone2D> clonedChain = new ArrayList<>(numBones);
 
 		// For each bone in the chain being cloned...		
 		for (int loop = 0; loop < numBones; ++loop)
@@ -1164,7 +1183,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 		
 		// Not the same target? Then we must solve the chain for the new target.
 		// We'll start by creating a list of bones to store our best solution
-		List<FabrikBone2D> bestSolution = new ArrayList<FabrikBone2D>(this.mNumBones);
+		List<FabrikBone2D> bestSolution = new ArrayList<>(this.mNumBones);
 		
 		// We'll keep track of our best solve distance, starting it at a huge value which will be beaten on first attempt			
 		float bestSolveDistance     = Float.MAX_VALUE;
@@ -1214,6 +1233,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 *
 	 * @return	The relative constraint UV about which this bone connects to a bone in another chain.
 	 */
+	@Override
 	public Vec2f getBaseboneRelativeConstraintUV() { return mBaseboneRelativeConstraintUV; }
 	
 	/**
@@ -1224,5 +1244,30 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D>
 	 * @param	constraintUV	The basebone relative constraint unit vector to set.
 	 */
 	public void setBaseboneRelativeConstraintUV(Vec2f constraintUV) { mBaseboneRelativeConstraintUV.set(constraintUV); }
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getMaxIterationAttempts() {
+		return this.mMaxIterationAttempts;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public float getMinIterationChange() {
+		return this.mMinIterationChange;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public float getSolveDistanceThreshold() {
+		return this.mSolveDistanceThreshold;
+	}
+	
 
 } // End of FabrikChain2D class

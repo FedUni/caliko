@@ -28,7 +28,7 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	private static final float MAX_LINE_WIDTH = 64.0f;
 	
 	/** Options for if a bone in another chain is connected to this bone, should it connect at the start or end location? */
-	public static enum BoneConnectionPoint3D { START, END };
+	public enum BoneConnectionPoint3D { START, END };
 	
 	/**
 	 * If this chain is connected to a bone in another chain, should this chain connect to the start or the end of that bone?

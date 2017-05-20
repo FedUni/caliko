@@ -3,6 +3,7 @@ package au.edu.federation.caliko;
 import java.util.ArrayList;
 import java.util.List;
 
+import au.edu.federation.caliko.FabrikChain3D.BaseboneConstraintType3D;
 import au.edu.federation.caliko.FabrikJoint3D.JointType;
 import au.edu.federation.utils.Colour4f;
 import au.edu.federation.utils.Mat3f;
@@ -17,14 +18,14 @@ import au.edu.federation.utils.Vec3f;
  * @author Al Lansley
  * @version 0.5 - 03/08/2016
  */
-public class FabrikChain3D implements FabrikChain<FabrikBone3D>
+public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint3D,BaseboneConstraintType3D>
 {	
 	private static final String NEW_LINE = System.lineSeparator();
 	
 	/**
 	 * Various types of basebone constraint types.
 	 */
-	public static enum BaseboneConstraintType3D
+	public enum BaseboneConstraintType3D implements BaseboneConstraintType
 	{
 		NONE,         // No constraint - basebone may rotate freely
 		GLOBAL_ROTOR, // World-space rotor constraint
@@ -39,7 +40,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * The core of a FabrikChain3D is a list of FabrikBone3D objects. It is this chain that we attempt to solve for a specified
 	 * target location via the {@link solveForTarget} method.
 	 */
-	private List<FabrikBone3D> mChain = new ArrayList<FabrikBone3D>();
+	private List<FabrikBone3D> mChain = new ArrayList<>();
 
 	/** 
 	 * The name of this FabrikChain3D object.
@@ -302,6 +303,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * @see		#mChainLength
 	 * @see		#mFixedBaseLocation
 	 */
+	@Override
 	public void addBone(FabrikBone3D bone)
 	{
 		// Add the new bone to the end of the ArrayList of bones
@@ -340,6 +342,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * @param	directionUV The initial direction of the new bone
 	 * @param	length		The length of the new bone
 	 */
+	@Override
 	public void addConsecutiveBone(Vec3f directionUV, float length) { addConsecutiveBone(directionUV, length, new Colour4f() ); }
 	
 	/**
@@ -595,7 +598,8 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * us to calculate this relative constraint UV.
 	 *  
 	 * @return The basebone relative constraint UV as updated (on solve) by the structure containing this chain.
-	 */ 
+	 */
+	@Override
 	public Vec3f getBaseboneRelativeConstraintUV() { return mBaseboneRelativeConstraintUV; }
 	
 	/**
@@ -603,6 +607,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 *
 	 * @return	The basebone constraint type of this chain.
 	 */
+	@Override
 	public BaseboneConstraintType3D getBaseboneConstraintType() { return mBaseboneConstraintType; }
 	
 	/**
@@ -627,6 +632,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * 
 	 * @return  The global directional constraint unit vector of the basebone of this IK chain.
 	 */
+	@Override
 	public Vec3f getBaseboneConstraintUV()
 	{
 		if ( !(mBaseboneConstraintType == BaseboneConstraintType3D.NONE) )
@@ -650,6 +656,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * 
 	 * @return	The location of the start joint of the first bone in this chain.
 	 */
+	@Override
 	public Vec3f getBaseLocation() { return mChain.get(0).getStartLocation(); }	
 	
 	/**
@@ -658,13 +665,15 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * @param	boneNumber	The number of the bone to return from the Vector of FabrikBone3D objects.
 	 * @return				The specified bone.
 	 */
+	@Override
 	public FabrikBone3D getBone(int boneNumber) { return mChain.get(boneNumber); }
 
 	/**
 	 * Return the List%lt;FabrikBone3D%gt; which comprises the actual IK chain of this FabrikChain3D object.
 	 *  
 	 * @return	The List%lt;FabrikBone3D%gt; which comprises the actual IK chain of this FabrikChain3D object.
-	 */	
+	 */
+	@Override
 	public List<FabrikBone3D> getChain() { return mChain; }
 	
 	/**
@@ -678,6 +687,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * 
 	 * @return	The pre-calculated length of the IK chain as stored in the mChainLength property.
 	 */
+	@Override
 	public float getChainLength() { return mChainLength; }
 	
 	/**
@@ -687,6 +697,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * 
 	 * @return	The zero-indexed number of the bone we are connected to in the chain we are connected to.
 	 */ 
+	@Override
 	public int getConnectedBoneNumber() { return mConnectedBoneNumber; }
 
 	/**
@@ -696,6 +707,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * 
 	 * @return	The zero-index number of the chain we are connected to.
 	 */ 
+	@Override
 	public int getConnectedChainNumber() { return mConnectedChainNumber; }
 	
 	/**
@@ -706,6 +718,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * 
 	 * @return	The location of this chain's end effector.
 	 */
+	@Override
 	public Vec3f getEffectorLocation() { return mChain.get(mNumBones-1).getEndLocation(); }
 
 	/**
@@ -715,6 +728,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * 
 	 * @return whether or not this chain uses an embedded target.
 	 */
+	@Override
 	public boolean getEmbeddedTargetMode() { return mUseEmbeddedTarget; }
 	
 	/**
@@ -722,6 +736,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * 
 	 * @return the embedded target location.
 	 */
+	@Override
 	public Vec3f getEmbeddedTarget() { return mEmbeddedTarget; }
 	
 	/**
@@ -732,6 +747,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * 
 	 * @return	The target location of the last solve attempt.
 	 */
+	@Override
 	public Vec3f getLastTargetLocation() { return mLastTargetLocation; }
 	
 	/**
@@ -760,6 +776,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 *
 	 * @return	The name of this IK chain.
 	 */
+	@Override
 	public String getName() { return mName; }
 	
 	/**
@@ -767,6 +784,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 *
 	 * @return	The number of bones in this IK chain.
 	 */
+	@Override
 	public int getNumBones() { return mNumBones; }
 	
 	/**
@@ -778,6 +796,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * 
 	 * @param	boneNumber	The zero-indexed bone to remove from this IK chain.
 	 */
+	@Override
 	public void removeBone(int boneNumber)
 	{
 		// If the bone number is a bone which exists...
@@ -832,6 +851,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * 
 	 * @param	value	Whether we should use the embedded target location when solving the IK chain.
 	 */
+	@Override
 	public void setEmbeddedTargetMode(boolean value) { mUseEmbeddedTarget = value; }
 	
 	/**
@@ -1000,6 +1020,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * @see		au.edu.federation.caliko.FabrikJoint3D#setHingeJointClockwiseConstraintDegs(float)
 	 * @see		au.edu.federation.caliko.FabrikJoint3D#setHingeJointAnticlockwiseConstraintDegs(float)
 	 */
+	@Override
 	public void setBaseboneConstraintUV(Vec3f constraintUV)
 	{
 		if (mBaseboneConstraintType == BaseboneConstraintType3D.NONE)
@@ -1026,6 +1047,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 *
 	 * @param	baseLocation	The fixed base location for this chain.
 	 */
+	@Override
 	public void setBaseLocation(Vec3f baseLocation) { mFixedBaseLocation = baseLocation; }
 
 	/**
@@ -1077,16 +1099,17 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 *  
 	 * @param  value  Whether or not to fix the basebone start location in place.
 	 */
+	@Override
 	public void setFixedBaseMode(boolean value)
 	{	
 		// Enforce that a chain connected to another chain stays in fixed base mode (i.e. it moves with the chain it's connected to instead of independently)
-		if (value == false && mConnectedChainNumber != -1)
+		if (!value && mConnectedChainNumber != -1)
 		{
 			throw new RuntimeException("This chain is connected to another chain so must remain in fixed base mode.");
 		}
 		
 		// We cannot have a freely moving base location AND constrain the basebone to an absolute direction
-		if (mBaseboneConstraintType == BaseboneConstraintType3D.GLOBAL_ROTOR && value == false)
+		if (mBaseboneConstraintType == BaseboneConstraintType3D.GLOBAL_ROTOR && !value)
 		{
 			throw new RuntimeException("Cannot set a non-fixed base mode when the chain's constraint type is BaseboneConstraintType3D.GLOBAL_ABSOLUTE_ROTOR.");
 		}
@@ -1108,6 +1131,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * 
 	 * @param maxIterations  The maximum number of attempts that will be made to solve this IK chain.
 	 */
+	@Override
 	public void setMaxIterationAttempts(int maxIterations)
 	{
 		// Ensure we have a valid maximum number of iteration attempts
@@ -1132,6 +1156,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * 
 	 * @param	minIterationChange  The minimum change in solve distance from one iteration to the next.
 	 */
+	@Override
 	public void setMinIterationChange(float minIterationChange)
 	{
 		// Ensure we have a valid maximum number of iteration attempts
@@ -1149,6 +1174,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * 
 	 * @param	name	The name to set.
 	 */
+	@Override
 	public void setName(String name) { mName = Utils.getValidatedName(name); }
 	
 	/**
@@ -1158,6 +1184,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * 
 	 * @param  solveDistance  The distance between the end effector of this IK chain and target within which we will accept the solution.
 	 */
+	@Override
 	public void setSolveDistanceThreshold(float solveDistance)
 	{
 		// Ensure we have a valid solve distance
@@ -1190,6 +1217,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * 
 	 * @return The distance between the end effector and the chain's embedded target location for our best solution.
 	 */
+	@Override
 	public float solveForEmbeddedTarget()
 	{
 		if (mUseEmbeddedTarget) { return solveForTarget(mEmbeddedTarget);                                                                                     }
@@ -1229,6 +1257,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * @param	newTarget	The location of the target for which we will solve this IK chain.
 	 * @return	float		The resulting distance between the end effector and the new target location after solving the IK chain.
 	 */
+	@Override
 	public float solveForTarget(Vec3f newTarget)
 	{	
 		// If we have both the same target and base location as the last run then do not solve
@@ -1245,7 +1274,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 		 */
 						
 		// Declare a list of bones to use to store our best solution
-		List<FabrikBone3D> bestSolution = new ArrayList<FabrikBone3D>();
+		List<FabrikBone3D> bestSolution = new ArrayList<>();
 		
 		// We start with a best solve distance that can be easily beaten
 		float bestSolveDistance = Float.MAX_VALUE;
@@ -1785,6 +1814,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 	 * 
 	 * @param newEmbeddedTarget	The location of the embedded target.
 	 */
+	@Override
 	public void updateEmbeddedTarget(Vec3f newEmbeddedTarget)
 	{
 		// Using embedded target mode? Overwrite embedded target with provided location
@@ -1821,7 +1851,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 		int numBones = mChain.size();
 		
 		// Create a new Vector of FabrikBone3D objects of that size
-		List<FabrikBone3D> clonedChain = new ArrayList<FabrikBone3D>(numBones);
+		List<FabrikBone3D> clonedChain = new ArrayList<>(numBones);
 
 		// For each bone in the chain being cloned...		
 		for (int loop = 0; loop < numBones; ++loop)
@@ -1833,5 +1863,29 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D>
 		
 		return clonedChain;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getMaxIterationAttempts() {
+		return this.mMaxIterationAttempts;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public float getMinIterationChange() {
+		return this.mMinIterationChange;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public float getSolveDistanceThreshold() {
+		return this.mSolveDistanceThreshold;
+	}	
 
 } // End of FabrikChain3D class

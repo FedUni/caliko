@@ -3,12 +3,11 @@ package au.edu.federation.caliko;
 import java.util.ArrayList;
 import java.util.List;
 
+import au.edu.federation.caliko.FabrikBone3D.BoneConnectionPoint3D;
 import au.edu.federation.caliko.FabrikChain3D.BaseboneConstraintType3D;
 import au.edu.federation.utils.Mat3f;
 import au.edu.federation.utils.Utils;
-import au.edu.federation.utils.Vec2f;
 import au.edu.federation.utils.Vec3f;
-import static au.edu.federation.caliko.FabrikBone3D.BoneConnectionPoint3D;
 
 /** 
  * A FabrikStructure3D contains one or more FabrikChain3D objects, which we can solve using the FABRIK (Forward And
