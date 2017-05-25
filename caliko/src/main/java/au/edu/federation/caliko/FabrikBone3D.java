@@ -27,18 +27,15 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	/** The maximum valid line width with which to draw a bone as a line is 64.0f pixels wide. */
 	private static final float MAX_LINE_WIDTH = 64.0f;
 	
-	/** Options for if a bone in another chain is connected to this bone, should it connect at the start or end location? */
-	public enum BoneConnectionPoint3D { START, END };
-	
 	/**
 	 * If this chain is connected to a bone in another chain, should this chain connect to the start or the end of that bone?
 	 * <p>
 	 * The default is to connect to the end of the specified bone.
 	 * <p>
 	 * This property can be set via the {#link #setBoneConnectionPoint(BoneConnectionPoint)} method, or when attaching this chain
-	 * to another chain via the {@link au.edu.federation.caliko.FabrikStructure3D#addConnectedChain(FabrikChain3D, int, int, BoneConnectionPoint)} method.
+	 * to another chain via the {@link au.edu.federation.caliko.FabrikStructure3D#connectChain(FabrikChain3D, int, int, BoneConnectionPoint)} method.
 	 */
-	private BoneConnectionPoint3D mBoneConnectionPoint = BoneConnectionPoint3D.END;
+	private BoneConnectionPoint mBoneConnectionPoint = BoneConnectionPoint.END;
 	
 	/**
 	 * mJoint	The joint attached to this FabrikBone3D.
@@ -321,10 +318,10 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	 * <p>
 	 * The default is BoneConnectionPoint3D.END.
 	 * 
-	 * @param	bcp	The bone connection point to use (BoneConnectionPOint3D.START or BoneConnectionPoint3D.END).
+	 * @param	bcp	The bone connection point to use (BoneConnectionPoint3.START or BoneConnectionPoint.END).
 	 * 
 	 */
-	public void setBoneConnectionPoint(BoneConnectionPoint3D bcp) { mBoneConnectionPoint = bcp; }
+	public void setBoneConnectionPoint(BoneConnectionPoint bcp) { mBoneConnectionPoint = bcp; }
 	
 	/** 
 	 * Return the bone connection point for THIS bone, which will be either BoneConnectionPoint.START or BoneConnectionPoint.END.
@@ -334,7 +331,7 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	 *
 	 * @return	The bone connection point for this bone.
 	 */
-	public BoneConnectionPoint3D getBoneConnectionPoint() { return mBoneConnectionPoint; }	
+	public BoneConnectionPoint getBoneConnectionPoint() { return mBoneConnectionPoint; }	
 
 	/**
 	 * Return the colour of this bone.

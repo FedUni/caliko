@@ -1,10 +1,10 @@
 package au.edu.federation.caliko.demo3d;
 
+import au.edu.federation.caliko.BoneConnectionPoint;
 import au.edu.federation.caliko.FabrikBone3D;
 import au.edu.federation.caliko.FabrikChain3D;
-import au.edu.federation.caliko.FabrikStructure3D;
-import au.edu.federation.caliko.FabrikBone3D.BoneConnectionPoint3D;
 import au.edu.federation.caliko.FabrikChain3D.BaseboneConstraintType3D;
+import au.edu.federation.caliko.FabrikStructure3D;
 import au.edu.federation.utils.Colour4f;
 import au.edu.federation.utils.Mat4f;
 import au.edu.federation.utils.Utils;
@@ -50,7 +50,7 @@ public class GlobalRotorConstrainedConnectedChains extends CalikoDemoStructure3D
 		secondChain.addConsecutiveBone(X_AXIS, 15.0f);
 		secondChain.setColour(Utils.RED);
 		
-		this.structure.connectChain(secondChain, 0, 3, BoneConnectionPoint3D.START);
+		this.structure.connectChain(secondChain, 0, 3, BoneConnectionPoint.START);
 		
 		FabrikChain3D thirdChain = new FabrikChain3D("Second Chain");
 		base = new FabrikBone3D( new Vec3f(), new Vec3f(0.0f, 15.0f, 0.0f) );
@@ -62,7 +62,7 @@ public class GlobalRotorConstrainedConnectedChains extends CalikoDemoStructure3D
 		thirdChain.addConsecutiveBone(Y_AXIS, 15.0f);
 		thirdChain.setColour(Utils.BLUE);
 		
-		this.structure.connectChain(thirdChain, 0, 6, BoneConnectionPoint3D.START);
+		this.structure.connectChain(thirdChain, 0, 6, BoneConnectionPoint.START);
 	}
 
 	@Override

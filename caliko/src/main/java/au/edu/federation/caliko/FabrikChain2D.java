@@ -31,9 +31,6 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 */
 	public enum BaseboneConstraintType2D	implements BaseboneConstraintType { NONE,	GLOBAL_ABSOLUTE, LOCAL_RELATIVE, LOCAL_ABSOLUTE };
 	
-	/** Bones may be connected together at either the start or end of the 'host' bone being connected to. */
-	public enum BoneConnectionPoint2D { START, END };
-			
 	// ---------- Private Properties ----------
 
 	/**
@@ -169,11 +166,11 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * If this chain is connected to a bone in another chain, then this property controls whether
 	 * it should connect to the start end location of the host bone.
 	 * 
-	 * @default BoneConnectionPoint2D.END
+	 * @default BoneConnectionPoint.END
 	 * @see {@link #setBoneConnectionPoint(BoneConnectionPoint)}
-	 * {see {@link FabrikStructure2D#addConnectedChain(FabrikChain2D, int, int, BoneConnectionPoint)}
+	 * {see {@link FabrikStructure2D#connectChain(FabrikChain2D, int, int, BoneConnectionPoint)}
 	 */
-	private BoneConnectionPoint2D mBoneConnectionPoint = BoneConnectionPoint2D.END;
+	private BoneConnectionPoint mBoneConnectionPoint = BoneConnectionPoint.END;
 	
 	/**
 	 * The direction around which we should constrain the base bone, as provided to the setBaseboneConstraintUV method.
@@ -471,7 +468,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 *
 	 * @return	The bone connection point of this chain.
 	 */
-	public BoneConnectionPoint2D getBoneConnectionPoint() { return mBoneConnectionPoint; }
+	public BoneConnectionPoint getBoneConnectionPoint() { return mBoneConnectionPoint; }
 	
 	/**
 	 * Return the actual IK chain of this FabrikChain2D object,
@@ -650,13 +647,13 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * Set the bone connection point of this chain.
 	 * <p>
 	 * When this chain is connected to another chain, it may either connect to the bone in the other chain at
-	 * the start (BoneConnectionPoint2D.START) or end (BoneConnectionPoint2D.END) of the bone.
+	 * the start (BoneConnectionPoint.START) or end (BoneConnectionPoint.END) of the bone.
 	 * <p>
 	 * This property is held per-chain rather than per-bone for efficiency.
 	 * 
-	 * @param	boneConnectionPoint	The BoneConnectionPoint2D to set on this chain.
+	 * @param	boneConnectionPoint	The BoneConnectionPoint to set on this chain.
 	 */
-	public void setBoneConnectionPoint(BoneConnectionPoint2D boneConnectionPoint) { mBoneConnectionPoint = boneConnectionPoint; }
+	public void setBoneConnectionPoint(BoneConnectionPoint boneConnectionPoint) { mBoneConnectionPoint = boneConnectionPoint; }
 
 	/**
 	 * Set the List%lt;FabrikBone2D%gt; of this FabrikChain2D to the provided list by reference.
@@ -712,6 +709,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 *  
 	 * @param  value  Whether or not to fix the base bone start location in place.
 	 */
+	@Override
 	public void setFixedBaseMode(boolean value)
 	{	
 		if (!value && mConnectedChainNumber != -1)
@@ -741,6 +739,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * 
 	 * @param maxIterations  The maximum number of attempts that will be made to solve this IK chain.
 	 */
+	@Override
 	public void setMaxIterationAttempts(int maxIterations)
 	{
 		// Ensure we have a valid maximum number of iteration attempts
@@ -763,6 +762,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * 
 	 * @param minIterationChange  The minimum change in solve distance from one iteration to the next.
 	 */
+	@Override
 	public void setMinIterationChange(float minIterationChange)
 	{
 		// Ensure we have a valid maximum number of iteration attempts
@@ -780,6 +780,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * 
 	 * @param	name	The name to set.
 	 */
+	 @Override
 	public void setName(String name) { mName = Utils.getValidatedName(name); }
 
 	/**
@@ -789,6 +790,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * 
 	 * @param  solveDistance  The distance between the end effector of this IK chain and target within which we will accept the solution.
 	 */
+	 @Override
 	public void setSolveDistanceThreshold(float solveDistance)
 	{
 		// Ensure we have a valid solve distance
@@ -1009,6 +1011,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * 
 	 * @param	value	Whether we should use the embedded target location when solving the IK chain.
 	 */
+	@Override
 	public void setEmbeddedTargetMode(boolean value) { mUseEmbeddedTarget = value; }
 	
 	/**
@@ -1121,6 +1124,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * 
 	 * @return The distance between the end effector and the chain's embedded target location for our best solution.
 	 */
+	@Override
 	public float solveForEmbeddedTarget()
 	{
 		if (mUseEmbeddedTarget) { return solveForTarget(mEmbeddedTarget);                                                                                     }

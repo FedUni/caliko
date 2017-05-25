@@ -10,15 +10,13 @@ public interface FabrikChain<B extends FabrikBone<V,J>, V extends Vectorf, J ext
 	/**
 	 * Add a bone to the end of this IK chain of this chain.
 	 * <p>
-	 * This chain's {@link mChainLength} property is updated to take into account the length of the
+	 * This chain's {@link #getChainLength()} property is updated to take into account the length of the
 	 * new bone added to the chain.
 	 * <p>
 	 * In addition, if the bone being added is the very first bone, then this chain's
-	 * {@link mFixedBaseLocation} property is set from the start joint location of the bone.
+	 * {@link #getBaseLocation()} property is set from the start joint location of the bone.
 	 * 
 	 * @param	bone	The FabrikBone to add to this FabrikChain.
-	 * @see		#mChainLength
-	 * @see		#mFixedBaseLocation
 	 */
 	void addBone(B bone);
 	
@@ -167,6 +165,8 @@ public interface FabrikChain<B extends FabrikBone<V,J>, V extends Vectorf, J ext
 	 * The FABRIK algorithm may require more than a single pass in order to solve
 	 * a given IK chain for an acceptable distance threshold. If we reach this
 	 * iteration limit then we stop attempting to solve the IK chain.
+	 * 
+	 * @return The maximum number of attempts that will be made to solve this IK chain.
 	 */
 	int getMaxIterationAttempts();
 	
@@ -175,11 +175,13 @@ public interface FabrikChain<B extends FabrikBone<V,J>, V extends Vectorf, J ext
 	 * <p>
 	 * If the current solve distance changes by less than this amount between solve attempt then we consider the
 	 * solve process to have stalled and dynamically abort any further attempts to solve the chain to minimise CPU usage.
+	 * 
+	 * @return The minimum iteration change before we dynamically abort any further attempts to solve this IK chain.
 	 */
 	float getMinIterationChange();
 	
 	/**
-	 * Return the distance threshold within which we consider the IK chain to be solved.
+	 * @return The distance threshold within which we consider the IK chain to be solved.
 	 */
 	float getSolveDistanceThreshold();		
 	

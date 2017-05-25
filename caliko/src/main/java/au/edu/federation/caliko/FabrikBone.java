@@ -6,8 +6,6 @@ import au.edu.federation.utils.Vectorf;
  * Interface for a bone
  * 
  * @author jsalvo
- *
- * @param <T>
  */
 @SuppressWarnings("rawtypes")
 public interface FabrikBone<V extends Vectorf, J extends FabrikJoint> {
@@ -52,7 +50,6 @@ public interface FabrikBone<V extends Vectorf, J extends FabrikJoint> {
 	 * and used throughout the lifetime of the bone.
 	 * 
 	 * @return	The length of this bone, as stored in the mLength property.
-	 * @see mLength
 	 */
 	float length();
 	
@@ -64,6 +61,7 @@ public interface FabrikBone<V extends Vectorf, J extends FabrikJoint> {
 	 * of the bone.
 	 * 
 	 * @return  The joint associated with this bone.
-	 */	J getJoint();
+	 */	
+	J getJoint();
 
 }

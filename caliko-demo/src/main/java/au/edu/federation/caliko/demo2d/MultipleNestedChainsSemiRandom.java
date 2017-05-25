@@ -28,7 +28,7 @@ public class MultipleNestedChainsSemiRandom extends FixedTargetDemo {
 			tempChain.setBaseboneConstraintType(BaseboneConstraintType2D.LOCAL_RELATIVE);
 			tempChain.setBaseboneConstraintUV(UP);
 			
-			this.structure.addConnectedChain( createRandomChain(), Utils.randRange(0, chainsInStructure++), Utils.randRange(0, 5) );
+			this.structure.connectChain( createRandomChain(), Utils.randRange(0, chainsInStructure++), Utils.randRange(0, 5) );
 		}
 	}
 	

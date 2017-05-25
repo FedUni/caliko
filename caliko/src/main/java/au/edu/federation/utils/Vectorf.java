@@ -4,8 +4,6 @@ package au.edu.federation.utils;
  * Interface for a Vector
  * 
  * @author jsalvo
- *
- * @param <T>
  */
 public interface Vectorf<T> {
 	
@@ -76,7 +74,7 @@ public interface Vectorf<T> {
 	
 	/** Return a T which is the result of multiplying this this T by a scalar value. This T remains unchanged.
 	 * 
-	 * @param	scale	The amount to scale each component of this vector.
+	 * @param	value	The amount to scale each component of this vector.
 	 * @return			The result of scaling this T by the providing argument.
 	 **/	
 	T times(float value);

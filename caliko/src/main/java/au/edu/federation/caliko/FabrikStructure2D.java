@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import au.edu.federation.caliko.FabrikChain2D.BaseboneConstraintType2D;
-import au.edu.federation.caliko.FabrikChain2D.BoneConnectionPoint2D;
 import au.edu.federation.utils.Utils;
 import au.edu.federation.utils.Vec2f;
 
@@ -21,7 +20,7 @@ import au.edu.federation.utils.Vec2f;
  * @author Al Lansley
  * @version 1.0 - 02/08/2016
  **/
-public class FabrikStructure2D
+public class FabrikStructure2D implements FabrikStructure<FabrikChain2D,Vec2f>
 {	
 	private static final Vec2f UP = new Vec2f(0.0f, 1.0f);
 	
@@ -58,6 +57,7 @@ public class FabrikStructure2D
 	 * 
 	 * @param	name	The name to set.
 	 */
+	@Override
 	public void setName(String name) { mName = Utils.getValidatedName(name); }
 	
 	/**
@@ -70,6 +70,7 @@ public class FabrikStructure2D
 	 *  
 	 * @param   newTargetLocation	The location of the target for which we will attempt to solve all chains attached to this structure.
 	 */
+	@Override
 	public void solveForTarget(Vec2f newTargetLocation)
 	{
 		int numChains = mChains.size();
@@ -96,7 +97,7 @@ public class FabrikStructure2D
 				FabrikBone2D hostBone = mChains.get(hostChainNumber).getBone( mChains.get(loop).getConnectedBoneNumber() );
 				
 				// If we're connecting this chain to the start location of the bone in the 'host' chain...
-				if (thisChain.getBoneConnectionPoint() == BoneConnectionPoint2D.START)
+				if (thisChain.getBoneConnectionPoint() == BoneConnectionPoint.START)
 				{
 					// ...set the base location of this bone to be the start location of the bone it's connected to.
 					thisChain.setBaseLocation( hostBone.getStartLocation() );
@@ -178,6 +179,7 @@ public class FabrikStructure2D
 	 * @param  chain	(FabrikChain2D)	The FabrikChain2D to add to this structure.
 	 * @see updateTarget
 	 **/
+	@Override
 	public void addChain(FabrikChain2D chain)
 	{
 		mChains.add(chain);		
@@ -202,7 +204,8 @@ public class FabrikStructure2D
 	 * @param	chainNumber The zero indexed number of the chain to connect the provided chain to.
 	 * @param	boneNumber	The zero indexed number of the bone within the specified chain to connect the provided chain to.
 	 */
-	public void addConnectedChain(FabrikChain2D chain, int chainNumber, int boneNumber)
+	@Override
+	public void connectChain(FabrikChain2D chain, int chainNumber, int boneNumber)
 	{	
 		// Does this chain exist? If not throw an IllegalArgumentException
 		if (chainNumber >= mNumChains)
@@ -225,9 +228,9 @@ public class FabrikStructure2D
 		relativeChain.setConnectedBoneNumber(boneNumber);
 		
 		// Get the connection point so we know to connect at the start or end location of the bone we're connecting to
-		BoneConnectionPoint2D connectionPoint = chain.getBoneConnectionPoint();		
+		BoneConnectionPoint connectionPoint = chain.getBoneConnectionPoint();		
 		Vec2f connectionLocation;
-		if (connectionPoint == BoneConnectionPoint2D.START)
+		if (connectionPoint == BoneConnectionPoint.START)
 		{
 			connectionLocation = mChains.get(chainNumber).getBone(boneNumber).getStartLocation();
 		}
@@ -266,13 +269,14 @@ public class FabrikStructure2D
 	 * @param	boneNumber			The zero-indexed number of bone in the pre-existing chain in this structure that the new chain will attach to.
 	 * @param	boneConnectionPoint	Whether to attach the new chain to the start or end point of the bone we are connecting to.
 	 */
-	public void addConnectedChain(FabrikChain2D chain, int chainNumber, int boneNumber, BoneConnectionPoint2D boneConnectionPoint)
+	@Override
+	public void connectChain(FabrikChain2D chain, int chainNumber, int boneNumber, BoneConnectionPoint boneConnectionPoint)
 	{
 		// Set the bone connection point so we'll connect to the start or the end point of the specified connection bone
 		chain.setBoneConnectionPoint(boneConnectionPoint);
 		
 		// Call the standard addConnectedChain method to perform the connection
-		addConnectedChain(chain, chainNumber, boneNumber);		
+		connectChain(chain, chainNumber, boneNumber);		
 	}
 
 	/**
@@ -280,6 +284,7 @@ public class FabrikStructure2D
 	 * 
 	 * @return	The number of chains in this structure.
 	 */
+	@Override
 	public int getNumChains() { return mNumChains; }
 	
 	/**
@@ -290,6 +295,7 @@ public class FabrikStructure2D
 	 * @param	chainNumber	The zero-indexed chain in this structure to return.
 	 * @return				The desired chain.
 	 */
+	@Override
 	public FabrikChain2D getChain(int chainNumber) { return mChains.get(chainNumber); }
 	
 	/**
@@ -307,6 +313,7 @@ public class FabrikStructure2D
 		mChains.get(0).setFixedBaseMode(mFixedBaseMode);
 	}
 	
+	@Override
 	public String getName() {
 		return this.mName;
 	}
