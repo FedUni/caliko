@@ -100,6 +100,7 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	 * Set the constraint angles of this FabrikJoint2D to match those of a source FabrikJoint2D, essentially making a copy of the source joint.
 	 * @param	sourceJoint	The source joint from which to copy values.
 	 */
+	@Override
 	public void set(FabrikJoint2D sourceJoint)
 	{	
 		setClockwiseConstraintDegs(sourceJoint.mClockwiseConstraintDegs);
@@ -115,9 +116,13 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	 */
 	public void setClockwiseConstraintDegs(float angleDegs)
 	{		
-		if (angleDegs < MIN_2D_CONSTRAINT_ANGLE_DEGS) { angleDegs = MIN_2D_CONSTRAINT_ANGLE_DEGS; }
-		if (angleDegs > MAX_2D_CONSTRAINT_ANGLE_DEGS) { angleDegs = MAX_2D_CONSTRAINT_ANGLE_DEGS; }
-		mClockwiseConstraintDegs = angleDegs;
+		if (angleDegs < MIN_2D_CONSTRAINT_ANGLE_DEGS) { 
+		  mClockwiseConstraintDegs = MIN_2D_CONSTRAINT_ANGLE_DEGS; 
+		} else if (angleDegs > MAX_2D_CONSTRAINT_ANGLE_DEGS) { 
+		  mClockwiseConstraintDegs = MAX_2D_CONSTRAINT_ANGLE_DEGS; 
+		} else {
+	    mClockwiseConstraintDegs = angleDegs;
+		}
 	}
  
 	/**
@@ -130,9 +135,14 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	 */
 	public void setAnticlockwiseConstraintDegs(float angleDegs)
 	{		
-		if (angleDegs < MIN_2D_CONSTRAINT_ANGLE_DEGS) { angleDegs = MIN_2D_CONSTRAINT_ANGLE_DEGS; }
-		if (angleDegs > MAX_2D_CONSTRAINT_ANGLE_DEGS) { angleDegs = MAX_2D_CONSTRAINT_ANGLE_DEGS; }
-		mAnticlockwiseConstraintDegs = angleDegs;
+		if (angleDegs < MIN_2D_CONSTRAINT_ANGLE_DEGS) { 
+		  mAnticlockwiseConstraintDegs = MIN_2D_CONSTRAINT_ANGLE_DEGS; 
+		}
+		else if (angleDegs > MAX_2D_CONSTRAINT_ANGLE_DEGS) { 
+		  mAnticlockwiseConstraintDegs = MAX_2D_CONSTRAINT_ANGLE_DEGS; 
+		} else {
+	    mAnticlockwiseConstraintDegs = angleDegs;
+		}
 	}
 	
 	/**
