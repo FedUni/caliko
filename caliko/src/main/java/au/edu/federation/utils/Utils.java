@@ -19,7 +19,7 @@ public class Utils
 
 	// Define a private static DecimalFormat to be used by our toString() method.
 	// Note: '0' means put a 0 there if it's zero, '#' means omit if zero.
-	public static DecimalFormat df = new DecimalFormat("0.000");
+	public static final DecimalFormat df = new DecimalFormat("0.000");
 	
 	/** Newline character for this system. */
 	public static final String NEW_LINE = System.lineSeparator();
@@ -29,18 +29,18 @@ public class Utils
 	 * <p>
 	 * These colours are neither final nor 'constant', so they can be user modified at runtime if desired.
 	 */
-	public static Colour4f RED       = new Colour4f(1.0f, 0.0f, 0.0f, 1.0f);
-	public static Colour4f GREEN     = new Colour4f(0.0f, 1.0f, 0.0f, 1.0f);
-	public static Colour4f BLUE      = new Colour4f(0.0f, 0.0f, 1.0f, 1.0f);
-	public static Colour4f MID_RED   = new Colour4f(0.6f, 0.0f, 0.0f, 1.0f);
-	public static Colour4f MID_GREEN = new Colour4f(0.0f, 0.6f, 0.0f, 1.0f);
-	public static Colour4f MID_BLUE  = new Colour4f(0.0f, 0.0f, 0.6f, 1.0f);
-	public static Colour4f BLACK     = new Colour4f(0.0f, 0.0f, 0.0f, 1.0f);
-	public static Colour4f GREY      = new Colour4f(0.5f, 0.5f, 0.5f, 1.0f);
-	public static Colour4f WHITE     = new Colour4f(1.0f, 1.0f, 1.0f, 1.0f);
-	public static Colour4f YELLOW    = new Colour4f(1.0f, 1.0f, 0.0f, 1.0f);
-	public static Colour4f CYAN      = new Colour4f(0.0f, 1.0f, 1.0f, 1.0f);
-	public static Colour4f MAGENTA   = new Colour4f(1.0f, 0.0f, 1.0f, 1.0f);
+	public static final Colour4f RED       = new Colour4f(1.0f, 0.0f, 0.0f, 1.0f);
+	public static final Colour4f GREEN     = new Colour4f(0.0f, 1.0f, 0.0f, 1.0f);
+	public static final Colour4f BLUE      = new Colour4f(0.0f, 0.0f, 1.0f, 1.0f);
+	public static final Colour4f MID_RED   = new Colour4f(0.6f, 0.0f, 0.0f, 1.0f);
+	public static final Colour4f MID_GREEN = new Colour4f(0.0f, 0.6f, 0.0f, 1.0f);
+	public static final Colour4f MID_BLUE  = new Colour4f(0.0f, 0.0f, 0.6f, 1.0f);
+	public static final Colour4f BLACK     = new Colour4f(0.0f, 0.0f, 0.0f, 1.0f);
+	public static final Colour4f GREY      = new Colour4f(0.5f, 0.5f, 0.5f, 1.0f);
+	public static final Colour4f WHITE     = new Colour4f(1.0f, 1.0f, 1.0f, 1.0f);
+	public static final Colour4f YELLOW    = new Colour4f(1.0f, 1.0f, 0.0f, 1.0f);
+	public static final Colour4f CYAN      = new Colour4f(0.0f, 1.0f, 1.0f, 1.0f);
+	public static final Colour4f MAGENTA   = new Colour4f(1.0f, 0.0f, 1.0f, 1.0f);
 	
 	/**
 	 * A Random object used to generate random numbers in the randRange methods.
@@ -54,14 +54,14 @@ public class Utils
 	public static Random random = new Random();
 	
 	/** The maximum length in characters of any names which may be used for bones, chains or structures. */
-	public static int MAX_NAME_LENGTH = 100;
+	public static final int MAX_NAME_LENGTH = 100;
 
 	/**
 	 * Set a fixed seed value - call this with any value before starting the inverse kinematics runs to get a repeatable sequence of events.
 	 * 
 	 * @param	seedValue	The seed value to set.
 	 */
-	public void setRandomSeed(int seedValue)
+	public static void setRandomSeed(int seedValue)
 	{
 		random = new Random(seedValue);
 	}
@@ -131,7 +131,9 @@ public class Utils
 	 */ 
 	public static float sign(float value)
 	{
-		if (value >= 0.0f) { return 1.0f; } // Implied else...		
+		if (value >= 0.0f) { 
+		  return 1.0f; 
+		}		
 		return -1.0f;
 	}
 	
@@ -154,7 +156,7 @@ public class Utils
 	public static void validateDirectionUV(Vec2f directionUV)
 	{
 		// Ensure that the magnitude of this direction unit vector is greater than zero
-		if ( !(directionUV.length() > 0.0f) )
+		if ( directionUV.length() <= 0.0f )
 		{
 			throw new IllegalArgumentException("Vec2f direction unit vector cannot be zero.");
 		}
@@ -169,7 +171,7 @@ public class Utils
 	public static void validateDirectionUV(Vec3f directionUV)
 	{
 		// Ensure that the magnitude of this direction unit vector is greater than zero
-		if ( !(directionUV.length() > 0.0f) )
+		if ( directionUV.length() <= 0.0f )
 		{
 			throw new IllegalArgumentException("Vec3f direction unit vector cannot be zero.");
 		}
