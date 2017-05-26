@@ -150,26 +150,6 @@ public class FabrikStructure2D implements FabrikStructure<FabrikChain2D,Vec2f>
 	} // End of updateTarget method
 
 	/**
-	 * Solve the structure for the given target location.
-	 * <p>
-	 * All chains in this structure are solved for the given target location EXCEPT those which have embedded targets enabled, which are
-	 * solved for the target location embedded in the chain.
-	 * <p>
-	 * After this method has been executed, the configuration of all IK chains attached to this structure will have been updated.
-	 * <p>
-	 * Internally, this method simply constructs a Vec2f from the provided x and y values and calls the Vec2f version of this method.
-	 * 
-	 * @param  targetXLocation	(float)	The horizontal location of the target for which we will solve all chains attached to this structure.
-	 * @param  targetYLocation	(float)	The vertical   location of the target for which we will solve all chains attached to this structure.
-	 **/
-	public void updateTarget(float targetXLocation, float targetYLocation)
-	{
-		// Call our Vec2f version of updateTarget using this constructed target location
-		// Note: This will loop over all chains, attempting to solve each for the same target location
-		solveForTarget( new Vec2f(targetXLocation, targetYLocation) );
-	}
-	
-	/**
 	 * Add a FabrikChain2D object to a FabrikStructure2D object.
 	 * <p>
 	 * Adding a chain using this method adds the chain to the structure, but does not connect it to any existing chain in the structure.

@@ -157,25 +157,6 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 	} // End of updateTarget method
 
 	/**
-	 * Solve the structure for the given target location.
-	 * <p>
-	 * All chains in this structure are solved for the given target location EXCEPT those which have embedded targets enabled, which are
-	 * solved for the target location embedded in the chain.
-	 * <p>
-	 * After this method has been executed, the configuration of all IK chains attached to this structure will have been updated.
-	 * 
-	 * @param  targetX	The target x location.
-	 * @param  targetY	The target y location.
-	 * @param  targetZ	The target z location.
-	 **/
-	public void solveForTarget(float targetX, float targetY, float targetZ)
-	{
-		// Call our Vec3f version of updateTarget using a constructed Vec3f target location
-		// Note: This will loop over all chains, attempting to solve each for the same target location
-		solveForTarget( new Vec3f(targetX, targetY, targetZ) );
-	}
-	
-	/**
 	 * Add a FabrikChain3D to this FabrikStructure3D.
 	 * <p>
 	 * In effect, the chain is added to the mChains list of FabrikChain3D objects, and the mNumChains property is incremented.

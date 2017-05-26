@@ -2,7 +2,6 @@ package au.edu.federation.caliko.visualisation;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -34,10 +33,10 @@ public class Model
 	// ---------- Private Properties ----------
 
 	// These are the models values as read from the file - they are not the final, consolidated model data
-	private List<Vec3f> vertices      = new ArrayList<Vec3f>();
-	private List<Vec3f> normals       = new ArrayList<Vec3f>();
-	private List<Vec3i> normalIndices = new ArrayList<Vec3i>();
-	private List<Vec3i> faces         = new ArrayList<Vec3i>();
+	private List<Vec3f> vertices      = new ArrayList<>();
+	private List<Vec3f> normals       = new ArrayList<>();
+	private List<Vec3i> normalIndices = new ArrayList<>();
+	private List<Vec3i> faces         = new ArrayList<>();
 	//ArrayList texCoords = new ArrayList<Vector>();
 
 	// The vertexData and normalData arrays are the final consolidated data which we can draw with.
@@ -47,8 +46,8 @@ public class Model
 	// vertices / normals as each vertex / normal may be used more than once in the model - the end result of this is that
 	// the vertexData and normalData will likely be larger than the 'as-read-from-file' vertices and normals arrays because
 	// of this duplication of values from the face data.
-	private List<Float> vertexData = new ArrayList<Float>();
-	private List<Float> normalData = new ArrayList<Float>();
+	private List<Float> vertexData = new ArrayList<>();
+	private List<Float> normalData = new ArrayList<>();
 	//ArrayList texCoordData = new ArrayList<Vector>();
 
 	// Counters to keep track of how many vertices, normals, normal indices, texture coordinates and faces
@@ -96,7 +95,9 @@ public class Model
 			{
 				//model.vertexData.add(f)
 			}
-			for ( Float f : sourceModel.getVertexData() ) { model.vertexData.add(f); }
+			for ( Float f : sourceModel.getVertexData() ) { 
+			  model.vertexData.add(f); 
+			}
 		}
 		else // ...or abort if we have no vertices to copy!
 		{
@@ -106,15 +107,21 @@ public class Model
 		// If the source model has normals then copy them across to the clone...
 		if (model.numNormals > 0)
 		{
-			for ( Float f : sourceModel.getNormalData() ) { model.normalData.add(f); }
+			for ( Float f : sourceModel.getNormalData() ) { 
+			  model.normalData.add(f); 
+			}
 		}
 		else // ...or (potentially) inform the user if they are no normals. This is not necessarily a deal breaker though, so we don't abort.
 		{
-			if (VERBOSE) { System.out.println( "Model created using clone method has 0 normals - continuing...");	}
+			if (VERBOSE) { 
+			  System.out.println( "Model created using clone method has 0 normals - continuing...");	
+			}
 		}
 
 		// Display final status if appropriate
-		if (VERBOSE) { System.out.println( "Model successfully cloned."); }
+		if (VERBOSE) { 
+		  System.out.println( "Model successfully cloned."); 
+		}
 
 		// Finally, return our cloned model
 		return model;
@@ -143,8 +150,12 @@ public class Model
 		// Did we load the file without errors?
 		if (VERBOSE)
 		{
-			if (modelLoadedCleanly) { System.out.println("Model loaded cleanly.");     }
-			else                    { System.out.println("Model loaded with errors."); }
+			if (modelLoadedCleanly) { 
+			  System.out.println("Model loaded cleanly.");     
+			}
+			else { 
+			  System.out.println("Model loaded with errors."); 
+			}
 		}
 
 		// Do we have vertices? If not then this is a non-recoverable error and we abort!
@@ -153,9 +164,15 @@ public class Model
 			if (VERBOSE)
 			{
 				System.out.println("Model vertex count: " + getNumVertices() ); 
-				if ( hasFaces()         ) { System.out.println( "Model face         count: " + getNumFaces()         ); }
-				if ( hasNormals()       ) { System.out.println( "Model normal       count: " + getNumNormals()       ); }
-				if ( hasNormalIndices() ) {	System.out.println( "Model normal index count: " + getNumNormalIndices() ); }
+				if ( hasFaces()         ) { 
+				  System.out.println( "Model face         count: " + getNumFaces()         );
+				}
+				if ( hasNormals()       ) { 
+				  System.out.println( "Model normal       count: " + getNumNormals()       ); 
+				}
+				if ( hasNormalIndices() ) {	
+				  System.out.println( "Model normal index count: " + getNumNormalIndices() ); 
+				}
 			}
 		}
 		else { throw new RuntimeException("Model has no vertices."); }
@@ -209,7 +226,9 @@ public class Model
 		float[] vertexFloatArray = new float[numVertexFloats];
 
 		// Loop over each item in the list, setting it to the appropriate element in the array
-		for (int loop = 0; loop < numVertexFloats; loop++) { vertexFloatArray[loop] = vertexData.get(loop); }
+		for (int loop = 0; loop < numVertexFloats; loop++) { 
+		  vertexFloatArray[loop] = vertexData.get(loop); 
+		}
 
 		// Finally, return the float array
 		return vertexFloatArray;
@@ -229,7 +248,9 @@ public class Model
 		float[] normalFloatArray = new float[numNormalFloats];
 
 		// Loop over each item in the list, setting it to the appropriate element in the array
-		for (int loop = 0; loop < numNormalFloats; loop++) { normalFloatArray[loop] = normalData.get(loop);	}
+		for (int loop = 0; loop < numNormalFloats; loop++) { 
+		  normalFloatArray[loop] = normalData.get(loop);	
+		}
 
 		// Finally, return the float array
 		return normalFloatArray;
@@ -298,7 +319,9 @@ public class Model
 	public void scale(float scale)
 	{
 		int numVerts = vertexData.size();
-		for (int loop = 0; loop < numVerts; ++loop) { vertexData.set(loop, vertexData.get(loop) * scale); }
+		for (int loop = 0; loop < numVerts; ++loop) { 
+		  vertexData.set(loop, vertexData.get(loop) * scale); 
+		}
 	}
 
 	/**
@@ -309,7 +332,9 @@ public class Model
 	public void scaleX(float scale)
 	{
 		int numVerts = vertexData.size();
-		for (int loop = 0; loop < numVerts; loop += 3) { vertexData.set( loop, vertexData.get(loop) * scale); }
+		for (int loop = 0; loop < numVerts; loop += 3) { 
+		  vertexData.set( loop, vertexData.get(loop) * scale); 
+		}
 	}
 	
 	/**
@@ -320,7 +345,9 @@ public class Model
 	public void scaleY(float scale)
 	{
 		int numVerts = vertexData.size();
-		for (int loop = 1; loop < numVerts; loop += 3) { vertexData.set( loop, vertexData.get(loop) * scale); }
+		for (int loop = 1; loop < numVerts; loop += 3) { 
+		  vertexData.set( loop, vertexData.get(loop) * scale); 
+		}
 	}
 	
 	/**
@@ -331,7 +358,9 @@ public class Model
 	public void scaleZ(float scale)
 	{
 		int numVerts = vertexData.size();
-		for (int loop = 2; loop < numVerts; loop += 3) { vertexData.set( loop, vertexData.get(loop) * scale); }
+		for (int loop = 2; loop < numVerts; loop += 3) { 
+		  vertexData.set( loop, vertexData.get(loop) * scale); 
+		}
 	}
 
 	/**
@@ -362,7 +391,11 @@ public class Model
 	}
 	
 	/** Print out the vertices of this model. */
-	public void printVertices() { for (Vec3f v : vertices) { System.out.println( "Vertex: " + v.toString() );	} }
+	public void printVertices() { 
+	  for (Vec3f v : vertices) { 
+	    System.out.println( "Vertex: " + v.toString() );	
+	  }
+	}
 
 	/**
 	 * Print out the vertex normal data for this model.
@@ -371,7 +404,9 @@ public class Model
 	 */
 	public void printNormals()
 	{
-		for (Vec3f n : normals)	{ System.out.println( "Normal: " + n.toString() ); }
+		for (Vec3f n : normals)	{ 
+		  System.out.println( "Normal: " + n.toString() ); 
+		}
 	}
 
 	/**
@@ -381,7 +416,9 @@ public class Model
 	 */
 	public void printFaces()
 	{
-		for (Vec3i face : faces) { System.out.println( "Face: " + face.toString() ); }
+		for (Vec3i face : faces) { 
+		  System.out.println( "Face: " + face.toString() ); 
+		}
 	}
 
 	/**
@@ -427,14 +464,14 @@ public class Model
 	private boolean loadModel(String filename)
 	{
 		// Initialise lists
-		vertices      = new ArrayList<Vec3f>();
-		normals       = new ArrayList<Vec3f>();
-		normalIndices = new ArrayList<Vec3i>();
-		faces         = new ArrayList<Vec3i>();
+		vertices      = new ArrayList<>();
+		normals       = new ArrayList<>();
+		normalIndices = new ArrayList<>();
+		faces         = new ArrayList<>();
 		//texCoords = new ArrayList<Vec2f();
 
-		vertexData      = new ArrayList<Float>();
-		normalData      = new ArrayList<Float>();
+		vertexData      = new ArrayList<>();
+		normalData      = new ArrayList<>();
 		//texCoordData      = new ArrayList<Vec2f>();
 
 		// Our vectors of attributes are initially empty
@@ -477,9 +514,9 @@ public class Model
 						if (token.length == 4)
 						{
 							// ...get the remaining 3 tokens as the x/y/z float values...
-							float x = Float.valueOf(token[1]);
-							float y = Float.valueOf(token[2]);
-							float z = Float.valueOf(token[3]);
+							float x = Float.parseFloat(token[1]);
+							float y = Float.parseFloat(token[2]);
+							float z = Float.parseFloat(token[3]);
 
 							// ... and push them into the vertices vector ...
 							vertices.add( new Vec3f(x, y, z) );
@@ -500,9 +537,9 @@ public class Model
 						if (token.length == 4)
 						{
 							// ...get the remaining 3 tokens as the x/y/z normal float values...
-							float normalX = Float.valueOf(token[1]);
-							float normalY = Float.valueOf(token[2]);
-							float normalZ = Float.valueOf(token[3]);
+							float normalX = Float.parseFloat(token[1]);
+							float normalY = Float.parseFloat(token[2]);
+							float normalZ = Float.parseFloat(token[3]);
 
 							// ... and push them into the normals vector ...
 							normals.add( new Vec3f(normalX, normalY, normalZ) );
@@ -532,9 +569,9 @@ public class Model
 						if ( (token.length == 4) && (pos == -1) )
 						{
 							// ...get the face vertex numbers as ints ...
-							int v1  = Integer.valueOf(token[1]);
-							int v2  = Integer.valueOf(token[2]);
-							int v3  = Integer.valueOf(token[3]);
+							int v1  = Integer.parseInt(token[1]);
+							int v2  = Integer.parseInt(token[2]);
+							int v3  = Integer.parseInt(token[3]);
 
 							// ... and push them into the faces vector ...
 							faces.add( new Vec3i(v1, v2, v3) );
@@ -553,7 +590,7 @@ public class Model
 							String faceToken1 = token[1].substring(0, faceEndPos);
 
 							// Convert face token value to int
-							int ft1 = Integer.valueOf(faceToken1);
+							int ft1 = Integer.parseInt(faceToken1);
 
 							// Mark the start of our next subtoken
 							int nextTokenStartPos = faceEndPos + 2;
@@ -562,7 +599,7 @@ public class Model
 							String normalToken1 = token[1].substring(nextTokenStartPos);
 
 							// Convert normal token value to int
-							int nt1 = Integer.valueOf(normalToken1);
+							int nt1 = Integer.parseInt(normalToken1);
 
 							// ----- Get the 2nd of three tokens as a String -----
 
@@ -573,7 +610,7 @@ public class Model
 							String faceToken2 = token[2].substring(0, faceEndPos);
 
 							// Convert face token value to int
-							int ft2 = Integer.valueOf(faceToken2);
+							int ft2 = Integer.parseInt(faceToken2);
 
 							// Mark the start of our next subtoken
 							nextTokenStartPos = faceEndPos + 2;
@@ -582,7 +619,7 @@ public class Model
 							String normalToken2 = token[2].substring(nextTokenStartPos);
 
 							// Convert normal token value to int
-							int nt2 = Integer.valueOf(normalToken2);
+							int nt2 = Integer.parseInt(normalToken2);
 
 							// ----- Get the 3rd of three tokens as a String -----
 
@@ -593,7 +630,7 @@ public class Model
 							String faceToken3 = token[3].substring(0, faceEndPos);
 
 							// Convert face token value to int
-							int ft3 = Integer.valueOf(faceToken3);
+							int ft3 = Integer.parseInt(faceToken3);
 
 							// Mark the start of our next subtoken
 							nextTokenStartPos = faceEndPos + 2;
@@ -602,7 +639,7 @@ public class Model
 							String normalToken3 = token[3].substring(nextTokenStartPos);
 
 							// Convert normal token value to int
-							int nt3 = Integer.valueOf(normalToken3);
+							int nt3 = Integer.parseInt(normalToken3);
 
 
 							// Finally, add the face to the faces array list and increment the face count...
@@ -675,12 +712,16 @@ public class Model
 	 */
 	private void setupData()
 	{
-		if (VERBOSE) { System.out.println( "Setting up model data to draw as arrays."); }
+		if (VERBOSE) { 
+		  System.out.println( "Setting up model data to draw as arrays."); 
+		}
 
 		// If we ONLY have vertex data, then transfer just that...
 		if ( ( hasVertices() ) && ( !hasFaces() ) && ( !hasNormals() ) )
 		{
-			if (VERBOSE) { System.out.println( "Model has no faces or normals. Transferring vertex data only."); }
+			if (VERBOSE) { 
+			  System.out.println( "Model has no faces or normals. Transferring vertex data only."); 
+			}
 
 			// Reset the vertex count
 			numVertices = 0;
@@ -695,12 +736,16 @@ public class Model
 			}
 
 			// Print a summary of the vertex data
-			if (VERBOSE) { System.out.println( "Number of vertices in data array: " + numVertices + " (" + getVertexDataSizeBytes() + " bytes)"); }
+			if (VERBOSE) { 
+			  System.out.println( "Number of vertices in data array: " + numVertices + " (" + getVertexDataSizeBytes() + " bytes)"); 
+			}
 		}
 		// If we have vertices AND faces BUT NOT normals...
 		else if ( ( hasVertices() ) && ( hasFaces() ) && ( !hasNormals() ) )
 		{
-			if (VERBOSE) { System.out.println("Model has vertices and faces, but no normals. Per-face normals will be generated.") ; }
+			if (VERBOSE) { 
+			  System.out.println("Model has vertices and faces, but no normals. Per-face normals will be generated.") ; 
+			}
 
 			// Create the vertexData and normalData arrays from the vector of faces
 			// Note: We generate the face normals ourselves.

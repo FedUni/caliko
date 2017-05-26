@@ -1051,14 +1051,6 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	public void setBaseLocation(Vec3f baseLocation) { mFixedBaseLocation = baseLocation; }
 
 	/**
-	 * Set the list of FabrikBone3D of this FabrikChain3D to the provided list by reference.
-	 * 
-	 * @param	chain	The list of FabrikBone3D objects to assign to the {@link #mChain} property.
-	 * @see		#mChain
-	 */
-	private void setChain(List<FabrikBone3D> chain) { this.mChain = chain; }
-
-	/**
 	 * Connect this chain to the specified bone in the specified chain in the provided structure.
 	 * <p>
 	 * In order to connect this chain to another chain, both chains must exist within the same structure.
