@@ -29,9 +29,6 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 	
 	private static final String NEW_LINE = System.lineSeparator();
 	
-	/** Max name of structure in characters.*/
-	private static final int MAX_NAME_LENGTH = 100;
-
 	/** The string name of this FabrikStructure3D - can be used for creating Maps, if required. */
 	private String mName;
 	
@@ -41,7 +38,7 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 	 * Each FabrikChain3D in the mChains vector is independent of all others, but shares the same target location as any/all other chains
 	 * which exist in this structure.
 	 */
-	private List<FabrikChain3D> mChains = new ArrayList<FabrikChain3D>();
+	private List<FabrikChain3D> mChains = new ArrayList<>();
 
 	/** Property to keep track of how many chains exist in this structure. */
 	private int mNumChains = 0;
@@ -60,7 +57,7 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 	 */
 	public FabrikStructure3D(String name)
 	{
-		mName = name.length() > MAX_NAME_LENGTH ? name = name.substring(0, MAX_NAME_LENGTH) : name;
+		mName = Utils.getValidatedName(name);
 	}
 
 	/**

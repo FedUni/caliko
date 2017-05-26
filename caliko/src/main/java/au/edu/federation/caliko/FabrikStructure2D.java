@@ -30,7 +30,7 @@ public class FabrikStructure2D implements FabrikStructure<FabrikChain2D,Vec2f>
 	private String mName;
 
 	/** The main substance of a FabrikStructure2D is an ArrayList of FabrikChain2D objects. */
-	private List<FabrikChain2D> mChains = new ArrayList<FabrikChain2D>();
+	private List<FabrikChain2D> mChains = new ArrayList<>();
 
 	/** Property to keep track of how many chains exist in this structure. */
 	private int mNumChains = 0;
