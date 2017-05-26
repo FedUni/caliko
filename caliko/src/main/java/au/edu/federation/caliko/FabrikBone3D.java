@@ -194,46 +194,15 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	{
 		// Sanity checking
 		setLength(length); // Throws IAE if < zero
-		if ( !(directionUV.length() > 0.0f) ) { throw new IllegalArgumentException("Direction cannot be a zero vector"); }
+		if ( directionUV.length() <= 0.0f ) { 
+		  throw new IllegalArgumentException("Direction cannot be a zero vector"); 
+		}
 		
 		// Set the length, start and end locations
 		setLength(length);
 		mStartLocation.set(startLocation);
 		mEndLocation.set( mStartLocation.plus( directionUV.normalised().times(length) ) );
 	}
-	
-	/**
-	 * Create a new FabrikBone3D from a start location, a direction unit vector, a length and
-	 * a pair of constraint angles.
-	 * <p>
-	 * If the direction has a magnitude of zero, the length is not a positive value, or* if either
-	 * constraint angle is not within their valid ranges then an then an {@link IllegalArgumentException}
-	 * is thrown.
-	 * 
-	 * @see #setAnticlockwiseConstraintDegs(float)
-	 * @see #setClockwiseConstraintDegs(float)
-	 * @see #mColour
-	 * @see #mJoint
-	 * @see #mLineWidth
-	 * @see #mName
-	 */
-	/*public FabrikBone3D(Vec3f startLocation, Vec3f directionUV, float length, float clockwiseConstraintDegs, float anticlockwiseConstraintDegs)
-	{
-		// Set up as per previous constructor - IllegalArgumentExceptions will be thrown for invalid directions or lengths
-		this(startLocation, directionUV, length);
-		
-		// Set the constraint angles - IllegalArgumentExceptions will be thrown for invalid constraint angles
-		setClockwiseConstraintDegs(clockwiseConstraintDegs);
-		setAnticlockwiseConstraintDegs(anticlockwiseConstraintDegs);
-	}*/
-	
-	/*public FabrikBone3D(Vec3f startLocation, Vec3f directionUV, float length, float clockwiseConstraintDegs, float anticlockwiseConstraintDegs, Colour4f colour)
-	{
-		// Set up as per previous constructor - IllegalArgumentExceptions will be thrown for bad values
-		this(startLocation, directionUV, length, clockwiseConstraintDegs, anticlockwiseConstraintDegs);
-		
-		mColour.set(colour);
-	}*/
 	
 	/**
 	 * Create a named FabrikBone3D from a start location, a direction unit vector, a bone length and a name.
@@ -518,7 +487,6 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	@Override
 	public String toString()
 	{
-		//Vec3f direction = this.getDirectionUV();
 		StringBuilder sb = new StringBuilder();
 		sb.append("Start joint location : " + mStartLocation  + NEW_LINE);
 		sb.append("End   joint location : " + mEndLocation    + NEW_LINE);

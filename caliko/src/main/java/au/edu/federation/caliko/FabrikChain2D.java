@@ -29,7 +29,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * 
 	 * @see #setBaseboneConstraintType(BaseboneConstraintType2D)
 	 */
-	public enum BaseboneConstraintType2D	implements BaseboneConstraintType { NONE,	GLOBAL_ABSOLUTE, LOCAL_RELATIVE, LOCAL_ABSOLUTE };
+	public enum BaseboneConstraintType2D	implements BaseboneConstraintType { NONE,	GLOBAL_ABSOLUTE, LOCAL_RELATIVE, LOCAL_ABSOLUTE }
 	
 	// ---------- Private Properties ----------
 
@@ -872,7 +872,9 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 				mChain.get(loop).setStartLocation(newStartLocation);
 
 				// ...and set the end joint location of the bone further in to also be at the new start location.
-				if (loop > 0) mChain.get(loop-1).setEndLocation(newStartLocation);
+				if (loop > 0) { 
+				  mChain.get(loop-1).setEndLocation(newStartLocation);
+				}
 			}
 
 		} // End of forward-pass loop over all bones
@@ -944,7 +946,9 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 					mChain.get(0).setEndLocation(newEndLocation);
 	
 					// Also, set the start location of the next bone to be the end location of this bone
-					if (mChain.size() > 1) mChain.get(1).setStartLocation(newEndLocation);
+					if (mChain.size() > 1) { 
+					  mChain.get(1).setStartLocation(newEndLocation);
+					}
 				}
 				else // ...otherwise we must constrain it to the base bone constraint unit vector
 				{	
@@ -1027,7 +1031,11 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 			sb.append("Number of bones: " + mNumBones + Utils.NEW_LINE);
 			
 			sb.append("Fixed base mode: ");
-			if (mFixedBaseMode) { sb.append("Yes." + Utils.NEW_LINE); } else { sb.append("No." + Utils.NEW_LINE); }
+			if (mFixedBaseMode) { 
+			  sb.append("Yes." + Utils.NEW_LINE); 
+			} else { 
+			  sb.append("No." + Utils.NEW_LINE); 
+			}
 			
 			sb.append("Base location: " + getBaseLocation() );
 		
@@ -1096,8 +1104,12 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	public void updateEmbeddedTarget(Vec2f newEmbeddedTarget)
 	{
 		// Using embedded target mode? Overwrite embedded target with provided location
-		if (mUseEmbeddedTarget) { mEmbeddedTarget.set(newEmbeddedTarget);                                                                                  }
-		else                    { throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); }
+		if (mUseEmbeddedTarget) { 
+		  mEmbeddedTarget.set(newEmbeddedTarget); 
+		}
+		else { 
+		  throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); 
+		}
 	}
 	
 	/**
@@ -1113,8 +1125,12 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	public void updateEmbeddedTarget(float x, float y)
 	{
 		// Using embedded target mode? Overwrite embedded target with provided location
-		if (mUseEmbeddedTarget) { mEmbeddedTarget.set( new Vec2f(x, y) );                                                                                  }
-		else                    { throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); }
+		if (mUseEmbeddedTarget) { 
+		  mEmbeddedTarget.set( new Vec2f(x, y) ); 
+		}
+		else { 
+		  throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); 
+		}
 	}
 	
 	/**
@@ -1127,8 +1143,12 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	@Override
 	public float solveForEmbeddedTarget()
 	{
-		if (mUseEmbeddedTarget) { return solveForTarget(mEmbeddedTarget);                                                                                     }
-		else                    { throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); }
+		if (mUseEmbeddedTarget) { 
+		  return solveForTarget(mEmbeddedTarget); 
+		}
+		else { 
+		  throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); 
+		}
 	}
 	
 	/**
@@ -1208,12 +1228,16 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 				bestSolution = this.cloneChainVector();
 				
 				// Did we solve for distance? Great! Break out of the loop.
-				if (solveDistance < mSolveDistanceThreshold) { break; }
+				if (solveDistance < mSolveDistanceThreshold) { 
+				  break; 
+				}
 			}
 			else // Did not solve to our satisfaction? Okay...
 			{
 				// Did we grind to a halt? If so then it's time to break out of the loop.
-				if (Math.abs(solveDistance - lastPassSolveDistance) < mMinIterationChange) { break; }
+				if (Math.abs(solveDistance - lastPassSolveDistance) < mMinIterationChange) { 
+				  break; 
+				}
 			}
 			
 			// Update the last pass solve distance

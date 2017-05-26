@@ -104,7 +104,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	// ---------- Constructors ----------
 
 	/** Default constructor */
-	public FabrikBone2D() { }
+	FabrikBone2D() { }
 
 	/**
 	 * Constructor to create a new FabrikBone2D from a start and end location as provided by a pair of Vec2fs.
@@ -383,9 +383,13 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 */
 	public void setLineWidth(float lineWidth)
 	{
-		if (lineWidth < 1.0f ) { lineWidth = 1.0f;  }
-		if (lineWidth > 64.0f) { lineWidth = 64.0f; }
-		mLineWidth = lineWidth;
+		if (lineWidth < 1.0f ) { 
+		  mLineWidth = 1.0f;  
+		} else if (lineWidth > 64.0f) { 
+		  mLineWidth = 64.0f; 
+		} else {
+	    mLineWidth = lineWidth;
+		}
 	}
 	
 	/** 

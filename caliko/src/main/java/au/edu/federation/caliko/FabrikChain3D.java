@@ -32,7 +32,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 		LOCAL_ROTOR,  // Rotor constraint in the coordinate space of (i.e. relative to) the direction of the connected bone
 		GLOBAL_HINGE, // World-space hinge constraint
 		LOCAL_HINGE   // Hinge constraint in the coordinate space of (i.e. relative to) the direction of the connected bone
-	};
+	}
 	
 	// ---------- Private Properties ----------
 	
@@ -475,7 +475,9 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 		Utils.validateLength(length);
 				
 		// Cannot add a consectuive bone of any kind if the there is no basebone
-		if (mNumBones == 0) { throw new RuntimeException("You must add a basebone before adding a consectutive bone."); }
+		if (mNumBones == 0) { 
+		  throw new RuntimeException("You must add a basebone before adding a consectutive bone."); 
+		}
 		
 		// Normalise the direction and hinge rotation axis 
 		directionUV.normalise();
@@ -562,7 +564,9 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 		// Validate the bone direction and length and that we have a basebone
 		Utils.validateDirectionUV(boneDirectionUV);
 		Utils.validateLength(boneLength);
-		if (mNumBones == 0) { throw new RuntimeException("Add a basebone before attempting to add consectuive bones."); }
+		if (mNumBones == 0) { 
+		  throw new RuntimeException("Add a basebone before attempting to add consectuive bones."); 
+		}
 				
 		// Create the bone starting at the end of the previous bone, set its direction, constraint angle and colour
 		// then add it to the chain. Note: The default joint type of a new FabrikBone3D is JointType.BALL.
@@ -635,7 +639,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	@Override
 	public Vec3f getBaseboneConstraintUV()
 	{
-		if ( !(mBaseboneConstraintType == BaseboneConstraintType3D.NONE) )
+		if ( mBaseboneConstraintType != BaseboneConstraintType3D.NONE )
 		{
 			return mBaseboneConstraintUV;
 		}
@@ -875,10 +879,18 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	public void setRotorBaseboneConstraint(BaseboneConstraintType3D rotorType, Vec3f constraintAxis, float angleDegs)
 	{
 		// Sanity checking
-		if (mNumBones == 0)	                     { throw new RuntimeException("Chain must contain a basebone before we can specify the basebone constraint type."); }		
-		if ( !(constraintAxis.length() > 0.0f) ) { throw new IllegalArgumentException("Constraint axis cannot be zero.");                                             }
-		if (angleDegs < 0.0f  )                  { angleDegs = 0.0f;                                                                                                  }
-		if (angleDegs > 180.0f)                  { angleDegs = 180.0f;                                                                                                }		
+		if (mNumBones == 0)	{ 
+		  throw new RuntimeException("Chain must contain a basebone before we can specify the basebone constraint type."); 
+		}		
+		if ( constraintAxis.length() <= 0.0f ) { 
+		  throw new IllegalArgumentException("Constraint axis cannot be zero."); 
+		}
+		if (angleDegs < 0.0f ) { 
+		  angleDegs = 0.0f; 
+		}
+		if (angleDegs > 180.0f) { 
+		  angleDegs = 180.0f;
+		}		
 		if ( !(rotorType == BaseboneConstraintType3D.GLOBAL_ROTOR || rotorType == BaseboneConstraintType3D.LOCAL_ROTOR) )
 		{
 			throw new IllegalArgumentException("The only valid rotor types for this method are GLOBAL_ROTOR and LOCAL_ROTOR.");
@@ -908,15 +920,19 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	public void setHingeBaseboneConstraint(BaseboneConstraintType3D hingeType, Vec3f hingeRotationAxis, float cwConstraintDegs, float acwConstraintDegs, Vec3f hingeReferenceAxis)
 	{
 		// Sanity checking
-		if (mNumBones == 0)	{ throw new RuntimeException("Chain must contain a basebone before we can specify the basebone constraint type."); }		
-		if ( !( hingeRotationAxis.length() > 0.0f) )  { throw new IllegalArgumentException("Hinge rotation axis cannot be zero.");		       }
-		if ( !( hingeReferenceAxis.length() > 0.0f) ) { throw new IllegalArgumentException("Hinge reference axis cannot be zero.");		       }
-		if ( !( Vec3f.perpendicular(hingeRotationAxis, hingeReferenceAxis) ) ) 
-		{
+		if (mNumBones == 0)	{ 
+		  throw new RuntimeException("Chain must contain a basebone before we can specify the basebone constraint type."); 
+		}		
+		if ( hingeRotationAxis.length() <= 0.0f )  { 
+		  throw new IllegalArgumentException("Hinge rotation axis cannot be zero.");
+		}
+		if ( hingeReferenceAxis.length() <= 0.0f ) { 
+		  throw new IllegalArgumentException("Hinge reference axis cannot be zero.");	
+		}
+		if ( !( Vec3f.perpendicular(hingeRotationAxis, hingeReferenceAxis) ) ) {
 			throw new IllegalArgumentException("The hinge reference axis must be in the plane of the hinge rotation axis, that is, they must be perpendicular.");
 		}
-		if ( !(hingeType == BaseboneConstraintType3D.GLOBAL_HINGE || hingeType == BaseboneConstraintType3D.LOCAL_HINGE) )
-		{	
+		if ( !(hingeType == BaseboneConstraintType3D.GLOBAL_HINGE || hingeType == BaseboneConstraintType3D.LOCAL_HINGE) ) {	
 			throw new IllegalArgumentException("The only valid hinge types for this method are GLOBAL_HINGE and LOCAL_HINGE.");
 		}
 		
@@ -1065,11 +1081,15 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	{
 		// Sanity check chain exists
 		int numChains = structure.getNumChains();
-		if (chainNumber > numChains) { throw new IllegalArgumentException("Structure does not contain a chain " + chainNumber + " - it has " + numChains + " chains."); }
+		if (chainNumber > numChains) { 
+		  throw new IllegalArgumentException("Structure does not contain a chain " + chainNumber + " - it has " + numChains + " chains."); 
+		}
 		
 		// Sanity check bone exists
 		int numBones = structure.getChain(chainNumber).getNumBones();
-		if (boneNumber > numBones) { throw new IllegalArgumentException("Chain does not contain a bone " + boneNumber + " - it has " + numBones + " bones."); }
+		if (boneNumber > numBones) { 
+		  throw new IllegalArgumentException("Chain does not contain a bone " + boneNumber + " - it has " + numBones + " bones."); 
+		}
 		
 		// All good? Set the connection details
 		mConnectedChainNumber = chainNumber;
@@ -1212,8 +1232,12 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	@Override
 	public float solveForEmbeddedTarget()
 	{
-		if (mUseEmbeddedTarget) { return solveForTarget(mEmbeddedTarget);                                                                                     }
-		else                    { throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); }
+		if (mUseEmbeddedTarget) { 
+		  return solveForTarget(mEmbeddedTarget); 
+		}
+		else { 
+		  throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); 
+		}
 	}
 	
 	/**
@@ -1333,8 +1357,12 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 			sb.append("Base location  : " + getBaseLocation() + NEW_LINE);
 			sb.append("Chain length   : " + getChainLength()  + NEW_LINE);
 			
-			if (mFixedBaseMode) { sb.append("Fixed base mode: Yes" + NEW_LINE);	}
-			else                { sb.append("Fixed base mode: No"  + NEW_LINE); }
+			if (mFixedBaseMode) { 
+			  sb.append("Fixed base mode: Yes" + NEW_LINE);	
+			}
+			else { 
+			  sb.append("Fixed base mode: No"  + NEW_LINE); 
+			}
 			
 			for (int loop = 0; loop < mNumBones; ++loop)
 			{
@@ -1362,7 +1390,9 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	private float solveIK(Vec3f target)
 	{	
 		// Sanity check that there are bones in the chain
-		if (mNumBones == 0) { throw new RuntimeException("It makes no sense to solve an IK chain with zero bones."); }
+		if (mNumBones == 0) { 
+		  throw new RuntimeException("It makes no sense to solve an IK chain with zero bones."); 
+		}
 		
 		// ---------- Forward pass from end effector to base -----------
 
@@ -1575,7 +1605,6 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 						 !( Utils.approximatelyEquals(acwConstraintDegs, FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGS, 0.001f) ) )
 					{
 						// Calc. the reference axis in local space
-						//Vec3f relativeHingeReferenceAxis = mBaseboneRelativeReferenceConstraintUV;//m.times( thisBoneJoint.getHingeReferenceAxis() ).normalise();
 						Vec3f relativeHingeReferenceAxis = m.times( thisBoneJoint.getHingeReferenceAxis() ).normalise();
 						
 						// Get the signed angle (about the hinge rotation axis) between the hinge reference axis and the hinge-rotation aligned bone UV
@@ -1605,7 +1634,9 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 
 				// If we are not working on the end effector bone, then we set the start joint location of the next bone in
 				// the chain (i.e. the bone closer to the target) to be the new end joint location of this bone.
-				if (loop < mNumBones - 1) { mChain.get(loop+1).setStartLocation(newEndLocation); }
+				if (loop < mNumBones - 1) { 
+				  mChain.get(loop+1).setStartLocation(newEndLocation); 
+				}
 			}
 			else // If we ARE working on the basebone...
 			{	
@@ -1627,7 +1658,9 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 					Vec3f newEndLocation = thisBone.getStartLocation().plus( thisBone.getDirectionUV().times(thisBoneLength) );
 					thisBone.setEndLocation(newEndLocation);	
 					
-					if (mNumBones > 1) { mChain.get(1).setStartLocation(newEndLocation); }
+					if (mNumBones > 1) { 
+					  mChain.get(1).setStartLocation(newEndLocation); 
+					}
 				}
 				else // ...otherwise we must constrain it to the basebone constraint unit vector
 				{	
@@ -1649,7 +1682,9 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 						thisBone.setEndLocation( newEndLocation );
 						
 						// Also, set the start location of the next bone to be the end location of this bone
-						if (mNumBones > 1) { mChain.get(1).setStartLocation(newEndLocation); }
+						if (mNumBones > 1) { 
+						  mChain.get(1).setStartLocation(newEndLocation); 
+						}
 					}
 					else if (mBaseboneConstraintType == BaseboneConstraintType3D.LOCAL_ROTOR)
 					{
@@ -1675,7 +1710,9 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 						thisBone.setEndLocation( newEndLocation );
 						
 						// Also, set the start location of the next bone to be the end location of this bone
-						if (mNumBones > 1) { mChain.get(1).setStartLocation(newEndLocation); }
+						if (mNumBones > 1) { 
+						  mChain.get(1).setStartLocation(newEndLocation); 
+						}
 					}
 					else if (mBaseboneConstraintType == BaseboneConstraintType3D.GLOBAL_HINGE)
 					{
@@ -1712,7 +1749,9 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 						thisBone.setEndLocation( newEndLocation );
 						
 						// Also, set the start location of the next bone to be the end location of this bone
-						if (mNumBones > 1) { mChain.get(1).setStartLocation(newEndLocation); }
+						if (mNumBones > 1) { 
+						  mChain.get(1).setStartLocation(newEndLocation); 
+						}
 					}
 					else if (mBaseboneConstraintType == BaseboneConstraintType3D.LOCAL_HINGE)
 					{
@@ -1730,7 +1769,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 						{
 							// Grab the hinge reference axis and calculate the current signed angle between it and our bone direction (about the hinge
 							// rotation axis). Note: ACW rotation is positive, CW rotation is negative.
-							Vec3f hingeReferenceAxis = mBaseboneRelativeReferenceConstraintUV; //thisJoint.getHingeReferenceAxis();
+							Vec3f hingeReferenceAxis = mBaseboneRelativeReferenceConstraintUV; 
 							float signedAngleDegs    = Vec3f.getSignedAngleBetweenDegs(hingeReferenceAxis, thisBoneInnerToOuterUV, hingeRotationAxis);
 							
 							// Constrain as necessary
@@ -1749,7 +1788,9 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 						thisBone.setEndLocation( newEndLocation );
 						
 						// Also, set the start location of the next bone to be the end location of this bone
-						if (mNumBones > 1) { mChain.get(1).setStartLocation(newEndLocation); }
+						if (mNumBones > 1) { 
+						  mChain.get(1).setStartLocation(newEndLocation); 
+						}
 					}
 					
 				} // End of basebone constraint handling section
@@ -1810,8 +1851,12 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	public void updateEmbeddedTarget(Vec3f newEmbeddedTarget)
 	{
 		// Using embedded target mode? Overwrite embedded target with provided location
-		if (mUseEmbeddedTarget) { mEmbeddedTarget.set(newEmbeddedTarget);                                                                                  }
-		else                    { throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); }
+		if (mUseEmbeddedTarget) { 
+		  mEmbeddedTarget.set(newEmbeddedTarget); 
+		}
+		else { 
+		  throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); 
+		}
 	}
 	
 	/**
@@ -1828,8 +1873,12 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	public void updateEmbeddedTarget(float x, float y, float z)
 	{
 		// Using embedded target mode? Overwrite embedded target with provided location
-		if (mUseEmbeddedTarget) { mEmbeddedTarget.set( new Vec3f(x, y, z) );                                                                                  }
-		else                    { throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); }
+		if (mUseEmbeddedTarget) { 
+		  mEmbeddedTarget.set( new Vec3f(x, y, z) ); 
+		}
+		else { 
+		  throw new RuntimeException("This chain does not have embedded targets enabled - enable with setEmbeddedTargetMode(true)."); 
+		}
 	}
 	
 	/**
