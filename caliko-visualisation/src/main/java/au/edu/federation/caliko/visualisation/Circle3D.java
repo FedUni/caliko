@@ -27,22 +27,22 @@ public class Circle3D
 	private static final int VERTEX_COMPONENTS = 3;
 	
 	// Flag used so that we only initialise the shader once
-	private static boolean shaderInitialised = false;
+	private boolean shaderInitialised = false;
 
 	/** Shader program to draw all circles. **/
-	private static ShaderProgram circleShaderProgram;
+	private ShaderProgram circleShaderProgram;
 	
 	/** Static FloatBuffer to hold the ModelViewProjection matrix - this gets updated in the draw() method. */
-	private static FloatBuffer mvpMatrixFB;
+	private FloatBuffer mvpMatrixFB;
 	
 	/** Static FloatBuffer to hold the colour to draw the circle. */
-	private static FloatBuffer colourFB;
+	private FloatBuffer colourFB;
 	
 	/** Static FloatBuffer to store and restore the current line width used to draw the circle. */
-	private static FloatBuffer currentLineWidthFB;
+	private FloatBuffer currentLineWidthFB;
 	
 	//Define our vertex and fragement shader GLSL source code
-	private static String vertexShaderSource =
+	private static final String vertexShaderSource =
 			"#version 330"                                                         + Utils.NEW_LINE +
 			"in vec4 vertexLocation; // Incoming vertex attribute"                 + Utils.NEW_LINE +
 			"out vec4 fragColour;    // Outgoing colour value"                     + Utils.NEW_LINE +
@@ -51,7 +51,7 @@ public class Circle3D
 			"	gl_Position = mvpMatrix * vertexLocation; // Project our geometry" + Utils.NEW_LINE +
 			"}";
 
-	private static String fragmentShaderSource =
+	private static final String fragmentShaderSource =
 			"#version 330"                                     + Utils.NEW_LINE +
 			"out vec4 vOutputColour; // Outgoing colour value" + Utils.NEW_LINE +
 			"uniform vec4 fragColour;"                         + Utils.NEW_LINE +
@@ -60,16 +60,16 @@ public class Circle3D
 			"}";
 
 	/** Static Vertex Array Object )VAO) id. */
-	private static int circleVaoId;
+	private int circleVaoId;
 	
 	/** Static Vertex Buffer Object (VBO) id. */
-	private static int circleVboId;       
+	private int circleVboId;       
 	
     /** Static array of floats used to draw the circle. */
-	private static float[] circleData;
+	private float[] circleData;
 	
     /** Static vertex FloatBuffer to hold our vertex data. */
-	private static FloatBuffer vertexFB;
+	private FloatBuffer vertexFB;
 
 	/** Constructor */
 	public Circle3D()
@@ -90,10 +90,6 @@ public class Circle3D
 
 			circleShaderProgram = new ShaderProgram();
 			circleShaderProgram.initFromStrings(vertexShaderSource, fragmentShaderSource);
-
-			// We no longer need the shader sources now we have a compiled shader
-			vertexShaderSource   = null;
-			fragmentShaderSource = null;
 
 			// Add the shader attributes and uniforms
 			circleShaderProgram.addAttribute("vertexLocation");

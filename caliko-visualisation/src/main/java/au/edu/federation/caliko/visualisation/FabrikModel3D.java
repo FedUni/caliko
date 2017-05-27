@@ -24,16 +24,16 @@ import static org.lwjgl.opengl.GL30.*;
 public class FabrikModel3D
 {	
 	// Flag used so that we only initialise the shader once
-	private static boolean shaderInitialised = false;
+	private boolean shaderInitialised = false;
 
 	// Each vertex has three positional components - the x, y and z values. 
 	private static final int VERTEX_COMPONENTS = 3;
 	
 	// A single static ShaderProgram is used to draw all axes
-	private static ShaderProgram shaderProgram;
+	private ShaderProgram shaderProgram;
 	
 	// Vertex shader source
-	private static String vertexShaderSource =
+	private static final String vertexShaderSource =
 			"#version 330"                                                                    + Utils.NEW_LINE +
 			"in vec3 vertexLocation;   // Incoming vertex attribute"                          + Utils.NEW_LINE +
 			"uniform mat4 mvpMatrix;   // Combined Model/View/Projection matrix  "            + Utils.NEW_LINE +
@@ -42,7 +42,7 @@ public class FabrikModel3D
 			"}";
 
 	// Fragment shader source
-	private static String fragmentShaderSource =
+	private static final String fragmentShaderSource =
 			"#version 330"              + Utils.NEW_LINE +
 			"out vec4 outputColour;"    + Utils.NEW_LINE +
 			"uniform vec4 colour;"      + Utils.NEW_LINE +
@@ -55,12 +55,12 @@ public class FabrikModel3D
 	private int vboId;
 	
 	// Float buffers for the ModelViewProjection matrix and model colour
-	private static FloatBuffer mvpMatrixFB;
-	private static FloatBuffer colourFB;
+	private FloatBuffer mvpMatrixFB;
+	private FloatBuffer colourFB;
 	
 	// We'll keep track of and restore the current OpenGL line width, which we'll store in this FloatBuffer.
 	// Note: Although we only need a single float for this, LWJGL insists upon a minimum size of 16 floats.
-	private static FloatBuffer currentLineWidthFB;	
+	private FloatBuffer currentLineWidthFB;	
 	
 	// ----- Non-Static Properties -----
 	
@@ -110,10 +110,6 @@ public class FabrikModel3D
 
 			shaderProgram = new ShaderProgram();
 			shaderProgram.initFromStrings(vertexShaderSource, fragmentShaderSource);
-
-			// We no longer need the shader sources
-			vertexShaderSource   = null;
-			fragmentShaderSource = null;
 
 			// ----- Grid shader attributes and uniforms -----
 

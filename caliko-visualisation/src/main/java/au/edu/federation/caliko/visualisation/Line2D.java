@@ -31,16 +31,16 @@ public class Line2D
 	private static final int COMPONENT_COUNT = VERTEX_COMPONENTS + COLOUR_COMPONENTS;
 
 	// Flag used so that we only initialise the shader once
-	private static boolean shaderInitialised = false;
+	private boolean shaderInitialised = false;
 
 	/** Static ShaderProgram shared across all Line2D instances. */
-	private static ShaderProgram lineShaderProgram;
+	private ShaderProgram lineShaderProgram;
 
 	/** Static FloatBuffer to hold the ModelViewProjection matrix - shared across all line 2D instances and updated for each line drawn. */
-	private static FloatBuffer mvpMatrixFloatBuffer;
+	private FloatBuffer mvpMatrixFloatBuffer;
 
 	/** GLSL version 330 fragment shader code. */	
-	private static String vertexShaderSource =
+	private static final String vertexShaderSource =
 			"#version 330"                                                                      + Utils.NEW_LINE +
 			"in vec2 vertexLocation; // Incoming vertex attribute"                              + Utils.NEW_LINE +
 			"in vec4 vertexColour;   // Incoming colour value"                                  + Utils.NEW_LINE +
@@ -52,7 +52,7 @@ public class Line2D
 			"}";
 
 	/** GLSL version 330 fragment shader code. */
-	private static String fragmentShaderSource =
+	private static final String fragmentShaderSource =
 			"#version 330"                                                  + Utils.NEW_LINE +
 			"in vec4 fragColour;     // Incoming colour from vertex shader" + Utils.NEW_LINE +
 			"out vec4 vOutputColour; // Outgoing colour value"              + Utils.NEW_LINE +
@@ -60,13 +60,11 @@ public class Line2D
 			"	vOutputColour = fragColour;"                                + Utils.NEW_LINE +
 			"}";
 
-	// ----- Non-Static Properties -----
-
-	private static int         lineVaoId;             // The Vertex Array Object ID which holds our shader attributes
-	private static int         lineVertexBufferId;    // The id of the vertex buffer containing the grid vertex data
-	private static float[]     lineData;              // Array of floats used to draw the grid
-	private static FloatBuffer vertexFloatBuffer;     // Vertex buffer to hold the gridArray vertex data
-	private static FloatBuffer lineWidthFloatBuffer;  // Vertex buffer to hold the gridArray vertex data
+	private int         lineVaoId;             // The Vertex Array Object ID which holds our shader attributes
+	private int         lineVertexBufferId;    // The id of the vertex buffer containing the grid vertex data
+	private float[]     lineData;              // Array of floats used to draw the grid
+	private FloatBuffer vertexFloatBuffer;     // Vertex buffer to hold the gridArray vertex data
+	private FloatBuffer lineWidthFloatBuffer;  // Vertex buffer to hold the gridArray vertex data
 
 	/** Constructor */
 	public Line2D()
@@ -86,10 +84,6 @@ public class Line2D
 			lineShaderProgram = new ShaderProgram();
 
 			lineShaderProgram.initFromStrings(vertexShaderSource, fragmentShaderSource);
-
-			// We no longer need the shader sources
-			vertexShaderSource   = null;
-			fragmentShaderSource = null;
 
 			// ----- Grid shader attributes and uniforms -----
 

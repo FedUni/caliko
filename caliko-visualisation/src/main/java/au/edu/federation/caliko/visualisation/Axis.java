@@ -28,7 +28,7 @@ public class Axis
 	// ----- Static Properties -----
 	
 	// Flag used so that we only initialise the shader once
-	private static boolean shaderInitialised = false;
+	private boolean shaderInitialised = false;
 
 	// We're drawing 3 lines and each line has 2 vertices, which brings our total to 6 vertices
 	private static final int NUM_VERTICES = 6;
@@ -43,10 +43,10 @@ public class Axis
 	private static final int COMPONENT_COUNT = VERTEX_COMPONENTS + COLOUR_COMPONENTS;
 	
 	// A single static ShaderProgram is used to draw all axes
-	private static ShaderProgram axisShaderProgram;
+	private ShaderProgram axisShaderProgram;
 
 	// Vertex shader source
-	private static String vertexShaderSource =
+	private static final String vertexShaderSource =
 			"#version 330"                                                                  + Utils.NEW_LINE +
 			"in vec3 vertexLocation;   // Incoming vertex attribute"                        + Utils.NEW_LINE +
 			"in vec4 vertexColour;     // Incoming colour value"                            + Utils.NEW_LINE +
@@ -58,7 +58,7 @@ public class Axis
 			"}";
 
 	// Fragment shader source
-	private static String fragmentShaderSource =
+	private static final String fragmentShaderSource =
 			"#version 330"                                                   + Utils.NEW_LINE +
 			"flat in vec4 fragColour; // Incoming colour from vertex shader" + Utils.NEW_LINE +
 			"out vec4 vOutputColour;  // Outgoing colour value"              + Utils.NEW_LINE +
@@ -67,18 +67,18 @@ public class Axis
 			"}";
 
     // Hold id values for the Vertex Array Object (VAO) and Vertex Buffer Object (VBO)
-	private static int axisVaoId;
-	private static int axisVboId;
+	private int axisVaoId;
+	private int axisVboId;
 	
 	/** The FloatBuffer which contains the ModelViewProjection matrix. */
-	private static FloatBuffer mvpMatrixFB;
+	private FloatBuffer mvpMatrixFB;
 	
 	// We'll keep track of and restore the current OpenGL line width, which we'll store in this FloatBuffer.
 	// Note: Although we only need a single float for this, LWJGL insists upon a minimum size of 16 floats.
-	private static FloatBuffer currentLineWidthFB;
+	private FloatBuffer currentLineWidthFB;
 	
 	// The FloatBuffer which will contain our vertex data
-	private static FloatBuffer vertexFloatBuffer;
+	private FloatBuffer vertexFloatBuffer;
 	
 	// ----- Non-Static Properties -----
 	
@@ -120,10 +120,6 @@ public class Axis
 
 			axisShaderProgram = new ShaderProgram();
 			axisShaderProgram.initFromStrings(vertexShaderSource, fragmentShaderSource);
-
-			// We no longer need the shader sources
-			vertexShaderSource   = null;
-			fragmentShaderSource = null;
 
 			// ----- Grid shader attributes and uniforms -----
 

@@ -35,19 +35,19 @@ public class Point2D
 	private static final int COMPONENT_COUNT = VERTEX_COMPONENTS + COLOUR_COMPONENTS;	
 
 	// Flag used so that we only initialise the shader once
-	private static boolean shaderInitialised = false;
+	private boolean shaderInitialised = false;
 
 	// Provide a definition of our static pointer to a ShaderProgram
-	private static ShaderProgram pointShaderProgram;
+	private ShaderProgram pointShaderProgram;
 
 	// Keep a FloatBuffer around to hold the ModelViewProjection matrix
-	private static FloatBuffer mvpMatrixFloatBuffer;
+	private FloatBuffer mvpMatrixFloatBuffer;
 
 	// We get the current OpenGL GL_POINT_SIZE before we use our own and then restore it drawing
-	private static FloatBuffer pointSizeFloatBuffer;
+	private FloatBuffer pointSizeFloatBuffer;
 
 	//Define our vertex shader source code
-	private static String vertexShaderSource =
+	private static final String vertexShaderSource =
 			"#version 330"                                                                                     		+ newLine +
 			"in vec2 vertexLocation;                                      // Incoming vertex attribute"             + newLine +
 			"in vec4 vertexColour;                                        // Incoming colour value"                 + newLine +
@@ -59,7 +59,7 @@ public class Point2D
 			"}";
 
 	//Define our fragment shader source code
-	private static String fragmentShaderSource =
+	private static final String fragmentShaderSource =
 			"#version 330"                                                   + newLine +
 			"flat in vec4 fragColour; // Incoming colour from vertex shader" + newLine +
 			"out vec4 vOutputColour;  // Outgoing colour value"              + newLine +
@@ -67,12 +67,10 @@ public class Point2D
 			"	vOutputColour = fragColour;"                                 + newLine +
 			"}";
 
-	// ----- Non-Static Properties -----
-
-	private static int         pointVaoId;          // The Vertex Array Object ID which holds our shader attributes
-	private static int         pointVertexBufferId; // The id of the vertex buffer containing the grid vertex data
-	private static float[]     pointData;          // Array of floats used to draw the grid
-	private static FloatBuffer vertexFloatBuffer;  // Vertex buffer to hold the gridArray vertex data
+	private int         pointVaoId;          // The Vertex Array Object ID which holds our shader attributes
+	private int         pointVertexBufferId; // The id of the vertex buffer containing the grid vertex data
+	private float[]     pointData;          // Array of floats used to draw the grid
+	private FloatBuffer vertexFloatBuffer;  // Vertex buffer to hold the gridArray vertex data
 
 	/** Constructor */
 	public Point2D()

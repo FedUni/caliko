@@ -18,21 +18,21 @@ public class Grid
 	private static final int VERTEX_COMPONENTS = 3;
 	
 	/** Flag used so that we only initialise the shader once. */
-	private static boolean shaderInitialised = false;
+	private boolean shaderInitialised = false;
 
 	/** The shader program used to draw all grids. */
-	private static ShaderProgram gridShaderProgram;
+	private ShaderProgram gridShaderProgram;
 
 	/** The ModelViewProjection matrix float buffer used to draw any given grid which is updated via the draw() method. */
-	private static FloatBuffer mvpMatrixFB;
+	private FloatBuffer mvpMatrixFB;
 	
 	/** The FloatBuffer used to get and restore the current line width. */
-	private static FloatBuffer currentLineWidthFB = Utils.createFloatBuffer(16);
+	private FloatBuffer currentLineWidthFB = Utils.createFloatBuffer(16);
 
 	//Define our vertex shader source code
 	//Note: The R" notation is for raw strings and preserves all spaces, indentation,
 	//newlines etc. in utf-8|16|32 wchar_t format, but requires C++0x or C++11.
-	private static String vertexShaderSource =
+	private static final String vertexShaderSource =
 			"#version 330"                                                                    + Utils.NEW_LINE +
 			"in vec3 vertexLocation; // Incoming vertex attribute"                            + Utils.NEW_LINE +
 			"uniform mat4 mvpMatrix; // Combined Model/View/Projection matrix"                + Utils.NEW_LINE +

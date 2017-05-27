@@ -29,15 +29,15 @@ public class Line3D
 	private static final int VERTEX_COMPONENTS = 3;
 
 	// Flag used so that we only initialise the shader once
-	private static boolean shaderInitialised = false;
+	private boolean shaderInitialised = false;
 
 	// Declare our shader program and the float buffer for our MVP matrix
-	private static ShaderProgram shaderProgram;
-	private static FloatBuffer mvpMatrixFloatBuffer;
-	private static FloatBuffer colourFloatBuffer;
+	private ShaderProgram shaderProgram;
+	private FloatBuffer mvpMatrixFloatBuffer;
+	private FloatBuffer colourFloatBuffer;
 
 	//Define our vertex and fragement shader GLSL source code
-	private static String vertexShaderSource =
+	private static final String vertexShaderSource =
 			"#version 330"                                                         + Utils.NEW_LINE +
 			"in vec4 vertexLocation; // Incoming vertex attribute"                 + Utils.NEW_LINE +
 			"out vec4 fragColour;    // Outgoing colour value"                     + Utils.NEW_LINE +
@@ -46,7 +46,7 @@ public class Line3D
 			"	gl_Position = mvpMatrix * vertexLocation; // Project our geometry" + Utils.NEW_LINE +
 			"}";
 
-	private static String fragmentShaderSource =
+	private static final String fragmentShaderSource =
 			"#version 330"                                     + Utils.NEW_LINE +
 			"out vec4 vOutputColour; // Outgoing colour value" + Utils.NEW_LINE +
 			"uniform vec4 colour;"                             + Utils.NEW_LINE +
@@ -54,13 +54,11 @@ public class Line3D
 			"	vOutputColour = colour;"                       + Utils.NEW_LINE +
 			"}";
 
-	// ----- Non-Static Properties -----
-
-	private static int         vaoId;                // The Vertex Array Object ID which holds our shader attributes
-	private static int         vboId;                // The id of the vertex buffer containing the grid vertex data
-	private static float[]     lineData;             // Array of floats used to draw the line
-	private static FloatBuffer vertexFloatBuffer;    // Vertex buffer to hold the gridArray vertex data
-	private static FloatBuffer lineWidthFloatBuffer; // Vertex buffer to hold the gridArray vertex data
+	private int         vaoId;                // The Vertex Array Object ID which holds our shader attributes
+	private int         vboId;                // The id of the vertex buffer containing the grid vertex data
+	private float[]     lineData;             // Array of floats used to draw the line
+	private FloatBuffer vertexFloatBuffer;    // Vertex buffer to hold the gridArray vertex data
+	private FloatBuffer lineWidthFloatBuffer; // Vertex buffer to hold the gridArray vertex data
 
 	/** Constructor */
 	public Line3D()
@@ -79,10 +77,6 @@ public class Line3D
 
 			shaderProgram = new ShaderProgram();
 			shaderProgram.initFromStrings(vertexShaderSource, fragmentShaderSource);
-
-			// We no longer need the shader sources now we have a compiled shader
-			vertexShaderSource   = null;
-			fragmentShaderSource = null;
 
 			// Add the shader attributes and uniforms
 			shaderProgram.addAttribute("vertexLocation");
