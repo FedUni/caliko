@@ -8,6 +8,8 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 
+import au.edu.federation.caliko.demo2d.CalikoDemoStructure2DFactory.CalikoDemoStructure2DEnum;
+import au.edu.federation.caliko.demo3d.CalikoDemoStructure3DFactory.CalikoDemoStructure3DEnum;
 import au.edu.federation.utils.Mat4f;
 import au.edu.federation.utils.Utils;
 import au.edu.federation.utils.Vec2f;
@@ -200,11 +202,11 @@ public class OpenGLWindow
 	            	case GLFW_KEY_RIGHT:						
 	            		if (Application.use3dDemo)
 	            		{
-	            			if (Application.demoNumber < Application.num3dDemos) { Application.demoNumber++; }
+	            			if (Application.demoNumber < CalikoDemoStructure3DEnum.values().length) { Application.demoNumber++; }
 	            		}
 	            		else // 2D Demo mode
 	            		{
-	            			if (Application.demoNumber < Application.num2dDemos) { Application.demoNumber++; }
+	            			if (Application.demoNumber < CalikoDemoStructure2DEnum.values().length) { Application.demoNumber++; }
 	            		}
 						Application.demo.setup(Application.demoNumber);	            		
 						break;	

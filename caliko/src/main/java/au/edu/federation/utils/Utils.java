@@ -11,7 +11,7 @@ import java.util.Random;
  * Version: 0.4
  * Date   : 04/12/2015
  */
-public class Utils
+public final class Utils
 {
 	// Constants to translate values from degrees to radians and vice versa
 	private static final float DEGS_TO_RADS = (float)Math.PI / 180.0f;
@@ -55,6 +55,8 @@ public class Utils
 	
 	/** The maximum length in characters of any names which may be used for bones, chains or structures. */
 	public static final int MAX_NAME_LENGTH = 100;
+	
+	private Utils() {}
 
 	/**
 	 * Set a fixed seed value - call this with any value before starting the inverse kinematics runs to get a repeatable sequence of events.
