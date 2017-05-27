@@ -29,6 +29,9 @@ import au.edu.federation.utils.Vec3i;
 public class Model
 {
 	private static boolean VERBOSE = false;
+	private static final String NUMBER_OF_VERTICES_LOG = "Number of vertices in data array: %d (%d bytes)";
+	private static final String NUMBER_OF_NORMALS_LOG = "Number of normals  in data array: %d (%d bytes)";
+	private static final String WRONG_COMPONENT_COUNT_LOG = "Found %s data with wrong component count at line number: %d - Skipping!";
 	
 	// ---------- Private Properties ----------
 
@@ -508,7 +511,7 @@ public class Model
 					String[] token = line.split("\\s+");
 
 					// If the first token is "v", then we're dealing with vertex data
-					if ( token[0].equalsIgnoreCase("v") )
+					if ( "v".equalsIgnoreCase(token[0]) )
 					{
 						// As long as there's 4 tokens on the line...
 						if (token.length == 4)
@@ -527,11 +530,11 @@ public class Model
 						else // If we got vertex data without 3 components - whine!
 						{
 							loadedCleanly = false;
-							System.out.println( "Found vertex data with wrong component count at line number: " + lineCount + " - Skipping!");
+							System.out.printf(WRONG_COMPONENT_COUNT_LOG,"vertex",lineCount);
 						}
 
 					} 
-					else if ( token[0].equalsIgnoreCase("vn") ) // If the first token is "vn", then we're dealing with a vertex normal
+					else if ( "vn".equalsIgnoreCase(token[0]) ) // If the first token is "vn", then we're dealing with a vertex normal
 					{
 						// As long as there's 4 tokens on the line...
 						if (token.length == 4)
@@ -550,7 +553,7 @@ public class Model
 						else // If we got normal data without 3 components - whine!
 						{
 							loadedCleanly = false;
-							System.out.println( "Found normal data with wrong component count at line number: " + lineCount + " - Skipping!") ;
+							System.out.printf(WRONG_COMPONENT_COUNT_LOG,"normal",lineCount);
 						}
 
 					} // End of vertex line parsing
@@ -560,7 +563,7 @@ public class Model
 					// Note: Faces can be described in two ways - we can have data like 'f 123 456 789' which means that the face is comprised
 					// of vertex 123, vertex 456 and vertex 789. Or, we have have data like f 123//111 456//222 789//333 which means that
 					// the face is comprised of vertex 123 using normal 111, vertex 456 using normal 222 and vertex 789 using normal 333.
-					else if ( token[0].equalsIgnoreCase("f") )
+					else if ( "f".equalsIgnoreCase(token[0]) )
 					{
 						// Check if there's a double-slash in the line
 						int pos = line.indexOf("//");
@@ -654,7 +657,7 @@ public class Model
 						else // If we got face data without 3 components - whine!
 						{
 							loadedCleanly = false;
-							System.out.println( "Found face data with wrong component count at line number: " + lineCount + " - Skipping!");
+							System.out.printf(WRONG_COMPONENT_COUNT_LOG,"face",lineCount);
 						}
 
 					} // End of if token is "f" (i.e. face indices)
@@ -737,7 +740,7 @@ public class Model
 
 			// Print a summary of the vertex data
 			if (VERBOSE) { 
-			  System.out.println( "Number of vertices in data array: " + numVertices + " (" + getVertexDataSizeBytes() + " bytes)"); 
+			  System.out.printf( NUMBER_OF_VERTICES_LOG, numVertices, getVertexDataSizeBytes()); 
 			}
 		}
 		// If we have vertices AND faces BUT NOT normals...
@@ -822,8 +825,8 @@ public class Model
 
 			if (VERBOSE)
 			{
-				System.out.println( "Number of vertices in data array: " + numVertices + " (" + getVertexDataSizeBytes() + " bytes)");
-				System.out.println( "Number of normals  in data array: " + numNormals  + " (" + getNormalDataSizeBytes() + " bytes)");
+				System.out.printf( NUMBER_OF_VERTICES_LOG, numVertices, getVertexDataSizeBytes());
+				System.out.printf( NUMBER_OF_NORMALS_LOG, numNormals, getNormalDataSizeBytes());
 			}
 		}
 		// If we have vertices AND faces AND normals AND normalIndices...
@@ -911,8 +914,8 @@ public class Model
 
 			if (VERBOSE)
 			{
-				System.out.println( "Number of vertices in data array: " + numVertices + " (" + getVertexDataSizeBytes() + " bytes)");
-				System.out.println( "Number of normals  in data array: " + numNormals  + " (" + getNormalDataSizeBytes() + " bytes)");
+				System.out.printf( NUMBER_OF_VERTICES_LOG, numVertices, getVertexDataSizeBytes());
+				System.out.printf( NUMBER_OF_NORMALS_LOG, numNormals, getNormalDataSizeBytes());
 			}
 		}
 		else
