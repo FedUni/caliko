@@ -157,7 +157,6 @@ public class FabrikStructure2D implements FabrikStructure<FabrikChain2D,Vec2f>
 	 * via a single call to updateTarget on this structure.
 	 *  
 	 * @param  chain	(FabrikChain2D)	The FabrikChain2D to add to this structure.
-	 * @see updateTarget
 	 **/
 	@Override
 	public void addChain(FabrikChain2D chain)
