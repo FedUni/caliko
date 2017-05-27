@@ -119,7 +119,7 @@ public class Line3D
 			glBindVertexArray(0);
 			
 			// Finally, instantiate our shaderInitialised Boolean so we don't perform this shader setup again
-			shaderInitialised = new Boolean(true);
+			shaderInitialised = true;
 		}
 	}
 

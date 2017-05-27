@@ -49,8 +49,8 @@ public class ShaderProgram
 		glUseProgram(mProgramId);
 
 		// Instantiate our maps
-		mAttributeMap = new HashMap<String, Integer>();
-		mUniformMap   = new HashMap<String, Integer>();
+		mAttributeMap = new HashMap<>();
+		mUniformMap   = new HashMap<>();
 	}
 
 	/**
@@ -340,9 +340,6 @@ public class ShaderProgram
 
 		// Compile the shader
 		glCompileShader(shaderId);
-
-		// We no longer need to keep the shader source around, so mark it as null so the GC can free the memory
-		shaderSource = null;
 
 		// Get the shader compilation status
 		int shaderStatus = glGetShaderi(shaderId, GL_COMPILE_STATUS);
