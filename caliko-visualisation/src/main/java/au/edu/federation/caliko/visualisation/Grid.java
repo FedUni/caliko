@@ -32,7 +32,7 @@ public class Grid
 	//Define our vertex shader source code
 	//Note: The R" notation is for raw strings and preserves all spaces, indentation,
 	//newlines etc. in utf-8|16|32 wchar_t format, but requires C++0x or C++11.
-	private static final String vertexShaderSource =
+	private static final String VERTEX_SHADER_SOURCE =
 			"#version 330"                                                                    + Utils.NEW_LINE +
 			"in vec3 vertexLocation; // Incoming vertex attribute"                            + Utils.NEW_LINE +
 			"uniform mat4 mvpMatrix; // Combined Model/View/Projection matrix"                + Utils.NEW_LINE +
@@ -41,7 +41,7 @@ public class Grid
 			"}";
 
 	//Define our fragment shader source code
-	private static String fragmentShaderSource =
+	private static final String FRAGMENT_SHADER_SOURCE =
 			"#version 330"                                                               + Utils.NEW_LINE +
 			"out vec4 vOutputColour; // Outgoing colour value"                           + Utils.NEW_LINE +
 			"void main() {"                                                              + Utils.NEW_LINE +
@@ -93,7 +93,7 @@ public class Grid
 
 			// Set up out shader
 			gridShaderProgram = new ShaderProgram();
-			gridShaderProgram.initFromStrings(vertexShaderSource, fragmentShaderSource);
+			gridShaderProgram.initFromStrings(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
 			gridShaderProgram.addAttribute("vertexLocation");
 			gridShaderProgram.addUniform("mvpMatrix");
 		}

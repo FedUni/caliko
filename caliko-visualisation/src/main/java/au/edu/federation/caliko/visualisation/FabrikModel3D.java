@@ -33,7 +33,7 @@ public class FabrikModel3D
 	private ShaderProgram shaderProgram;
 	
 	// Vertex shader source
-	private static final String vertexShaderSource =
+	private static final String VERTEX_SHADER_SOURCE =
 			"#version 330"                                                                    + Utils.NEW_LINE +
 			"in vec3 vertexLocation;   // Incoming vertex attribute"                          + Utils.NEW_LINE +
 			"uniform mat4 mvpMatrix;   // Combined Model/View/Projection matrix  "            + Utils.NEW_LINE +
@@ -42,7 +42,7 @@ public class FabrikModel3D
 			"}";
 
 	// Fragment shader source
-	private static final String fragmentShaderSource =
+	private static final String FRAGMENT_SHADER_SOURCE =
 			"#version 330"              + Utils.NEW_LINE +
 			"out vec4 outputColour;"    + Utils.NEW_LINE +
 			"uniform vec4 colour;"      + Utils.NEW_LINE +
@@ -109,7 +109,7 @@ public class FabrikModel3D
 			// ----- Grid shader program setup -----
 
 			shaderProgram = new ShaderProgram();
-			shaderProgram.initFromStrings(vertexShaderSource, fragmentShaderSource);
+			shaderProgram.initFromStrings(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
 
 			// ----- Grid shader attributes and uniforms -----
 

@@ -46,7 +46,7 @@ public class Axis
 	private ShaderProgram axisShaderProgram;
 
 	// Vertex shader source
-	private static final String vertexShaderSource =
+	private static final String VERTEX_SHADER_SOURCE =
 			"#version 330"                                                                  + Utils.NEW_LINE +
 			"in vec3 vertexLocation;   // Incoming vertex attribute"                        + Utils.NEW_LINE +
 			"in vec4 vertexColour;     // Incoming colour value"                            + Utils.NEW_LINE +
@@ -58,7 +58,7 @@ public class Axis
 			"}";
 
 	// Fragment shader source
-	private static final String fragmentShaderSource =
+	private static final String FRAGMENT_SHADER_SOURCE =
 			"#version 330"                                                   + Utils.NEW_LINE +
 			"flat in vec4 fragColour; // Incoming colour from vertex shader" + Utils.NEW_LINE +
 			"out vec4 vOutputColour;  // Outgoing colour value"              + Utils.NEW_LINE +
@@ -119,7 +119,7 @@ public class Axis
 			// ----- Grid shader program setup -----
 
 			axisShaderProgram = new ShaderProgram();
-			axisShaderProgram.initFromStrings(vertexShaderSource, fragmentShaderSource);
+			axisShaderProgram.initFromStrings(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
 
 			// ----- Grid shader attributes and uniforms -----
 

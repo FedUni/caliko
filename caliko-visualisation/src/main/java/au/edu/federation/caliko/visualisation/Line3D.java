@@ -37,7 +37,7 @@ public class Line3D
 	private FloatBuffer colourFloatBuffer;
 
 	//Define our vertex and fragement shader GLSL source code
-	private static final String vertexShaderSource =
+	private static final String VERTEX_SHADER_SOURCE =
 			"#version 330"                                                         + Utils.NEW_LINE +
 			"in vec4 vertexLocation; // Incoming vertex attribute"                 + Utils.NEW_LINE +
 			"out vec4 fragColour;    // Outgoing colour value"                     + Utils.NEW_LINE +
@@ -46,7 +46,7 @@ public class Line3D
 			"	gl_Position = mvpMatrix * vertexLocation; // Project our geometry" + Utils.NEW_LINE +
 			"}";
 
-	private static final String fragmentShaderSource =
+	private static final String FRAGMENT_SHADER_SOURCE =
 			"#version 330"                                     + Utils.NEW_LINE +
 			"out vec4 vOutputColour; // Outgoing colour value" + Utils.NEW_LINE +
 			"uniform vec4 colour;"                             + Utils.NEW_LINE +
@@ -76,7 +76,7 @@ public class Line3D
 			// ----- Shader program setup -----
 
 			shaderProgram = new ShaderProgram();
-			shaderProgram.initFromStrings(vertexShaderSource, fragmentShaderSource);
+			shaderProgram.initFromStrings(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
 
 			// Add the shader attributes and uniforms
 			shaderProgram.addAttribute("vertexLocation");
