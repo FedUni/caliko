@@ -129,7 +129,7 @@ public class Vec3f implements Vectorf<Vec3f>
 			throw new IllegalArgumentException("Comparison tolerance cannot be less than zero.");
 		}
 		
-		if ( Math.abs(this.length() - 1.0f) < tolerance)
+		if ( Math.abs(this.length() - value) < tolerance)
 		{
 			return true;
 		}

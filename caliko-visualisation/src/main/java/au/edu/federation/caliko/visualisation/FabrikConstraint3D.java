@@ -148,9 +148,9 @@ public class FabrikConstraint3D
 				     !Utils.approximatelyEquals(    clockwiseConstraintDegs, 180.0f, 0.01f) )
 				{	
 					// Get the relative hinge rotation axis and draw it...
-					Vec3f relativeHingeReferenceAxis = bone.getJoint().getHingeReferenceAxis().projectOntoPlane(relativeHingeRotationAxis);
+					bone.getJoint().getHingeReferenceAxis().projectOntoPlane(relativeHingeRotationAxis);
 					
-					relativeHingeReferenceAxis = m.times(bone.getJoint().getHingeReferenceAxis()).normalise();
+					Vec3f relativeHingeReferenceAxis = m.times(bone.getJoint().getHingeReferenceAxis()).normalise();
 					
 					mLine.draw(lineStart, lineStart.plus( relativeHingeReferenceAxis.times(radius) ), REFERENCE_AXIS_COLOUR, lineWidth, mvpMatrix);
 					
