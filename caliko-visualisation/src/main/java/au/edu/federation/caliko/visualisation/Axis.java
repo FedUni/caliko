@@ -159,7 +159,7 @@ public class Axis
 					                                                     GL_FLOAT,  // Data type
 						                                                    true,   // Normalised?
 						                            COMPONENT_COUNT * Float.BYTES,  // Stride
-						                         VERTEX_COMPONENTS * Float.BYTES);  // Offset
+						                      (long)VERTEX_COMPONENTS * Float.BYTES);  // Offset
 				
 				// Unbind VBO
 				glBindBuffer(GL_ARRAY_BUFFER, 0);

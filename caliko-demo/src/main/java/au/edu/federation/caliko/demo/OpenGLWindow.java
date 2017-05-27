@@ -57,10 +57,8 @@ public class OpenGLWindow
     public OpenGLWindow(int windowWidth, int windowHeight, float vertFoVDegs, float zNear, float zFar, float orthoExtent)
     {
     	// Set properties and create the projection matrix
-    	if (windowWidth  <= 0) { windowWidth  = 1; }
-		if (windowHeight <= 0) { windowHeight = 1; } 
-    	mWindowWidth  = windowWidth;
-    	mWindowHeight = windowHeight;
+    	mWindowWidth  = windowWidth <= 0 ? 1 : windowWidth;
+    	mWindowHeight = windowHeight <= 0 ? 1 : windowHeight;
     	mAspectRatio  = (float)mWindowWidth / (float)mWindowHeight; 
     	
     	mVertFoVDegs = vertFoVDegs;
@@ -358,7 +356,7 @@ public class OpenGLWindow
 				if (Application.use3dDemo)
 				{	
 					// Immediately set the cursor position to the centre of the screen so our view doesn't "jump" on first cursor position change
-					glfwSetCursorPos(windowId, (double)(mWindowWidth / 2), (double)(mWindowHeight / 2.) );
+					glfwSetCursorPos(windowId, ((double)mWindowWidth / 2), ((double)mWindowHeight / 2) );
 					
 					switch (action)
 					{

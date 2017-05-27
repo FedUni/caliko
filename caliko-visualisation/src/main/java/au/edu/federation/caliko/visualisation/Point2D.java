@@ -103,10 +103,6 @@ public class Point2D
 			// Load, compile and link the shaders into the shader program
 			pointShaderProgram.initFromStrings(vertexShaderSource, fragmentShaderSource);
 
-			// We no longer need the shader sources, so make them null so the GC can free them
-			vertexShaderSource   = null;
-			fragmentShaderSource = null;
-
 			// ----- Grid shader attributes and uniforms -----
 
 			// Add the shader attributes
@@ -145,7 +141,7 @@ public class Point2D
 	                                                                      GL_FLOAT,  // Data type
 	                                                                         false,  // Normalised?
 	                                                 COMPONENT_COUNT * Float.BYTES,  // Stride
-	                                              VERTEX_COMPONENTS * Float.BYTES);  // Offset
+	                                         (long)VERTEX_COMPONENTS * Float.BYTES);  // Offset
 				// Unbind VBO
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 	

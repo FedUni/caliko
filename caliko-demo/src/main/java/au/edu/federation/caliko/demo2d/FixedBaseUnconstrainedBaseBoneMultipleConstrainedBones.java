@@ -30,7 +30,7 @@ public class FixedBaseUnconstrainedBaseBoneMultipleConstrainedBones extends Cali
 		for (int loop = 0; loop < numBones; loop++)
 		{
 			// Each bone added will be rotated 10 degrees further than the last
-			Vec2f rotatedUV = Vec2f.rotateDegs(defaultUV, loop * numBones);
+			Vec2f rotatedUV = Vec2f.rotateDegs(defaultUV, (float)loop * numBones);
 			
 			// Constrained
 			chain.addConsecutiveConstrainedBone(rotatedUV, boneLength, 60.0f, 60.0f);
