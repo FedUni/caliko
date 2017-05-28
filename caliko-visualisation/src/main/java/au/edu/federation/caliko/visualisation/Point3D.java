@@ -34,17 +34,14 @@ public class Point3D
 	// Total number of float components per vertex (3 + 4 = 7)
 	private static final int COMPONENT_COUNT = VERTEX_COMPONENTS + COLOUR_COMPONENTS;	
 
-	// Flag used so that we only initialise the shader once
-	private boolean shaderInitialised = false;
-
 	// Provide a definition of our static pointer to a ShaderProgram
-	private ShaderProgram pointShaderProgram;
+	private static ShaderProgram pointShaderProgram;
 
 	// Keep a FloatBuffer around to hold the ModelViewProjection matrix
-	private FloatBuffer mvpMatrixFloatBuffer;
+	private static FloatBuffer mvpMatrixFloatBuffer;
 
 	// We get the current OpenGL GL_POINT_SIZE before we use our own and then restore it drawing
-	private FloatBuffer pointSizeFloatBuffer;
+	private static FloatBuffer pointSizeFloatBuffer;
 
 	//Define our vertex shader source code
 	private static final String VERTEX_SHADER_SOURCE =
@@ -67,96 +64,91 @@ public class Point3D
 			"	vOutputColour = fragColour;"                                 + newLine +
 			"}";
 
-	private int         pointVaoId;          // The Vertex Array Object ID which holds our shader attributes
-	private int         pointVertexBufferId; // The id of the vertex buffer containing the grid vertex data
-	private float[]     pointData;          // Array of floats used to draw the grid
-	private FloatBuffer vertexFloatBuffer;  // Vertex buffer to hold the gridArray vertex data
+	private static int         pointVaoId;          // The Vertex Array Object ID which holds our shader attributes
+	private static int         pointVertexBufferId; // The id of the vertex buffer containing the grid vertex data
+	private static float[]     pointData;          // Array of floats used to draw the grid
+	private static FloatBuffer vertexFloatBuffer;  // Vertex buffer to hold the gridArray vertex data
+	
+	static {
+		// Instantiate our float data array which we'll transfer data from into the float buffer
+		pointData = new float[NUM_VERTICES * COMPONENT_COUNT];
+
+		// Create the float buffer which will hold the geometry data to draw
+		vertexFloatBuffer = Utils.createFloatBuffer(NUM_VERTICES * COMPONENT_COUNT);
+
+		// Create the float buffer which will hold the ModelViewProjection matrix
+		mvpMatrixFloatBuffer = Utils.createFloatBuffer(16);
+
+		// Create the FloatBuffer to hold the current OpenGL GL_POINT_SIZE so we can restore it later
+		// Note: LWJGL minimum size to get OpenGL data is 16, even though we only want to store 1 float.
+		pointSizeFloatBuffer = Utils.createFloatBuffer(16);			
+
+		// ----- Shader program setup -----
+
+		// Instantiate the shader program
+		pointShaderProgram = new ShaderProgram();
+
+		// Load, compile and link the shaders into the shader program
+		pointShaderProgram.initFromStrings(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
+
+		// ----- Grid shader attributes and uniforms -----
+
+		// Add the shader attributes
+		pointShaderProgram.addAttribute("vertexLocation");
+		pointShaderProgram.addAttribute("vertexColour");
+
+		// Add the shader uniforms
+		pointShaderProgram.addUniform("mvpMatrix");
+
+
+		// ----- Set up our Vertex Array Object (VAO) to hold the shader attributes -----
+
+		// Get an Id for the Vertex Array Object (VAO) and bind to it
+		pointVaoId = glGenVertexArrays();
+		glBindVertexArray(pointVaoId);
+
+		// ----- Location Vertex Buffer Object (VBO) -----
+
+		// Generate an id for the locationBuffer and bind to it
+		pointVertexBufferId = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, pointVertexBufferId);
+
+		// Place the location data into the VBO...
+		glBufferData(GL_ARRAY_BUFFER, vertexFloatBuffer, GL_DYNAMIC_DRAW);
+
+		// ...and specify the data format.
+		glVertexAttribPointer(pointShaderProgram.attribute("vertexLocation"), // Vertex location attribute index
+                                                               VERTEX_COMPONENTS, // Number of vertex components per vertex
+                                                                        GL_FLOAT, // Data type
+                                                                           false, // Normalised?
+                                                   COMPONENT_COUNT * Float.BYTES, // Stride
+                                                                              0); // Offset
+
+		// ...and specify the data format.
+		glVertexAttribPointer(pointShaderProgram.attribute("vertexColour"),  // Vertex colour attribute index
+                                                           COLOUR_COMPONENTS,  // Number of colour components per vertex
+                                                                    GL_FLOAT,  // Data type
+                                                                       false,  // Normalised?
+                                               COMPONENT_COUNT * Float.BYTES,  // Stride
+                                       (long)VERTEX_COMPONENTS * Float.BYTES);  // Offset
+		// Unbind VBO
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		// Enable the vertex attributes
+		glEnableVertexAttribArray( pointShaderProgram.attribute("vertexLocation") );
+		glEnableVertexAttribArray( pointShaderProgram.attribute("vertexColour")   );
+
+		// Unbind our Vertex Array object - all the buffer and attribute settings above will be associated with our VAO
+		glBindVertexArray(0);
+	}
 
 	// Constructor
 	// Note: width is along +/- x-axis, depth is along +/- z-axis, height is the location on
 	// the y-axis, numDivisions is how many points to draw across each axis
 	public Point3D()
 	{
-		// If this is the first grid we're creating then do the shader setup
-		if (!shaderInitialised)
-		{
-			shaderInitialised = true;
-			
-			// Instantiate our float data array which we'll transfer data from into the float buffer
-			pointData = new float[NUM_VERTICES * COMPONENT_COUNT];
-
-			// Create the float buffer which will hold the geometry data to draw
-			vertexFloatBuffer = Utils.createFloatBuffer(NUM_VERTICES * COMPONENT_COUNT);
-
-			// Create the float buffer which will hold the ModelViewProjection matrix
-			mvpMatrixFloatBuffer = Utils.createFloatBuffer(16);
-
-			// Create the FloatBuffer to hold the current OpenGL GL_POINT_SIZE so we can restore it later
-			// Note: LWJGL minimum size to get OpenGL data is 16, even though we only want to store 1 float.
-			pointSizeFloatBuffer = Utils.createFloatBuffer(16);			
-
-			// ----- Shader program setup -----
-
-			// Instantiate the shader program
-			pointShaderProgram = new ShaderProgram();
-
-			// Load, compile and link the shaders into the shader program
-			pointShaderProgram.initFromStrings(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
-
-			// ----- Grid shader attributes and uniforms -----
-
-			// Add the shader attributes
-			pointShaderProgram.addAttribute("vertexLocation");
-			pointShaderProgram.addAttribute("vertexColour");
-
-			// Add the shader uniforms
-			pointShaderProgram.addUniform("mvpMatrix");
-
-
-			// ----- Set up our Vertex Array Object (VAO) to hold the shader attributes -----
-
-			// Get an Id for the Vertex Array Object (VAO) and bind to it
-			pointVaoId = glGenVertexArrays();
-			glBindVertexArray(pointVaoId);
-
-				// ----- Location Vertex Buffer Object (VBO) -----
-	
-				// Generate an id for the locationBuffer and bind to it
-				pointVertexBufferId = glGenBuffers();
-				glBindBuffer(GL_ARRAY_BUFFER, pointVertexBufferId);
-	
-				// Place the location data into the VBO...
-				glBufferData(GL_ARRAY_BUFFER, vertexFloatBuffer, GL_DYNAMIC_DRAW);
-	
-				// ...and specify the data format.
-				glVertexAttribPointer(pointShaderProgram.attribute("vertexLocation"), // Vertex location attribute index
-                                                                   VERTEX_COMPONENTS, // Number of vertex components per vertex
-                                                                            GL_FLOAT, // Data type
-                                                                               false, // Normalised?
-                                                       COMPONENT_COUNT * Float.BYTES, // Stride
-                                                                                  0); // Offset
-	
-				// ...and specify the data format.
-				glVertexAttribPointer(pointShaderProgram.attribute("vertexColour"),  // Vertex colour attribute index
-	                                                             COLOUR_COMPONENTS,  // Number of colour components per vertex
-	                                                                      GL_FLOAT,  // Data type
-	                                                                         false,  // Normalised?
-	                                                 COMPONENT_COUNT * Float.BYTES,  // Stride
-	                                         (long)VERTEX_COMPONENTS * Float.BYTES);  // Offset
-				// Unbind VBO
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-	
-				// Enable the vertex attributes
-				glEnableVertexAttribArray( pointShaderProgram.attribute("vertexLocation") );
-				glEnableVertexAttribArray( pointShaderProgram.attribute("vertexColour")   );
-
-			// Unbind our Vertex Array object - all the buffer and attribute settings above will be associated with our VAO
-			glBindVertexArray(0);
-		}
-		
-	} // End of constructor
-	
-	
+		//
+	} 
 
 	/**
 	 * Draw a Point3D as a GL_POINT.
@@ -169,16 +161,7 @@ public class Point3D
 	// to pass to the shader as a uniform.
 	public void draw(Vec3f location, Colour4f colour, float pointSize, Mat4f mvpMatrix)
 	{
-		// Point x/y/z
-		pointData[0] = location.x;
-		pointData[1] = location.y;
-		pointData[2] = location.z;
-
-		// Point colour
-		pointData[3] = colour.r;
-		pointData[4] = colour.g;
-		pointData[5] = colour.b;
-		pointData[6] = colour.a;
+		setPointData(location, colour);
 
 		// Transfer the point data into the vertex float buffer and flip it ready for use
 		vertexFloatBuffer.put(pointData);
@@ -194,38 +177,51 @@ public class Point3D
 		// Bind to our vertex buffer object
 		glBindVertexArray(pointVaoId);
 	
-			// Bind to the vertex buffer object (VBO) and place the new data into it
-			glBindBuffer(GL_ARRAY_BUFFER, pointVertexBufferId);
-			glBufferData(GL_ARRAY_BUFFER, vertexFloatBuffer, GL_DYNAMIC_DRAW);		
-		
-				// Provide the projection matrix uniform
-				glUniformMatrix4fv(pointShaderProgram.uniform("mvpMatrix"), false, mvpMatrixFloatBuffer);
-			
-				// Store the current GL_POINT_SIZE
-				// Note: We MUST allocate a minimum of 16 floats in our FloatBuffer in LWJGL, we CANNOT
-				// just get a FloatBuffer with 1 float!
-				// Also: Previously we could have used 'glPushAttrib(GL_POINT_BIT); /* do stuff */ glPopAttrib();'
-				// - but this was deprecated in OpenGL 3.2 as a means to remove some of the state tracking
-				// from OpenGL after the move to a programmable pipeline (i.e. shader based) architecture.
-				glGetFloatv(GL_POINT_SIZE, pointSizeFloatBuffer);
-			
-				// Set the GL_POINT_SIZE to be the size requested
-				glPointSize(pointSize);
-			
-				// 	Draw the axis points
-				glDrawArrays(GL_POINTS, 0, NUM_VERTICES);
-			
-				// Restore the point width to the previous value
-				glPointSize( pointSizeFloatBuffer.get(0) );
+		// Bind to the vertex buffer object (VBO) and place the new data into it
+		glBindBuffer(GL_ARRAY_BUFFER, pointVertexBufferId);
+		glBufferData(GL_ARRAY_BUFFER, vertexFloatBuffer, GL_DYNAMIC_DRAW);		
+	
+		// Provide the projection matrix uniform
+		glUniformMatrix4fv(pointShaderProgram.uniform("mvpMatrix"), false, mvpMatrixFloatBuffer);
+	
+		// Store the current GL_POINT_SIZE
+		// Note: We MUST allocate a minimum of 16 floats in our FloatBuffer in LWJGL, we CANNOT
+		// just get a FloatBuffer with 1 float!
+		// Also: Previously we could have used 'glPushAttrib(GL_POINT_BIT); /* do stuff */ glPopAttrib();'
+		// - but this was deprecated in OpenGL 3.2 as a means to remove some of the state tracking
+		// from OpenGL after the move to a programmable pipeline (i.e. shader based) architecture.
+		glGetFloatv(GL_POINT_SIZE, pointSizeFloatBuffer);
+	
+		// Set the GL_POINT_SIZE to be the size requested
+		glPointSize(pointSize);
+	
+		// 	Draw the axis points
+		glDrawArrays(GL_POINTS, 0, NUM_VERTICES);
+	
+		// Restore the point width to the previous value
+		glPointSize( pointSizeFloatBuffer.get(0) );
 
-			// Unbind from VBO
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
+		// Unbind from VBO
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		// Unbind from our VAO
 		glBindVertexArray(0);
 
 		// Disable our shader program
 		pointShaderProgram.disable();
+	}
+	
+	private static void setPointData(Vec3f location, Colour4f colour) {
+		// Point x/y/z
+		pointData[0] = location.x;
+		pointData[1] = location.y;
+		pointData[2] = location.z;
+
+		// Point colour
+		pointData[3] = colour.r;
+		pointData[4] = colour.g;
+		pointData[5] = colour.b;
+		pointData[6] = colour.a;
 	}
 	
 } // End of Point3D class
