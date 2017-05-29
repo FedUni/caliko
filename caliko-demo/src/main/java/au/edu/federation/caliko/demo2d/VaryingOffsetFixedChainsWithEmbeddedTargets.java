@@ -1,9 +1,9 @@
 package au.edu.federation.caliko.demo2d;
 
+import au.edu.federation.caliko.BoneConnectionPoint;
 import au.edu.federation.caliko.FabrikBone2D;
 import au.edu.federation.caliko.FabrikChain2D;
 import au.edu.federation.caliko.FabrikChain2D.BaseboneConstraintType2D;
-import au.edu.federation.caliko.FabrikChain2D.BoneConnectionPoint2D;
 import au.edu.federation.caliko.FabrikStructure2D;
 import au.edu.federation.utils.Mat4f;
 import au.edu.federation.utils.Utils;
@@ -68,7 +68,7 @@ public class VaryingOffsetFixedChainsWithEmbeddedTargets extends FixedTargetDemo
 		leftChain.setColour(Utils.MID_GREEN);
 		
 		// Add the left chain to the structure, connected to the start of bone 1 in chain 0
-		this.structure.addConnectedChain(leftChain, 0, 1, BoneConnectionPoint2D.START);
+		this.structure.connectChain(leftChain, 0, 1, BoneConnectionPoint.START);
 		
 		// ----- Right grey chain with embedded target -----
 		FabrikChain2D rightChain = new FabrikChain2D();				
@@ -90,7 +90,7 @@ public class VaryingOffsetFixedChainsWithEmbeddedTargets extends FixedTargetDemo
 		rightChain.setBaseboneRelativeConstraintUV(RIGHT);
 		
 		// Add the right chain to the structure, connected to the start of bone 2 in chain 0
-		this.structure.addConnectedChain(rightChain, 0, 2, BoneConnectionPoint2D.START);
+		this.structure.connectChain(rightChain, 0, 2, BoneConnectionPoint.START);
 	}
 	
 	@Override

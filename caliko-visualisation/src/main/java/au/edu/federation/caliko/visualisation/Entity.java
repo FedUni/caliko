@@ -22,19 +22,19 @@ public class Entity
 	// ---------- Static Properties ----------
 	
 	/** Projection matrix float buffer - static because all entities will have a 4x4 projection matrix we can overwrite rather than allocate new memory to. */
-	private static FloatBuffer projectionMatrixFB;
+	private FloatBuffer projectionMatrixFB;
 	
 	/** View matrix float buffer - static because all entities will have a 4x4 view matrix we can overwrite rather than allocate new memory to. */
-	private static FloatBuffer viewMatrixFB;
+	private FloatBuffer viewMatrixFB;
 	
 	/** Model matrix float buffer - static because all entities will have a 4x4 model matrix we can overwrite rather than allocate new memory to. */
-	private static FloatBuffer modelMatrixFB;
+	private FloatBuffer modelMatrixFB;
 	
 	/** Normal matrix float buffer - static because all entities will have a 4x4 normal matrix we can overwrite rather than allocate new memory to. */
-	private static FloatBuffer normalMatrixFB;
+	private FloatBuffer normalMatrixFB;
 	
 	/** How many entities exist - if this is zero (which it will be on startup as that's the default) then buffers are allocated in the constructor. */
-	private static int numEntities = 0;
+	private int numEntities = 0;
 
 	// ---------- Private Properties ------------
 	

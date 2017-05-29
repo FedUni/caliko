@@ -26,9 +26,6 @@ public class Circle3D
 	private static final int NUM_VERTICES      = 40;
 	private static final int VERTEX_COMPONENTS = 3;
 	
-	// Flag used so that we only initialise the shader once
-	private static boolean shaderInitialised = false;
-
 	/** Shader program to draw all circles. **/
 	private static ShaderProgram circleShaderProgram;
 	
@@ -42,7 +39,7 @@ public class Circle3D
 	private static FloatBuffer currentLineWidthFB;
 	
 	//Define our vertex and fragement shader GLSL source code
-	private static String vertexShaderSource =
+	private static final String VERTEX_SHADER_SOURCE =
 			"#version 330"                                                         + Utils.NEW_LINE +
 			"in vec4 vertexLocation; // Incoming vertex attribute"                 + Utils.NEW_LINE +
 			"out vec4 fragColour;    // Outgoing colour value"                     + Utils.NEW_LINE +
@@ -51,7 +48,7 @@ public class Circle3D
 			"	gl_Position = mvpMatrix * vertexLocation; // Project our geometry" + Utils.NEW_LINE +
 			"}";
 
-	private static String fragmentShaderSource =
+	private static final String FRAGMENT_SHADER_SOURCE =
 			"#version 330"                                     + Utils.NEW_LINE +
 			"out vec4 vOutputColour; // Outgoing colour value" + Utils.NEW_LINE +
 			"uniform vec4 fragColour;"                         + Utils.NEW_LINE +
@@ -70,66 +67,60 @@ public class Circle3D
 	
     /** Static vertex FloatBuffer to hold our vertex data. */
 	private static FloatBuffer vertexFB;
+	
+	static {
+		// Allocate memory for arrays and buffers
+		circleData         = new float[NUM_VERTICES * VERTEX_COMPONENTS];
+		vertexFB           = Utils.createFloatBuffer(NUM_VERTICES * VERTEX_COMPONENTS);
+		mvpMatrixFB        = Utils.createFloatBuffer(16);
+		colourFB           = Utils.createFloatBuffer(16); // Minimum size is 16, even though we only want to store 1 float
+		currentLineWidthFB = Utils.createFloatBuffer(16); // Minimum size is 16, even though we only want to store 1 float
+
+		// ----- Shader program setup -----
+
+		circleShaderProgram = new ShaderProgram();
+		circleShaderProgram.initFromStrings(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
+
+		// Add the shader attributes and uniforms
+		circleShaderProgram.addAttribute("vertexLocation");
+		circleShaderProgram.addUniform("mvpMatrix");
+		circleShaderProgram.addUniform("fragColour");
+
+		// Get an id for the Vertex Array Object (VAO) and bind to it
+		circleVaoId = glGenVertexArrays();
+		glBindVertexArray(circleVaoId);
+
+		// Generate an id for our Vertex Buffer Object (VBO) and bind to it
+		circleVboId = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, circleVboId);
+
+		// Place the location data into the VBO...
+		glBufferData(GL_ARRAY_BUFFER, vertexFB, GL_DYNAMIC_DRAW);
+
+		// ...and specify the data format.
+		glVertexAttribPointer(circleShaderProgram.attribute("vertexLocation"),  // Vertex location attribute index
+				                                            VERTEX_COMPONENTS,  // Number of normal components per vertex
+				                                                     GL_FLOAT,  // Data type
+				                                                        false,  // Normalised?
+				                                                            0,  // Stride
+				                                                            0); // Offset
+		
+		// Unbind VBO
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		// Enable the vertex attributes
+		glEnableVertexAttribArray(circleShaderProgram.attribute("vertexLocation"));
+
+		// Unbind our from our VAO, saving all settings
+		glBindVertexArray(0);
+	}
 
 	/** Constructor */
 	public Circle3D()
 	{
-		// If this is the first grid we're creating then do the shader setup
-		if (!shaderInitialised)
-		{
-			shaderInitialised = true;
-			
-			// Allocate memory for arrays and buffers
-			circleData         = new float[NUM_VERTICES * VERTEX_COMPONENTS];
-			vertexFB           = Utils.createFloatBuffer(NUM_VERTICES * VERTEX_COMPONENTS);
-			mvpMatrixFB        = Utils.createFloatBuffer(16);
-			colourFB           = Utils.createFloatBuffer(16); // Minimum size is 16, even though we only want to store 1 float
-			currentLineWidthFB = Utils.createFloatBuffer(16); // Minimum size is 16, even though we only want to store 1 float
-
-			// ----- Shader program setup -----
-
-			circleShaderProgram = new ShaderProgram();
-			circleShaderProgram.initFromStrings(vertexShaderSource, fragmentShaderSource);
-
-			// We no longer need the shader sources now we have a compiled shader
-			vertexShaderSource   = null;
-			fragmentShaderSource = null;
-
-			// Add the shader attributes and uniforms
-			circleShaderProgram.addAttribute("vertexLocation");
-			circleShaderProgram.addUniform("mvpMatrix");
-			circleShaderProgram.addUniform("fragColour");
-
-			// Get an id for the Vertex Array Object (VAO) and bind to it
-			circleVaoId = glGenVertexArrays();
-			glBindVertexArray(circleVaoId);
-
-			// Generate an id for our Vertex Buffer Object (VBO) and bind to it
-			circleVboId = glGenBuffers();
-			glBindBuffer(GL_ARRAY_BUFFER, circleVboId);
-
-			// Place the location data into the VBO...
-			glBufferData(GL_ARRAY_BUFFER, vertexFB, GL_DYNAMIC_DRAW);
-
-			// ...and specify the data format.
-			glVertexAttribPointer(circleShaderProgram.attribute("vertexLocation"),  // Vertex location attribute index
-					                                            VERTEX_COMPONENTS,  // Number of normal components per vertex
-					                                                     GL_FLOAT,  // Data type
-					                                                        false,  // Normalised?
-					                                                            0,  // Stride
-					                                                            0); // Offset
-			
-			// Unbind VBO
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-			// Enable the vertex attributes
-			glEnableVertexAttribArray(circleShaderProgram.attribute("vertexLocation"));
-
-			// Unbind our from our VAO, saving all settings
-			glBindVertexArray(0);
-		}
+		//
 	}
-
+	
 	/**
 	 * Draw a circle in 3D space.
 	 * <p>
@@ -156,10 +147,7 @@ public class Circle3D
 			// Translate to the given location
 			point = point.plus(location);
 			
-			// Point x/y/z
-			circleData[(vertexNumLoop * VERTEX_COMPONENTS)    ] = point.x;
-			circleData[(vertexNumLoop * VERTEX_COMPONENTS) + 1] = point.y;
-			circleData[(vertexNumLoop * VERTEX_COMPONENTS) + 2] = point.z;
+			setCircleData(vertexNumLoop, point);
 		}
 		
 		// Transfer the data into the vertex float buffer
@@ -178,34 +166,42 @@ public class Circle3D
 		circleShaderProgram.use();
 		glBindVertexArray(circleVaoId);
 
-			// Bind to the vertex buffer object (VBO) and place the new data into it
-			glBindBuffer(GL_ARRAY_BUFFER, circleVboId);
-			glBufferData(GL_ARRAY_BUFFER, vertexFB, GL_DYNAMIC_DRAW);
-	
-			// Provide the projection matrix and colour uniforms to our shader
-			glUniformMatrix4fv(circleShaderProgram.uniform("mvpMatrix"), false, mvpMatrixFB);
-			glUniform4fv(circleShaderProgram.uniform("fragColour"), colourFB);
-	
-			// Store the current GL_LINE_WIDTH
-			// IMPORTANT: We MUST allocate a minimum of 16 floats in our FloatBuffer in LWJGL, we CANNOT just get a FloatBuffer with 1 float!
-			// ALSO: glPushAttrib(GL_LINE_BIT); /* do stuff */ glPopAttrib(); should work instead of this in theory - but LWJGL fails with 'function not supported'.
-			glGetFloatv(GL_LINE_WIDTH, currentLineWidthFB);
-	
-			/// Set the GL_LINE_WIDTH to be the width requested, as passed to the constructor
-			glLineWidth(lineWidth);
-	
-			// 	Draw the circle as a line loop
-			glDrawArrays(GL_LINE_LOOP, 0, NUM_VERTICES);
-	
-			// Restore the previous GL_LINE_WIDTH
-			glLineWidth( currentLineWidthFB.get(0) );
+		// Bind to the vertex buffer object (VBO) and place the new data into it
+		glBindBuffer(GL_ARRAY_BUFFER, circleVboId);
+		glBufferData(GL_ARRAY_BUFFER, vertexFB, GL_DYNAMIC_DRAW);
 
-			// Unbind from VBO & VAO, then disable our shader
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
+		// Provide the projection matrix and colour uniforms to our shader
+		glUniformMatrix4fv(circleShaderProgram.uniform("mvpMatrix"), false, mvpMatrixFB);
+		glUniform4fv(circleShaderProgram.uniform("fragColour"), colourFB);
+
+		// Store the current GL_LINE_WIDTH
+		// IMPORTANT: We MUST allocate a minimum of 16 floats in our FloatBuffer in LWJGL, we CANNOT just get a FloatBuffer with 1 float!
+		// ALSO: glPushAttrib(GL_LINE_BIT); /* do stuff */ glPopAttrib(); should work instead of this in theory - but LWJGL fails with 'function not supported'.
+		glGetFloatv(GL_LINE_WIDTH, currentLineWidthFB);
+
+		/// Set the GL_LINE_WIDTH to be the width requested, as passed to the constructor
+		glLineWidth(lineWidth);
+
+		// 	Draw the circle as a line loop
+		glDrawArrays(GL_LINE_LOOP, 0, NUM_VERTICES);
+
+		// Restore the previous GL_LINE_WIDTH
+		glLineWidth( currentLineWidthFB.get(0) );
+
+		// Unbind from VBO & VAO, then disable our shader
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 			
 		glBindVertexArray(0);
 		circleShaderProgram.disable();
 	
 	} // End of draw method
+	
+	private static void setCircleData(int vertexNumLoop, Vec3f point) {
+		// Point x/y/z
+		circleData[(vertexNumLoop * VERTEX_COMPONENTS)    ] = point.x;
+		circleData[(vertexNumLoop * VERTEX_COMPONENTS) + 1] = point.y;
+		circleData[(vertexNumLoop * VERTEX_COMPONENTS) + 2] = point.z;		
+	}
+	
 	
 } // End of Circle3D class

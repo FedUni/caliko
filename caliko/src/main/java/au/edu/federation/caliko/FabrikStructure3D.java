@@ -6,9 +6,7 @@ import java.util.List;
 import au.edu.federation.caliko.FabrikChain3D.BaseboneConstraintType3D;
 import au.edu.federation.utils.Mat3f;
 import au.edu.federation.utils.Utils;
-import au.edu.federation.utils.Vec2f;
 import au.edu.federation.utils.Vec3f;
-import static au.edu.federation.caliko.FabrikBone3D.BoneConnectionPoint3D;
 
 /** 
  * A FabrikStructure3D contains one or more FabrikChain3D objects, which we can solve using the FABRIK (Forward And
@@ -25,15 +23,12 @@ import static au.edu.federation.caliko.FabrikBone3D.BoneConnectionPoint3D;
  * @author Al Lansley
  * @version 0.4 - 29/12/2015
  **/
-public class FabrikStructure3D
+public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 {
 	// ---------- Private Properties ----------
 	
 	private static final String NEW_LINE = System.lineSeparator();
 	
-	/** Max name of structure in characters.*/
-	private static final int MAX_NAME_LENGTH = 100;
-
 	/** The string name of this FabrikStructure3D - can be used for creating Maps, if required. */
 	private String mName;
 	
@@ -43,7 +38,7 @@ public class FabrikStructure3D
 	 * Each FabrikChain3D in the mChains vector is independent of all others, but shares the same target location as any/all other chains
 	 * which exist in this structure.
 	 */
-	private List<FabrikChain3D> mChains = new ArrayList<FabrikChain3D>();
+	private List<FabrikChain3D> mChains = new ArrayList<>();
 
 	/** Property to keep track of how many chains exist in this structure. */
 	private int mNumChains = 0;
@@ -62,7 +57,7 @@ public class FabrikStructure3D
 	 */
 	public FabrikStructure3D(String name)
 	{
-		mName = name.length() > MAX_NAME_LENGTH ? name = name.substring(0, MAX_NAME_LENGTH) : name;
+		mName = Utils.getValidatedName(name);
 	}
 
 	/**
@@ -75,6 +70,7 @@ public class FabrikStructure3D
 	 *  
 	 * @param   newTargetLocation	The location of the target for which we will attempt to solve all chains attached to this structure.
 	 */
+	@Override
 	public void solveForTarget(Vec3f newTargetLocation)
 	{
 		int numChains = mChains.size();
@@ -97,7 +93,7 @@ public class FabrikStructure3D
 				// ... get the host chain and bone which this chain is connected to
 				FabrikChain3D hostChain = mChains.get(connectedChainNumber);
 				FabrikBone3D hostBone   = hostChain.getBone( thisChain.getConnectedBoneNumber() );
-				if (hostBone.getBoneConnectionPoint() == BoneConnectionPoint3D.START) { thisChain.setBaseLocation( hostBone.getStartLocation() ); }
+				if (hostBone.getBoneConnectionPoint() == BoneConnectionPoint.START) { thisChain.setBaseLocation( hostBone.getStartLocation() ); }
 				else                                                                  { thisChain.setBaseLocation( hostBone.getEndLocation()   ); }
 				
 				// Now that we've clamped the base location of this chain to the start or end point of the bone in the chain we are connected to, it's
@@ -158,25 +154,6 @@ public class FabrikStructure3D
 	} // End of updateTarget method
 
 	/**
-	 * Solve the structure for the given target location.
-	 * <p>
-	 * All chains in this structure are solved for the given target location EXCEPT those which have embedded targets enabled, which are
-	 * solved for the target location embedded in the chain.
-	 * <p>
-	 * After this method has been executed, the configuration of all IK chains attached to this structure will have been updated.
-	 * 
-	 * @param  targetX	The target x location.
-	 * @param  targetY	The target y location.
-	 * @param  targetZ	The target z location.
-	 **/
-	public void solveForTarget(float targetX, float targetY, float targetZ)
-	{
-		// Call our Vec3f version of updateTarget using a constructed Vec3f target location
-		// Note: This will loop over all chains, attempting to solve each for the same target location
-		solveForTarget( new Vec3f(targetX, targetY, targetZ) );
-	}
-	
-	/**
 	 * Add a FabrikChain3D to this FabrikStructure3D.
 	 * <p>
 	 * In effect, the chain is added to the mChains list of FabrikChain3D objects, and the mNumChains property is incremented.
@@ -188,9 +165,10 @@ public class FabrikStructure3D
 	 * via a single call to updateTarget. 
 	 *  
 	 * @param	chain	(FabrikChain3D)	The FabrikChain3D to add to this structure.
-	 * @see		#connectChain(au.edu.federation.caliko.FabrikChain3D, int, int)
-	 * @see		#connectChain(au.edu.federation.caliko.FabrikChain3D, int, int, au.edu.federation.caliko.FabrikBone3D.BoneConnectionPoint3D)
+	 * @see   #connectChain(FabrikChain3D, int, int)
+	 * @see		#connectChain(FabrikChain3D, int, int, BoneConnectionPoint)
 	 **/
+	@Override
 	public void addChain(FabrikChain3D chain)
 	{
 		mChains.add(chain);		
@@ -222,6 +200,7 @@ public class FabrikStructure3D
 	 * @param	existingChainNumber	The index of the chain to connect the new chain to.
 	 * @param	existingBoneNumber	The index of the bone to connect the new chain to within the existing chain.
 	 */
+	@Override
 	public void connectChain(FabrikChain3D newChain, int existingChainNumber, int existingBoneNumber)
 	{	
 		// Does this chain exist? If not throw an IllegalArgumentException
@@ -247,9 +226,9 @@ public class FabrikStructure3D
 		
 		
 		// Get the connection point so we know to connect at the start or end location of the bone we're connecting to
-		BoneConnectionPoint3D connectionPoint = this.getChain(existingChainNumber).getBone(existingBoneNumber).getBoneConnectionPoint();
+		BoneConnectionPoint connectionPoint = this.getChain(existingChainNumber).getBone(existingBoneNumber).getBoneConnectionPoint();
 		Vec3f connectionLocation;
-		if (connectionPoint == BoneConnectionPoint3D.START)
+		if (connectionPoint == BoneConnectionPoint.START)
 		{
 			connectionLocation = mChains.get(existingChainNumber).getBone(existingBoneNumber).getStartLocation();
 		}
@@ -293,7 +272,8 @@ public class FabrikStructure3D
 	 * @param	existingBoneNumber	The index of the bone to connect the new chain to within the existing chain.
 	 * @param	boneConnectionPoint	Whether the new chain should connect to the START or END of the specified bone in the specified chain.
 	 */
-	public void connectChain(FabrikChain3D newChain, int existingChainNumber, int existingBoneNumber, BoneConnectionPoint3D boneConnectionPoint)
+	@Override
+	public void connectChain(FabrikChain3D newChain, int existingChainNumber, int existingBoneNumber, BoneConnectionPoint boneConnectionPoint)
 	{
 		// Does this chain exist? If not throw an IllegalArgumentException
 		if (existingChainNumber > mNumChains)
@@ -320,7 +300,7 @@ public class FabrikStructure3D
 		// Set the connection point and use it to get the connection location
 		this.getChain(existingChainNumber).getBone(existingBoneNumber).setBoneConnectionPoint(boneConnectionPoint);
 		Vec3f connectionLocation;
-		if (boneConnectionPoint == BoneConnectionPoint3D.START)
+		if (boneConnectionPoint == BoneConnectionPoint.START)
 		{
 			connectionLocation = mChains.get(existingChainNumber).getBone(existingBoneNumber).getStartLocation();
 		}
@@ -356,6 +336,7 @@ public class FabrikStructure3D
 	 *
 	 * @return	The number of chains in this structure.
 	 */
+	@Override
 	public int getNumChains() { return mNumChains; }
 	
 	/**
@@ -367,6 +348,7 @@ public class FabrikStructure3D
 	 * @param	chainNumber	The specified chain from this structure.
 	 * @return	The specified FabrikChain3D from this chain.
 	 */
+	@Override
 	public FabrikChain3D getChain(int chainNumber) { return mChains.get(chainNumber); }
 	
 	/**
@@ -387,8 +369,10 @@ public class FabrikStructure3D
 	 * 
 	 * @param	name	The name to set.
 	 */
+	@Override
 	public void setName(String name) { mName = Utils.getValidatedName(name); }
 	
+	@Override
 	public String getName() {
 		return this.mName;
 	}
@@ -412,7 +396,7 @@ public class FabrikStructure3D
 		{
 			sb.append(mChains.get(loop).toString() );
 		}
-
+ 
 		return sb.toString();
 	}
 

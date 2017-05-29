@@ -21,6 +21,8 @@ public class FabrikLine3D
 	// A static Line3D object used to draw lines.
 	private static Line3D line = new Line3D();
 	
+	private FabrikLine3D() {}
+	
 	// ---------- Bone Drawing Methods ----------
 	
 	/**

@@ -21,12 +21,12 @@ public class FabrikConstraint3D
 	private static final float DEGS_TO_RADS = (float)Math.PI / 180.0f;
 	
 	// Constraint colours
-	private static Colour4f ANTICLOCKWISE_CONSTRAINT_COLOUR = new Colour4f(1.0f, 0.0f, 0.0f, 1.0f);
-	private static Colour4f CLOCKWISE_CONSTRAINT_COLOUR     = new Colour4f(0.0f, 0.0f, 1.0f, 1.0f);	
-	private static Colour4f BALL_JOINT_COLOUR               = new Colour4f(1.0f, 0.0f, 0.0f, 1.0f);
-	private static Colour4f GLOBAL_HINGE_COLOUR             = new Colour4f(1.0f, 1.0f, 0.0f, 1.0f);
-	private static Colour4f LOCAL_HINGE_COLOUR              = new Colour4f(0.0f, 1.0f, 1.0f, 1.0f);
-	private static Colour4f REFERENCE_AXIS_COLOUR           = new Colour4f(1.0f, 0.0f, 1.0f, 1.0f);
+	private static final Colour4f ANTICLOCKWISE_CONSTRAINT_COLOUR = new Colour4f(1.0f, 0.0f, 0.0f, 1.0f);
+	private static final Colour4f CLOCKWISE_CONSTRAINT_COLOUR     = new Colour4f(0.0f, 0.0f, 1.0f, 1.0f);	
+	private static final Colour4f BALL_JOINT_COLOUR               = new Colour4f(1.0f, 0.0f, 0.0f, 1.0f);
+	private static final Colour4f GLOBAL_HINGE_COLOUR             = new Colour4f(1.0f, 1.0f, 0.0f, 1.0f);
+	private static final Colour4f LOCAL_HINGE_COLOUR              = new Colour4f(0.0f, 1.0f, 1.0f, 1.0f);
+	private static final Colour4f REFERENCE_AXIS_COLOUR           = new Colour4f(1.0f, 0.0f, 1.0f, 1.0f);
 	
 	// The drawn length of the rotor cone and the radius of the cone and circle describing the hinge axes
 	private static final float CONE_LENGTH_FACTOR  = 0.3f;
@@ -148,9 +148,9 @@ public class FabrikConstraint3D
 				     !Utils.approximatelyEquals(    clockwiseConstraintDegs, 180.0f, 0.01f) )
 				{	
 					// Get the relative hinge rotation axis and draw it...
-					Vec3f relativeHingeReferenceAxis = bone.getJoint().getHingeReferenceAxis().projectOntoPlane(relativeHingeRotationAxis);
+					bone.getJoint().getHingeReferenceAxis().projectOntoPlane(relativeHingeRotationAxis);
 					
-					relativeHingeReferenceAxis = m.times(bone.getJoint().getHingeReferenceAxis()).normalise();
+					Vec3f relativeHingeReferenceAxis = m.times(bone.getJoint().getHingeReferenceAxis()).normalise();
 					
 					mLine.draw(lineStart, lineStart.plus( relativeHingeReferenceAxis.times(radius) ), REFERENCE_AXIS_COLOUR, lineWidth, mvpMatrix);
 					

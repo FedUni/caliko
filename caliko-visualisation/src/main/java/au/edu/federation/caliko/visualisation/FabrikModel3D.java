@@ -23,9 +23,6 @@ import static org.lwjgl.opengl.GL30.*;
  */
 public class FabrikModel3D
 {	
-	// Flag used so that we only initialise the shader once
-	private static boolean shaderInitialised = false;
-
 	// Each vertex has three positional components - the x, y and z values. 
 	private static final int VERTEX_COMPONENTS = 3;
 	
@@ -33,7 +30,7 @@ public class FabrikModel3D
 	private static ShaderProgram shaderProgram;
 	
 	// Vertex shader source
-	private static String vertexShaderSource =
+	private static final String VERTEX_SHADER_SOURCE =
 			"#version 330"                                                                    + Utils.NEW_LINE +
 			"in vec3 vertexLocation;   // Incoming vertex attribute"                          + Utils.NEW_LINE +
 			"uniform mat4 mvpMatrix;   // Combined Model/View/Projection matrix  "            + Utils.NEW_LINE +
@@ -42,7 +39,7 @@ public class FabrikModel3D
 			"}";
 
 	// Fragment shader source
-	private static String fragmentShaderSource =
+	private static final String FRAGMENT_SHADER_SOURCE =
 			"#version 330"              + Utils.NEW_LINE +
 			"out vec4 outputColour;"    + Utils.NEW_LINE +
 			"uniform vec4 colour;"      + Utils.NEW_LINE +
@@ -51,8 +48,8 @@ public class FabrikModel3D
 			"}";
 
     // Hold id values for the Vertex Array Object (VAO) and Vertex Buffer Object (VBO)
-	private int vaoId;
-	private int vboId;
+	private static int vaoId;
+	private static int vboId;
 	
 	// Float buffers for the ModelViewProjection matrix and model colour
 	private static FloatBuffer mvpMatrixFB;
@@ -80,6 +77,55 @@ public class FabrikModel3D
 	 */
 	private float mLineWidth = 1.0f;
 	
+	static {
+		mvpMatrixFB        = Utils.createFloatBuffer(16);
+		colourFB           = Utils.createFloatBuffer(16);
+		currentLineWidthFB = Utils.createFloatBuffer(16);
+
+		// ----- Grid shader program setup -----
+
+		shaderProgram = new ShaderProgram();
+		shaderProgram.initFromStrings(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
+
+		// ----- Grid shader attributes and uniforms -----
+
+		// Add the shader attributes and uniforms
+		shaderProgram.addAttribute("vertexLocation");			
+		shaderProgram.addUniform("mvpMatrix");
+		shaderProgram.addUniform("colour");
+
+		// ----- Set up our Vertex Array Object (VAO) to hold the shader attributes -----
+
+		// Create a VAO and bind to it
+		vaoId = glGenVertexArrays();
+		glBindVertexArray(vaoId);
+
+		// ----- Vertex Buffer Object (VBO) -----
+
+		// Create a VBO and bind to it
+		vboId = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, vboId);
+
+		// Note: We do NOT copy the data into the buffer at this time - we do that on draw!
+		
+		// Vertex attribute configuration
+		glVertexAttribPointer(shaderProgram.attribute("vertexLocation"), // Vertex location attribute index
+				                                      VERTEX_COMPONENTS, // Number of components per vertex
+				                                               GL_FLOAT, // Data type
+				                                                  false, // Normalised?
+                                            VERTEX_COMPONENTS * Float.BYTES, // Stride
+				                                                    0); // Offset
+		
+		// Unbind VBO
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		// Enable the vertex attributes
+		glEnableVertexAttribArray(shaderProgram.attribute("vertexLocation"));
+
+		// Unbind VAO - all the buffer and attribute settings above will now be associated with our VAO
+		glBindVertexArray(0);			
+	}
+	
 	/**
 	 * Default constructor.
 	 * 
@@ -97,63 +143,6 @@ public class FabrikModel3D
 		
 		mLineWidth = lineWidth;
 		
-		// If this is the first axis we're creating an Axis object then perform the shader setup
-		if (!shaderInitialised)
-		{
-			shaderInitialised = true;
-			
-			mvpMatrixFB        = Utils.createFloatBuffer(16);
-			colourFB           = Utils.createFloatBuffer(16);
-			currentLineWidthFB = Utils.createFloatBuffer(16);
-
-			// ----- Grid shader program setup -----
-
-			shaderProgram = new ShaderProgram();
-			shaderProgram.initFromStrings(vertexShaderSource, fragmentShaderSource);
-
-			// We no longer need the shader sources
-			vertexShaderSource   = null;
-			fragmentShaderSource = null;
-
-			// ----- Grid shader attributes and uniforms -----
-
-			// Add the shader attributes and uniforms
-			shaderProgram.addAttribute("vertexLocation");			
-			shaderProgram.addUniform("mvpMatrix");
-			shaderProgram.addUniform("colour");
-
-			// ----- Set up our Vertex Array Object (VAO) to hold the shader attributes -----
-
-			// Create a VAO and bind to it
-			vaoId = glGenVertexArrays();
-			glBindVertexArray(vaoId);
-
-				// ----- Vertex Buffer Object (VBO) -----
-	
-				// Create a VBO and bind to it
-				vboId = glGenBuffers();
-				glBindBuffer(GL_ARRAY_BUFFER, vboId);
-	
-				// Note: We do NOT copy the data into the buffer at this time - we do that on draw!
-				
-				// Vertex attribute configuration
-				glVertexAttribPointer(shaderProgram.attribute("vertexLocation"), // Vertex location attribute index
-						                                      VERTEX_COMPONENTS, // Number of components per vertex
-						                                               GL_FLOAT, // Data type
-						                                                  false, // Normalised?
-                                                VERTEX_COMPONENTS * Float.BYTES, // Stride
-						                                                    0); // Offset
-				
-				// Unbind VBO
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-	
-				// Enable the vertex attributes
-				glEnableVertexAttribArray(shaderProgram.attribute("vertexLocation"));
-
-			// Unbind VAO - all the buffer and attribute settings above will now be associated with our VAO
-			glBindVertexArray(0);			
-		}
-
 	} // End of constructor
 
 	/** Private method to actually draw the model. */
@@ -163,41 +152,41 @@ public class FabrikModel3D
 		shaderProgram.use();
 		glBindVertexArray(vaoId);
 
-			// Bind to our VBO so we can update the axis data for this particular axis object
-			glBindBuffer(GL_ARRAY_BUFFER, vboId);
-	
-				// Copy the data for this particular model into the vertex float buffer
-				// Note: The model is scaled to each individual bone length, hence the GL_DYNAMIC_DRAW performance hint.
-				vertexFB.put(modelData);
-				vertexFB.flip();
-				glBufferData(GL_ARRAY_BUFFER, vertexFB, GL_DYNAMIC_DRAW);
+		// Bind to our VBO so we can update the axis data for this particular axis object
+		glBindBuffer(GL_ARRAY_BUFFER, vboId);
+
+		// Copy the data for this particular model into the vertex float buffer
+		// Note: The model is scaled to each individual bone length, hence the GL_DYNAMIC_DRAW performance hint.
+		vertexFB.put(modelData);
+		vertexFB.flip();
+		glBufferData(GL_ARRAY_BUFFER, vertexFB, GL_DYNAMIC_DRAW);
+
+		// Provide the mvp matrix uniform data
+		mvpMatrixFB.put( mvpMatrix.toArray() );
+		mvpMatrixFB.flip();
+		glUniformMatrix4fv(shaderProgram.uniform("mvpMatrix"), false, mvpMatrixFB);
 		
-				// Provide the mvp matrix uniform data
-				mvpMatrixFB.put( mvpMatrix.toArray() );
-				mvpMatrixFB.flip();
-				glUniformMatrix4fv(shaderProgram.uniform("mvpMatrix"), false, mvpMatrixFB);
-				
-				// Provide the model vertex colour data
-				colourFB.put( colour.toArray() );
-				colourFB.flip();
-				glUniform4fv(shaderProgram.uniform("colour"), colourFB);
-		
-				// Store the current GL_LINE_WIDTH
-				// IMPORTANT: We MUST allocate a minimum of 16 floats in our FloatBuffer in LWJGL, we CANNOT just get a FloatBuffer with 1 float!
-				// ALSO: glPushAttrib(GL_LINE_BIT); /* do stuff */ glPopAttrib(); should work instead of this in theory - but LWJGL fails with 'function not supported'.
-				glGetFloatv(GL_LINE_WIDTH, currentLineWidthFB);
-		
-				/// Set the GL_LINE_WIDTH to be the width requested, as passed to the constructor
-				glLineWidth(lineWidth);
-		
-				// 	Draw the model as lines
-				glDrawArrays( GL_LINES, 0, model.getNumVertices() );
-		
-				// Reset the line width to the previous value
-				glLineWidth( currentLineWidthFB.get(0) );
-	
-			// Unbind from our VBO
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
+		// Provide the model vertex colour data
+		colourFB.put( colour.toArray() );
+		colourFB.flip();
+		glUniform4fv(shaderProgram.uniform("colour"), colourFB);
+
+		// Store the current GL_LINE_WIDTH
+		// IMPORTANT: We MUST allocate a minimum of 16 floats in our FloatBuffer in LWJGL, we CANNOT just get a FloatBuffer with 1 float!
+		// ALSO: glPushAttrib(GL_LINE_BIT); /* do stuff */ glPopAttrib(); should work instead of this in theory - but LWJGL fails with 'function not supported'.
+		glGetFloatv(GL_LINE_WIDTH, currentLineWidthFB);
+
+		/// Set the GL_LINE_WIDTH to be the width requested, as passed to the constructor
+		glLineWidth(lineWidth);
+
+		// 	Draw the model as lines
+		glDrawArrays( GL_LINES, 0, model.getNumVertices() );
+
+		// Reset the line width to the previous value
+		glLineWidth( currentLineWidthFB.get(0) );
+
+		// Unbind from our VBO
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		// Unbind from our VAO
 		glBindVertexArray(0);

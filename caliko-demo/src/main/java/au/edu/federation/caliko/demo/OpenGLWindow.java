@@ -8,6 +8,8 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 
+import au.edu.federation.caliko.demo2d.CalikoDemoStructure2DFactory.CalikoDemoStructure2DEnum;
+import au.edu.federation.caliko.demo3d.CalikoDemoStructure3DFactory.CalikoDemoStructure3DEnum;
 import au.edu.federation.utils.Mat4f;
 import au.edu.federation.utils.Utils;
 import au.edu.federation.utils.Vec2f;
@@ -57,10 +59,8 @@ public class OpenGLWindow
     public OpenGLWindow(int windowWidth, int windowHeight, float vertFoVDegs, float zNear, float zFar, float orthoExtent)
     {
     	// Set properties and create the projection matrix
-    	if (windowWidth  <= 0) { windowWidth  = 1; }
-		if (windowHeight <= 0) { windowHeight = 1; } 
-    	mWindowWidth  = windowWidth;
-    	mWindowHeight = windowHeight;
+    	mWindowWidth  = windowWidth <= 0 ? 1 : windowWidth;
+    	mWindowHeight = windowHeight <= 0 ? 1 : windowHeight;
     	mAspectRatio  = (float)mWindowWidth / (float)mWindowHeight; 
     	
     	mVertFoVDegs = vertFoVDegs;
@@ -202,11 +202,11 @@ public class OpenGLWindow
 	            	case GLFW_KEY_RIGHT:						
 	            		if (Application.use3dDemo)
 	            		{
-	            			if (Application.demoNumber < Application.num3dDemos) { Application.demoNumber++; }
+	            			if (Application.demoNumber < CalikoDemoStructure3DEnum.values().length) { Application.demoNumber++; }
 	            		}
 	            		else // 2D Demo mode
 	            		{
-	            			if (Application.demoNumber < Application.num2dDemos) { Application.demoNumber++; }
+	            			if (Application.demoNumber < CalikoDemoStructure2DEnum.values().length) { Application.demoNumber++; }
 	            		}
 						Application.demo.setup(Application.demoNumber);	            		
 						break;	
@@ -358,7 +358,7 @@ public class OpenGLWindow
 				if (Application.use3dDemo)
 				{	
 					// Immediately set the cursor position to the centre of the screen so our view doesn't "jump" on first cursor position change
-					glfwSetCursorPos(windowId, (double)(mWindowWidth / 2), (double)(mWindowHeight / 2.) );
+					glfwSetCursorPos(windowId, ((double)mWindowWidth / 2), ((double)mWindowHeight / 2) );
 					
 					switch (action)
 					{

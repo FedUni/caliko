@@ -36,19 +36,23 @@ To use the library in your own Maven project, declare the following dependencies
 
 1) If you only need the IK algorithm and do not need any visualisation:
 
+```xml
     <dependency>
       <groupId>au.edu.federation.caliko</groupId>
       <artifactId>caliko</artifactId>
       <version>1.3.2</version>
     </dependency> 
+```
 
-2) If you need the IK algorirthm and the visualisation:
+2) If you need the IK algorithm and the visualisation:
 
+```xml
     <dependency>
       <groupId>au.edu.federation.caliko.visualisation</groupId>
       <artifactId>caliko-visualisation</artifactId>
       <version>1.3.2</version>
     </dependency> 
+```
 
 ## Demo controls
 

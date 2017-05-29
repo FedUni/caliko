@@ -27,8 +27,6 @@ public class Application
 	// State tracking variables
 	static boolean use3dDemo           = false;
 	static int     demoNumber          = 1;
-	static int     num2dDemos          = 8;
-	static int     num3dDemos          = 12;
 	static boolean fixedBaseMode       = true;
 	static boolean rotateBasesMode     = false;
 	static boolean drawLines           = true;

@@ -17,9 +17,6 @@ public class Grid
     /** Each vertex has an X, Y and Z component. */
 	private static final int VERTEX_COMPONENTS = 3;
 	
-	/** Flag used so that we only initialise the shader once. */
-	private static boolean shaderInitialised = false;
-
 	/** The shader program used to draw all grids. */
 	private static ShaderProgram gridShaderProgram;
 
@@ -32,7 +29,7 @@ public class Grid
 	//Define our vertex shader source code
 	//Note: The R" notation is for raw strings and preserves all spaces, indentation,
 	//newlines etc. in utf-8|16|32 wchar_t format, but requires C++0x or C++11.
-	private static String vertexShaderSource =
+	private static final String VERTEX_SHADER_SOURCE =
 			"#version 330"                                                                    + Utils.NEW_LINE +
 			"in vec3 vertexLocation; // Incoming vertex attribute"                            + Utils.NEW_LINE +
 			"uniform mat4 mvpMatrix; // Combined Model/View/Projection matrix"                + Utils.NEW_LINE +
@@ -41,7 +38,7 @@ public class Grid
 			"}";
 
 	//Define our fragment shader source code
-	private static String fragmentShaderSource =
+	private static final String FRAGMENT_SHADER_SOURCE =
 			"#version 330"                                                               + Utils.NEW_LINE +
 			"out vec4 vOutputColour; // Outgoing colour value"                           + Utils.NEW_LINE +
 			"void main() {"                                                              + Utils.NEW_LINE +
@@ -56,6 +53,17 @@ public class Grid
 	private int         numVerts;           // How many vertices in this grid?
 	private float[]     gridArray;          // Array of floats used to draw the grid
 	private FloatBuffer vertexFloatBuffer;  // Vertex buffer to hold the gridArray vertex data
+	
+	static {
+		// Create our MVP matrix float buffer
+		mvpMatrixFB = Utils.createFloatBuffer(16);
+
+		// Set up out shader
+		gridShaderProgram = new ShaderProgram();
+		gridShaderProgram.initFromStrings(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
+		gridShaderProgram.addAttribute("vertexLocation");
+		gridShaderProgram.addUniform("mvpMatrix");
+	}
 
 	/**
 	 * Constructor.
@@ -82,22 +90,6 @@ public class Grid
 		// ...which we'll store in this float array!
 		gridArray = new float[gridFloatCount];
 
-		// If this is the first grid we're creating then do the shader setup
-		if (!shaderInitialised)
-		{
-			// Set the flag so we never initialise the shader again
-			shaderInitialised = true;
-
-			// Create our MVP matrix float buffer
-			mvpMatrixFB = Utils.createFloatBuffer(16);
-
-			// Set up out shader
-			gridShaderProgram = new ShaderProgram();
-			gridShaderProgram.initFromStrings(vertexShaderSource, fragmentShaderSource);
-			gridShaderProgram.addAttribute("vertexLocation");
-			gridShaderProgram.addUniform("mvpMatrix");
-		}
-		
 		// For a grid of width and depth, the extent goes from -halfWidth to +halfWidth,
 		// and -halfDepth to +halfDepth.
 		float halfWidth = width / 2.0f;

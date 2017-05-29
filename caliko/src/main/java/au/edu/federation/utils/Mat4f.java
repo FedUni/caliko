@@ -620,13 +620,7 @@ public class Mat4f
 		boolean yDotZOrthogonal = Math.abs( Vec3f.dotProduct(yAxis, zAxis) ) <= epsilon;
 
 		// All three axes are orthogonal? Return true
-		if (xDotYOrthogonal && xDotZOrthogonal && yDotZOrthogonal)
-		{
-			return true;
-		}
-		
-		// One or more axes is not orthogonal? Return false.
-		return false;
+		return (xDotYOrthogonal && xDotZOrthogonal && yDotZOrthogonal);
 	}
 
 	/**
@@ -874,7 +868,7 @@ public class Mat4f
 
 		// Each property of the inverse matrix is multiplied by 1.0f divided by the determinant.
 		// As we cannot divide by zero, we will throw an IllegalArgumentException if the determinant is zero.
-		if (determinant == 0.0f)
+		if (Float.compare(determinant,0.0f)==0)
 		{
 			throw new IllegalArgumentException("Cannot invert a matrix with a determinant of zero.");
 		}
@@ -1342,9 +1336,9 @@ public class Mat4f
 	public static Mat4f createOrthographicProjectionMatrix(float left, float right, float top, float bottom, float near, float far)
 	{
 		// Perform sanity checking to avoid divide by zero errors
-		if (right - left == 0.0f) { throw new IllegalArgumentException("(right - left) cannot be zero."); }
-		if (top - bottom == 0.0f) {	throw new IllegalArgumentException("(top - bottom) cannot be zero."); }		
-		if (far - near   == 0.0f) { throw new IllegalArgumentException("(far - near) cannot be zero.");   }
+		if (Float.compare(right - left,0.0f)==0) { throw new IllegalArgumentException("(right - left) cannot be zero."); }
+		if (Float.compare(top - bottom,0.0f)==0) {	throw new IllegalArgumentException("(top - bottom) cannot be zero."); }		
+		if (Float.compare(far - near,0.0f)==0) { throw new IllegalArgumentException("(far - near) cannot be zero.");   }
 		
 		// Got legal arguments? Construct the orthographic matrix		
 		Mat4f m = new Mat4f();

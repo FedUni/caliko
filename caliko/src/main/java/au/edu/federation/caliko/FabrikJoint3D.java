@@ -41,7 +41,7 @@ import au.edu.federation.utils.Vec3f;
  * 
  * @version 0.4.1 - 20/07/2016
  */
-public class FabrikJoint3D
+public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 {
 	// A line separator for the current system running this code
 	private static final String NEW_LINE = System.lineSeparator();
@@ -69,12 +69,12 @@ public class FabrikJoint3D
 	 * mHingeAntiClockwiseConstraintDegs properties have been set to lower values.</li>
 	 * </ul>
 	 */ 
-	public static enum JointType
+	public enum JointType
 	{
 		BALL,
 		GLOBAL_HINGE,
 		LOCAL_HINGE
-	};	
+	}
 	
 	/** The minimum valid constraint angle for a joint is 0 degrees - this will fully constrain the bone. */
 	public static final float MIN_CONSTRAINT_ANGLE_DEGS = 0.0f;
@@ -173,6 +173,7 @@ public class FabrikJoint3D
 	 * 
 	 * @param	source	The joint from which to duplicate all properties on this joint.
 	 */
+	@Override
 	public void set(FabrikJoint3D source)
 	{
 		// Copy by value
@@ -276,7 +277,7 @@ public class FabrikJoint3D
 	 */
 	public float getHingeClockwiseConstraintDegs()
 	{
-		if ( !(mJointType == JointType.BALL) )
+		if ( mJointType != JointType.BALL )
 		{
 			return mHingeClockwiseConstraintDegs;
 		}
@@ -295,7 +296,7 @@ public class FabrikJoint3D
 	 */
 	public float getHingeAnticlockwiseConstraintDegs()
 	{
-		if ( !(mJointType == JointType.BALL) )
+		if ( mJointType != JointType.BALL )
 		{
 			return mHingeAnticlockwiseConstraintDegs;
 		}
@@ -358,7 +359,7 @@ public class FabrikJoint3D
 	{
 		FabrikJoint3D.validateConstraintAngleDegs(angleDegs);
 		
-		if ( !(mJointType == JointType.BALL) )
+		if ( mJointType != JointType.BALL )
 		{
 			mHingeClockwiseConstraintDegs = angleDegs;
 		}
@@ -380,7 +381,7 @@ public class FabrikJoint3D
 	{
 		FabrikJoint3D.validateConstraintAngleDegs(angleDegs);
 		
-		if ( !(mJointType == JointType.BALL) )
+		if ( mJointType != JointType.BALL )
 		{
 			mHingeAnticlockwiseConstraintDegs = angleDegs;
 		}
@@ -402,7 +403,7 @@ public class FabrikJoint3D
 	{
 		FabrikJoint3D.validateAxis(axis);
 		
-		if ( !(mJointType == JointType.BALL) )
+		if ( mJointType != JointType.BALL )
 		{
 			mRotationAxisUV.set( axis.normalised() );
 		}
@@ -421,7 +422,7 @@ public class FabrikJoint3D
 	 */
 	public Vec3f getHingeReferenceAxis()
 	{	
-		if ( !(mJointType == JointType.BALL) )
+		if ( mJointType != JointType.BALL )
 		{
 			return mReferenceAxisUV;
 		}
@@ -443,7 +444,7 @@ public class FabrikJoint3D
 	{
 		FabrikJoint3D.validateAxis(referenceAxis);
 		
-		if ( !(mJointType == JointType.BALL) )
+		if ( mJointType != JointType.BALL )
 		{
 			mReferenceAxisUV.set( referenceAxis.normalised() );
 		}
@@ -462,7 +463,7 @@ public class FabrikJoint3D
 	 */
 	public Vec3f getHingeRotationAxis()
 	{	
-		if ( !(mJointType == JointType.BALL) )
+		if ( mJointType != JointType.BALL )
 		{
 			return mRotationAxisUV;
 		}
@@ -525,7 +526,7 @@ public class FabrikJoint3D
 	
 	private static void validateAxis(Vec3f axis)
 	{
-		if ( !(axis.length() > 0.0f) )
+		if ( axis.length() <= 0.0f )
 		{
 			throw new IllegalArgumentException("Provided axis is illegal - it has a magnitude of zero.");
 		}

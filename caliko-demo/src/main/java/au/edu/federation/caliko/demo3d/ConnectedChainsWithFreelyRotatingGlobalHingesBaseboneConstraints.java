@@ -1,9 +1,9 @@
 package au.edu.federation.caliko.demo3d;
 
+import au.edu.federation.caliko.BoneConnectionPoint;
 import au.edu.federation.caliko.FabrikBone3D;
 import au.edu.federation.caliko.FabrikChain3D;
 import au.edu.federation.caliko.FabrikStructure3D;
-import au.edu.federation.caliko.FabrikBone3D.BoneConnectionPoint3D;
 import au.edu.federation.utils.Colour4f;
 import au.edu.federation.utils.Mat4f;
 import au.edu.federation.utils.Utils;
@@ -55,7 +55,7 @@ public class ConnectedChainsWithFreelyRotatingGlobalHingesBaseboneConstraints ex
 		secondChain.setColour(Utils.GREY);
 		
 		// Connect this second chain to the start point of bone 3 in chain 0 of the structure
-		this.structure.connectChain(secondChain, 0, 3, BoneConnectionPoint3D.START);
+		this.structure.connectChain(secondChain, 0, 3, BoneConnectionPoint.START);
 	}
 
 	@Override
