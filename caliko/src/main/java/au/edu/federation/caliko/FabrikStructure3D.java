@@ -3,6 +3,13 @@ package au.edu.federation.caliko;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import au.edu.federation.caliko.FabrikChain3D.BaseboneConstraintType3D;
 import au.edu.federation.utils.Mat3f;
 import au.edu.federation.utils.Utils;
@@ -23,6 +30,8 @@ import au.edu.federation.utils.Vec3f;
  * @author Al Lansley
  * @version 0.4 - 29/12/2015
  **/
+@XmlRootElement(name="3dstructure")
+@XmlAccessorType(XmlAccessType.NONE)
 public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 {
 	// ---------- Private Properties ----------
@@ -30,6 +39,7 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 	private static final String NEW_LINE = System.lineSeparator();
 	
 	/** The string name of this FabrikStructure3D - can be used for creating Maps, if required. */
+	@XmlAttribute(name="name")
 	private String mName;
 	
 	/**
@@ -38,10 +48,9 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 	 * Each FabrikChain3D in the mChains vector is independent of all others, but shares the same target location as any/all other chains
 	 * which exist in this structure.
 	 */
+	@XmlElementWrapper(name="3dchains")
+	@XmlElement(name="3dchain")	
 	private List<FabrikChain3D> mChains = new ArrayList<>();
-
-	/** Property to keep track of how many chains exist in this structure. */
-	private int mNumChains = 0;
 
 	// --------- Public Methods ----------
 
@@ -172,7 +181,6 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 	public void addChain(FabrikChain3D chain)
 	{
 		mChains.add(chain);		
-		++mNumChains;
 	}
 	
 	/**
@@ -185,7 +193,6 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 	public void removeChain(int chainIndex)
 	{
 		mChains.remove(chainIndex);		
-		--mNumChains;
 	}
 	
 	/**
@@ -204,7 +211,7 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 	public void connectChain(FabrikChain3D newChain, int existingChainNumber, int existingBoneNumber)
 	{	
 		// Does this chain exist? If not throw an IllegalArgumentException
-		if (existingChainNumber > mNumChains)
+		if (existingChainNumber > this.mChains.size())
 		{
 			throw new IllegalArgumentException("Cannot connect to chain " + existingChainNumber + " - no such chain (remember that chains are zero indexed).");
 		}
@@ -276,7 +283,7 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 	public void connectChain(FabrikChain3D newChain, int existingChainNumber, int existingBoneNumber, BoneConnectionPoint boneConnectionPoint)
 	{
 		// Does this chain exist? If not throw an IllegalArgumentException
-		if (existingChainNumber > mNumChains)
+		if (existingChainNumber > this.mChains.size())
 		{
 			throw new IllegalArgumentException("Cannot connect to chain " + existingChainNumber + " - no such chain (remember that chains are zero indexed).");
 		}
@@ -337,7 +344,7 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 	 * @return	The number of chains in this structure.
 	 */
 	@Override
-	public int getNumChains() { return mNumChains; }
+	public int getNumChains() { return this.mChains.size(); }
 	
 	/**
 	 * Return the specified chain from this structure.
@@ -358,7 +365,7 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 	 */
 	public void setFixedBaseMode(boolean fixedBaseMode)
 	{
-		for (int loop = 0; loop < mNumChains; ++loop)
+		for (int loop = 0; loop < this.mChains.size(); ++loop)
 		{
 			mChains.get(loop).setFixedBaseMode(fixedBaseMode);
 		}
@@ -390,9 +397,9 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 		StringBuilder sb = new StringBuilder();
 		sb.append("----- FabrikStructure3D: " + mName + " -----" + NEW_LINE);
 		
-		sb.append("Number of chains: " + mNumChains + NEW_LINE);
+		sb.append("Number of chains: " + this.mChains.size() + NEW_LINE);
 
-		for (int loop = 0; loop < mNumChains; ++loop)
+		for (int loop = 0; loop < this.mChains.size(); ++loop)
 		{
 			sb.append(mChains.get(loop).toString() );
 		}

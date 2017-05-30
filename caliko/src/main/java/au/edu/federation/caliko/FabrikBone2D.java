@@ -1,5 +1,10 @@
 package au.edu.federation.caliko;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import au.edu.federation.utils.Colour4f;
 import au.edu.federation.utils.Mat4f;
 import au.edu.federation.utils.Utils;
@@ -15,6 +20,8 @@ import au.edu.federation.utils.Vec2f;
  * @author Al Lansley
  * @version 0.9.1 - 20/07/2016
  */
+@XmlRootElement(name="2dbone")
+@XmlAccessorType(XmlAccessType.NONE)
 public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 {
 	/**
@@ -43,6 +50,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * The start location of a bone may only be set through a constructor or via an 'addBone'
 	 * or 'addConsecutiveBone' method provided by the {@link FabrikChain2D} class.
 	 */
+	@XmlElement(name="startLocation")
 	private Vec2f mStartLocation = new Vec2f();
 	
 	/**
@@ -51,6 +59,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * The end location of a bone may only be set through a constructor or indirectly via an
 	 * 'addBone' method provided by the {@link FabrikChain2D} class.
 	 */
+	@XmlElement(name="endLocation")
 	private Vec2f mEndLocation = new Vec2f();
 
 	/**

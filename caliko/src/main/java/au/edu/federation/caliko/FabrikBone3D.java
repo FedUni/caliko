@@ -1,5 +1,10 @@
 package au.edu.federation.caliko;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import au.edu.federation.caliko.FabrikJoint3D.JointType;
 import au.edu.federation.utils.Colour4f;
 import au.edu.federation.utils.Mat4f;
@@ -16,6 +21,8 @@ import au.edu.federation.utils.Vec3f;
  * @version 0.3.1 - 20/07/2016
  * @see FabrikJoint3D
  */
+@XmlRootElement(name="3dbone")
+@XmlAccessorType(XmlAccessType.NONE)
 public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 {
 	/** A line separator for the current system running this code. */
@@ -68,6 +75,7 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	 * During the backward (base-to-tip) pass, each bone is constrained by the joint angles
 	 * relative to the bone before it, ensuring that all constraints are enforced.
 	 */
+	@XmlElement(name="3djoint")
 	private FabrikJoint3D mJoint = new FabrikJoint3D();
 
 	/**
@@ -76,6 +84,7 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	 * The start location of a bone may only be set through a constructor or via an 'addBone'
 	 * method provided by the {@link FabrikChain3D} class.
 	 */
+	@XmlElement(name="startLocation")
 	private Vec3f mStartLocation = new Vec3f();
 	
 	/**
@@ -84,6 +93,7 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	 * The end location of a bone may only be set through a constructor or indirectly via an
 	 * 'addBone' method provided by the {@link FabrikChain3D} class.
 	 */
+	@XmlElement(name="endLocation")
 	private Vec3f mEndLocation = new Vec3f();
 
 	/**
@@ -99,6 +109,7 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	 * @see #FabrikBone3D(Vec3f, Vec3f, String)
 	 * @see #FabrikBone3D(Vec3f, Vec3f, float, String)
 	 */
+	@XmlElement(name="name")
 	private String mName;
 	
 	/**

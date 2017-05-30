@@ -3,6 +3,13 @@ package au.edu.federation.caliko;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import au.edu.federation.caliko.FabrikChain3D.BaseboneConstraintType3D;
 import au.edu.federation.caliko.FabrikJoint3D.JointType;
 import au.edu.federation.utils.Colour4f;
@@ -18,6 +25,8 @@ import au.edu.federation.utils.Vec3f;
  * @author Al Lansley
  * @version 0.5 - 03/08/2016
  */
+@XmlRootElement(name="3dchain")
+@XmlAccessorType(XmlAccessType.NONE)
 public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint3D,BaseboneConstraintType3D>
 {	
 	private static final String NEW_LINE = System.lineSeparator();
@@ -40,6 +49,8 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * The core of a FabrikChain3D is a list of FabrikBone3D objects. It is this chain that we attempt to solve for a specified
 	 * target location via the {@link solveForTarget} method.
 	 */
+	@XmlElementWrapper(name="3dbones")
+	@XmlElement(name="3dbone")		
 	private List<FabrikBone3D> mChain = new ArrayList<>();
 
 	/** 
@@ -51,6 +62,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * @see  #setName
 	 * @see  #getName
 	 */
+	@XmlAttribute(name="name")
 	private String mName;
 
 	/** 

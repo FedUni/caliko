@@ -3,6 +3,13 @@ package au.edu.federation.caliko;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import au.edu.federation.caliko.FabrikChain2D.BaseboneConstraintType2D;
 import au.edu.federation.utils.Utils;
 import au.edu.federation.utils.Vec2f;
@@ -20,6 +27,8 @@ import au.edu.federation.utils.Vec2f;
  * @author Al Lansley
  * @version 1.0 - 02/08/2016
  **/
+@XmlRootElement(name="2dstructure")
+@XmlAccessorType(XmlAccessType.NONE)
 public class FabrikStructure2D implements FabrikStructure<FabrikChain2D,Vec2f>
 {	
 	private static final Vec2f UP = new Vec2f(0.0f, 1.0f);
@@ -27,14 +36,14 @@ public class FabrikStructure2D implements FabrikStructure<FabrikChain2D,Vec2f>
 	// ---------- Private Properties ----------
 	
 	/** The string name of this FabrikStructure2D - can be used for creating Maps, if required. */
+	@XmlAttribute(name="name")
 	private String mName;
 
 	/** The main substance of a FabrikStructure2D is an ArrayList of FabrikChain2D objects. */
+	@XmlElementWrapper(name="2dchains")
+	@XmlElement(name="2dchain")
 	private List<FabrikChain2D> mChains = new ArrayList<>();
 
-	/** Property to keep track of how many chains exist in this structure. */
-	private int mNumChains = 0;
-	
 	/** Property to indicate if the first chain (chain zero) in this structure has its basebone fixed in place or not. */
 	private boolean mFixedBaseMode = true;
 
@@ -162,7 +171,6 @@ public class FabrikStructure2D implements FabrikStructure<FabrikChain2D,Vec2f>
 	public void addChain(FabrikChain2D chain)
 	{
 		mChains.add(chain);		
-		++mNumChains;
 	}	
 	
 	/**
@@ -187,7 +195,7 @@ public class FabrikStructure2D implements FabrikStructure<FabrikChain2D,Vec2f>
 	public void connectChain(FabrikChain2D chain, int chainNumber, int boneNumber)
 	{	
 		// Does this chain exist? If not throw an IllegalArgumentException
-		if (chainNumber >= mNumChains)
+		if (chainNumber >= this.mChains.size())
 		{
 			throw new IllegalArgumentException("Cannot connect to chain " + chainNumber + " - no such chain (remember that chains are zero indexed).");
 		}
@@ -264,7 +272,7 @@ public class FabrikStructure2D implements FabrikStructure<FabrikChain2D,Vec2f>
 	 * @return	The number of chains in this structure.
 	 */
 	@Override
-	public int getNumChains() { return mNumChains; }
+	public int getNumChains() { return this.mChains.size(); }
 	
 	/**
 	 * Return a chain which exists in this structure.
@@ -307,8 +315,8 @@ public class FabrikStructure2D implements FabrikStructure<FabrikChain2D,Vec2f>
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("----- FabrikStructure2D: " + mName + " -----" + Utils.NEW_LINE);		
-		sb.append("Number of chains: " + mNumChains              + Utils.NEW_LINE);
-		for (int loop = 0; loop < mNumChains; ++loop)
+		sb.append("Number of chains: " + this.mChains.size()              + Utils.NEW_LINE);
+		for (int loop = 0; loop < this.mChains.size(); ++loop)
 		{
 			sb.append(mChains.get(loop).toString() );
 		}

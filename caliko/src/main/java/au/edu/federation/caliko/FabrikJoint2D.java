@@ -1,5 +1,10 @@
 package au.edu.federation.caliko;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /** 
  * Class to represent a joint used to constrain the relative angle between FabrikBone2D objects in an IK chain.
  * <p>
@@ -33,6 +38,8 @@ package au.edu.federation.caliko;
  * @author Al Lansley
  * @version 0.8 - 16/12/2015
  */
+@XmlRootElement(name="2djoint")
+@XmlAccessorType(XmlAccessType.NONE)
 public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 {
 	/** The minimum valid constraint angle for both clockwise and anticlockwise rotation is 0 degrees. */
@@ -55,6 +62,7 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	 * 
 	 * @default 180.0f
 	 */
+	@XmlAttribute(name="clockwiseConstraintDegrees")
 	private float mClockwiseConstraintDegs = MAX_2D_CONSTRAINT_ANGLE_DEGS;
 
 	/**
@@ -67,6 +75,7 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	 * 
 	 * @default 180.0f
 	 */
+	@XmlAttribute(name="anticlockwiseConstraintDegrees")
 	private float mAnticlockwiseConstraintDegs = MAX_2D_CONSTRAINT_ANGLE_DEGS;
 
 	// ---------- Constructors ----------

@@ -1,5 +1,11 @@
 package au.edu.federation.caliko;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import au.edu.federation.utils.Utils;
 import au.edu.federation.utils.Vec3f;
 
@@ -41,6 +47,8 @@ import au.edu.federation.utils.Vec3f;
  * 
  * @version 0.4.1 - 20/07/2016
  */
+@XmlRootElement(name="3djoint")
+@XmlAccessorType(XmlAccessType.NONE)
 public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 {
 	// A line separator for the current system running this code
@@ -106,6 +114,7 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 	 * @default 180.0f.
 	 * @see mHingeAxis
 	 */
+	@XmlAttribute(name="hingeClockwiseConstraintDegrees")
 	private float mHingeClockwiseConstraintDegs = MAX_CONSTRAINT_ANGLE_DEGS;
 	
 	/**
@@ -118,12 +127,15 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 	 * <p>
 	 * @default 180.0f.
 	 */
+	@XmlAttribute(name="hingeAnticlockwiseConstraintDegrees")
 	private float mHingeAnticlockwiseConstraintDegs = MAX_CONSTRAINT_ANGLE_DEGS;
 	
 	/** The unit vector axis about which a hinged joint may rotate. */
+	@XmlElement(name="rotationAxis")
 	private Vec3f mRotationAxisUV = new Vec3f();
 	
 	/** For a hinged joint, this is the axis used as a point of reference for rotation (it is NOT the axis about which the hinge rotates). */
+	@XmlElement(name="referenceAxis")
 	private Vec3f mReferenceAxisUV = new Vec3f();
 	
 	/**
@@ -133,6 +145,7 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 	 * 
 	 * @default	JointType.BALL
 	 */
+	@XmlAttribute(name="jointType")
 	private JointType mJointType = JointType.BALL;
 
 	// ---------- Constructors ----------

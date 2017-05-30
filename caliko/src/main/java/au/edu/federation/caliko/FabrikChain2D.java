@@ -3,6 +3,12 @@ package au.edu.federation.caliko;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import au.edu.federation.caliko.FabrikChain2D.BaseboneConstraintType2D;
 import au.edu.federation.utils.Colour4f;
 import au.edu.federation.utils.Utils;
@@ -14,6 +20,8 @@ import au.edu.federation.utils.Vec2f;
  * @author Al Lansley
  * @version 1.1 - 02/08/2016
  */
+@XmlRootElement(name="2dchain")
+@XmlAccessorType(XmlAccessType.NONE)
 public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint2D,BaseboneConstraintType2D>
 {	
 	/**
@@ -37,6 +45,8 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * The core of a FabrikChain2D is a list of FabrikBone2D objects, where each bone contains a start and end location, and a joint
 	 * that stores any rotational constraints.
 	 */
+	@XmlElementWrapper(name="2dbones")
+	@XmlElement(name="2dbone")	
 	private List<FabrikBone2D> mChain = new ArrayList<>();
 
 	/** 
