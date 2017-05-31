@@ -87,7 +87,9 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	 * constrained in its rotation. To specify joint constraints, use the {@link #setClockwiseConstraintDegs(float)} and
 	 * {@link #setAnticlockwiseConstraintDegs(float)} methods.
 	 */
-	public FabrikJoint2D() { }
+	public FabrikJoint2D() {
+	  //
+	}
 	
 	/**
 	 * Two parameter constructor which sets the constraint angles.
@@ -167,5 +169,36 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	 * @return	The anticlockwise constraint angle of this joint in degrees.
 	 */
 	public float getAnticlockwiseConstraintDegs() {	return mAnticlockwiseConstraintDegs; }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + Float.floatToIntBits(mAnticlockwiseConstraintDegs);
+    result = prime * result + Float.floatToIntBits(mClockwiseConstraintDegs);
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    FabrikJoint2D other = (FabrikJoint2D) obj;
+    if (Float.floatToIntBits(mAnticlockwiseConstraintDegs) != Float
+        .floatToIntBits(other.mAnticlockwiseConstraintDegs)) {
+      return false;
+    }
+    if (Float.floatToIntBits(mClockwiseConstraintDegs) != Float.floatToIntBits(other.mClockwiseConstraintDegs)) {
+      return false;
+    }
+    return true;
+  }
 
 } // End of FabrikJoint2D class

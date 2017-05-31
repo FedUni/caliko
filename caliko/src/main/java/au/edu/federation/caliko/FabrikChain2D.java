@@ -131,16 +131,6 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	private float mChainLength;
 
 	/** 
-	 * The number of bones in this IK chain.
-	 * <p>
-	 * As it is very common to need to know the number of bones in an IK chain, rather than constantly calling mChain.size()
-	 * to get the value, we store it in our own private member property for performance.
-	 *
-	 * @default 0
-	 */
-	private int mNumBones = 0;	
-
-	/** 
 	 * The location of the start joint of the first bone added to the chain.
 	 * <p>
 	 * By default, FabrikChain2D objects are created with a fixed base location, that is, the start joint of the first bone in the chain is
@@ -290,7 +280,6 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 		
 		// Native copy by value for primitive members
 		mChainLength            = source.mChainLength;
-		mNumBones               = source.mNumBones;
 		mCurrentSolveDistance   = source.mCurrentSolveDistance;
 		mConnectedChainNumber   = source.mConnectedChainNumber;
 		mConnectedBoneNumber    = source.mConnectedBoneNumber;
@@ -322,7 +311,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 		mChain.add(bone);
 
 		// If this is the basebone...
-		if (mNumBones == 0)
+		if (mChain.size() == 1)
 		{
 			// ...then keep a copy of the fixed start location...
 			mBaseLocation.set( bone.getStartLocation() );
@@ -330,9 +319,6 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 			// ...and set the basebone constraint UV to be around the bone direction
 			mBaseboneConstraintUV = bone.getDirectionUV();
 		}
-
-		// Increment the number of bones in the chain...
-		++mNumBones;
 
 		// ...and update the desired length of the chain (i.e. combined length of all bones)
 		updateChainLength();
@@ -385,10 +371,10 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 		Utils.validateLength(length);
 				
 		// If we have at least one bone already in the chain...
-		if (mNumBones > 0)
+		if (mChain.size() > 0)
 		{		
 			// Get the end location of the last bone, which will be used as the start location of the new bone
-			Vec2f prevBoneEnd = mChain.get(mNumBones-1).getEndLocation();
+			Vec2f prevBoneEnd = mChain.get(mChain.size()-1).getEndLocation();
 				
 			// Add a bone to the end of this IK chain
 			addBone( new FabrikBone2D(prevBoneEnd, Vec2f.normalised(directionUV), length, clockwiseDegs, anticlockwiseDegs, colour) );
@@ -447,7 +433,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	@Override
 	public Vec2f getBaseLocation() 
 	{
-		if (mNumBones > 0)
+		if (mChain.size() > 0)
 		{
 			return mChain.get(0).getStartLocation();
 		}
@@ -528,9 +514,9 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	@Override
 	public Vec2f getEffectorLocation()
 	{
-		if (mNumBones > 0)
+		if (mChain.size() > 0)
 		{
-			return mChain.get(mNumBones-1).getEndLocation();
+			return mChain.get(mChain.size()-1).getEndLocation();
 		}
 		else
 		{
@@ -585,7 +571,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * @return	The number of bones in the FabrikChain2D.
 	 */
 	@Override
-	public int getNumBones() { return mNumBones; }
+	public int getNumBones() { return mChain.size(); }
 	
 	/**
 	 * Remove a bone from this IK chain.
@@ -604,12 +590,11 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	public void removeBone(int boneNumber)
 	{
 		// If the bone number is a bone which exists...
-		if (boneNumber < mNumBones)
+		if (boneNumber < mChain.size())
 		{
 			
 			// ...then remove the bone, decrease the bone count and update the chain length.
 			mChain.remove(boneNumber);
-			--mNumBones;
 			updateChainLength();
 		}
 		else
@@ -684,7 +669,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 */
 	public void setColour(Colour4f colour)
 	{			
-		for (int loop = 0; loop < mNumBones; ++loop)
+		for (int loop = 0; loop < mChain.size(); ++loop)
 		{
 			getBone(loop).setColour(colour);
 		}
@@ -830,13 +815,13 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 		// ---------- Step 1 of 2 - Forward pass from end-effector to base -----------
 
 		// Loop over all bones in the chain, from the end effector (numBones-1) back to the base bone (0)		
-		for (int loop = mNumBones-1; loop >= 0; --loop)
+		for (int loop = mChain.size()-1; loop >= 0; --loop)
 		{
 			// Get the length of the bone we're working on
 			float boneLength = mChain.get(loop).length();
 
 			// If we are not working on the end effector bone
-			if (loop != mNumBones - 1)
+			if (loop != mChain.size() - 1)
 			{
 				// Get the outer-to-inner unit vector of the bone further out
 				Vec2f outerBoneOuterToInnerUV = mChain.get(loop+1).getDirectionUV().negated();
@@ -891,7 +876,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 
 		// ---------- Step 2 of 2 - Backward pass from base to end effector -----------
 
-		for (int loop = 0; loop < mNumBones; ++loop)
+		for (int loop = 0; loop < mChain.size(); ++loop)
 		{
 			// Get the length of the bone we're working on
 			float boneLength = mChain.get(loop).length();
@@ -920,7 +905,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 				// If we are not working on the end bone, then we set the start joint location of
 				// the next bone in the chain (i.e. the bone closer to the end effector) to be the
 				// new end joint location of this bone also.
-				if (loop < mNumBones-1)
+				if (loop < mChain.size()-1)
 				{
 					mChain.get(loop+1).setStartLocation(newEndLocation);
 				}
@@ -1000,7 +985,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 					// If we are not working on the end bone, then we set the start joint location of
 					// the next bone in the chain (i.e. the bone closer to the end effector) to be the
 					// new end joint location of this bone.
-					if (loop < mNumBones-1)
+					if (loop < mChain.size()-1)
 					{
 						mChain.get(loop+1).setStartLocation(newEndLocation);
 					}					
@@ -1014,7 +999,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 		mLastTargetLocation.set(target);
 		
 		// Finally, get the current effector location...
-		Vec2f currentEffectorLocation = mChain.get(mNumBones-1).getEndLocation();
+		Vec2f currentEffectorLocation = mChain.get(mChain.size()-1).getEndLocation();
 				
 		// ...and calculate and return the distance between the current effector location and the target.
 		return Vec2f.distanceBetween(currentEffectorLocation, target);
@@ -1038,7 +1023,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 		StringBuilder sb = new StringBuilder();
 		
 			sb.append("----- FabrikChain2D: " + mName + " -----" + Utils.NEW_LINE);				
-			sb.append("Number of bones: " + mNumBones + Utils.NEW_LINE);
+			sb.append("Number of bones: " + mChain.size() + Utils.NEW_LINE);
 			
 			sb.append("Fixed base mode: ");
 			if (mFixedBaseMode) { 
@@ -1095,7 +1080,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	private void updateChainLength()
 	{
 		mChainLength = 0.0f;
-		for (int loop = 0; loop < mNumBones; ++loop)
+		for (int loop = 0; loop < mChain.size(); ++loop)
 		{
 			mChainLength += mChain.get(loop).length();
 		}
@@ -1217,7 +1202,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 		
 		// Not the same target? Then we must solve the chain for the new target.
 		// We'll start by creating a list of bones to store our best solution
-		List<FabrikBone2D> bestSolution = new ArrayList<>(this.mNumBones);
+		List<FabrikBone2D> bestSolution = new ArrayList<>(this.mChain.size());
 		
 		// We'll keep track of our best solve distance, starting it at a huge value which will be beaten on first attempt			
 		float bestSolveDistance     = Float.MAX_VALUE;
@@ -1306,6 +1291,136 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	public float getSolveDistanceThreshold() {
 		return this.mSolveDistanceThreshold;
 	}
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((mBaseLocation == null) ? 0 : mBaseLocation.hashCode());
+    result = prime * result + ((mBaseboneConstraintType == null) ? 0 : mBaseboneConstraintType.hashCode());
+    result = prime * result + ((mBaseboneConstraintUV == null) ? 0 : mBaseboneConstraintUV.hashCode());
+    result = prime * result + ((mBaseboneRelativeConstraintUV == null) ? 0 : mBaseboneRelativeConstraintUV.hashCode());
+    result = prime * result + ((mBoneConnectionPoint == null) ? 0 : mBoneConnectionPoint.hashCode());
+    result = prime * result + ((mChain == null) ? 0 : mChain.hashCode());
+    result = prime * result + Float.floatToIntBits(mChainLength);
+    result = prime * result + mConnectedBoneNumber;
+    result = prime * result + mConnectedChainNumber;
+    result = prime * result + Float.floatToIntBits(mCurrentSolveDistance);
+    result = prime * result + ((mEmbeddedTarget == null) ? 0 : mEmbeddedTarget.hashCode());
+    result = prime * result + (mFixedBaseMode ? 1231 : 1237);
+    result = prime * result + ((mLastBaseLocation == null) ? 0 : mLastBaseLocation.hashCode());
+    result = prime * result + ((mLastTargetLocation == null) ? 0 : mLastTargetLocation.hashCode());
+    result = prime * result + mMaxIterationAttempts;
+    result = prime * result + Float.floatToIntBits(mMinIterationChange);
+    result = prime * result + ((mName == null) ? 0 : mName.hashCode());
+    result = prime * result + Float.floatToIntBits(mSolveDistanceThreshold);
+    result = prime * result + (mUseEmbeddedTarget ? 1231 : 1237);
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    FabrikChain2D other = (FabrikChain2D) obj;
+    if (mBaseLocation == null) {
+      if (other.mBaseLocation != null) {
+        return false;
+      }
+    } else if (!mBaseLocation.equals(other.mBaseLocation)) {
+      return false;
+    }
+    if (mBaseboneConstraintType != other.mBaseboneConstraintType) {
+      return false;
+    }
+    if (mBaseboneConstraintUV == null) {
+      if (other.mBaseboneConstraintUV != null) {
+        return false;
+      }
+    } else if (!mBaseboneConstraintUV.equals(other.mBaseboneConstraintUV)) {
+      return false;
+    }
+    if (mBaseboneRelativeConstraintUV == null) {
+      if (other.mBaseboneRelativeConstraintUV != null) {
+        return false;
+      }
+    } else if (!mBaseboneRelativeConstraintUV.equals(other.mBaseboneRelativeConstraintUV)) {
+      return false;
+    }
+    if (mBoneConnectionPoint != other.mBoneConnectionPoint) {
+      return false;
+    }
+    if (mChain == null) {
+      if (other.mChain != null) {
+        return false;
+      }
+    } else if (!mChain.equals(other.mChain)) {
+      return false;
+    }
+    if (Float.floatToIntBits(mChainLength) != Float.floatToIntBits(other.mChainLength)) {
+      return false;
+    }
+    if (mConnectedBoneNumber != other.mConnectedBoneNumber) {
+      return false;
+    }
+    if (mConnectedChainNumber != other.mConnectedChainNumber) {
+      return false;
+    }
+    if (Float.floatToIntBits(mCurrentSolveDistance) != Float.floatToIntBits(other.mCurrentSolveDistance)) {
+      return false;
+    }
+    if (mEmbeddedTarget == null) {
+      if (other.mEmbeddedTarget != null) {
+        return false;
+      }
+    } else if (!mEmbeddedTarget.equals(other.mEmbeddedTarget)) {
+      return false;
+    }
+    if (mFixedBaseMode != other.mFixedBaseMode) {
+      return false;
+    }
+    if (mLastBaseLocation == null) {
+      if (other.mLastBaseLocation != null) {
+        return false;
+      }
+    } else if (!mLastBaseLocation.equals(other.mLastBaseLocation)) {
+      return false;
+    }
+    if (mLastTargetLocation == null) {
+      if (other.mLastTargetLocation != null) {
+        return false;
+      }
+    } else if (!mLastTargetLocation.equals(other.mLastTargetLocation)) {
+      return false;
+    }
+    if (mMaxIterationAttempts != other.mMaxIterationAttempts) {
+      return false;
+    }
+    if (Float.floatToIntBits(mMinIterationChange) != Float.floatToIntBits(other.mMinIterationChange)) {
+      return false;
+    }
+    if (mName == null) {
+      if (other.mName != null) {
+        return false;
+      }
+    } else if (!mName.equals(other.mName)) {
+      return false;
+    }
+    if (Float.floatToIntBits(mSolveDistanceThreshold) != Float.floatToIntBits(other.mSolveDistanceThreshold)) {
+      return false;
+    }
+    if (mUseEmbeddedTarget != other.mUseEmbeddedTarget) {
+      return false;
+    }
+    return true;
+  }
 	
 
 } // End of FabrikChain2D class

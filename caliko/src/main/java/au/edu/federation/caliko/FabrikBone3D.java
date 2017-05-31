@@ -544,6 +544,80 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 			throw new IllegalArgumentException("Bone length must be a positive value.");
 		}
 	}
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((mBoneConnectionPoint == null) ? 0 : mBoneConnectionPoint.hashCode());
+    result = prime * result + ((mColour == null) ? 0 : mColour.hashCode());
+    result = prime * result + ((mEndLocation == null) ? 0 : mEndLocation.hashCode());
+    result = prime * result + ((mJoint == null) ? 0 : mJoint.hashCode());
+    result = prime * result + Float.floatToIntBits(mLength);
+    result = prime * result + Float.floatToIntBits(mLineWidth);
+    result = prime * result + ((mName == null) ? 0 : mName.hashCode());
+    result = prime * result + ((mStartLocation == null) ? 0 : mStartLocation.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    FabrikBone3D other = (FabrikBone3D) obj;
+    if (mBoneConnectionPoint != other.mBoneConnectionPoint) {
+      return false;
+    }
+    if (mColour == null) {
+      if (other.mColour != null) {
+        return false;
+      }
+    } else if (!mColour.equals(other.mColour)) {
+      return false;
+    }
+    if (mEndLocation == null) {
+      if (other.mEndLocation != null) {
+        return false;
+      }
+    } else if (!mEndLocation.equals(other.mEndLocation)) {
+      return false;
+    }
+    if (mJoint == null) {
+      if (other.mJoint != null) {
+        return false;
+      }
+    } else if (!mJoint.equals(other.mJoint)) {
+      return false;
+    }
+    if (Float.floatToIntBits(mLength) != Float.floatToIntBits(other.mLength)) {
+      return false;
+    }
+    if (Float.floatToIntBits(mLineWidth) != Float.floatToIntBits(other.mLineWidth)) {
+      return false;
+    }
+    if (mName == null) {
+      if (other.mName != null) {
+        return false;
+      }
+    } else if (!mName.equals(other.mName)) {
+      return false;
+    }
+    if (mStartLocation == null) {
+      if (other.mStartLocation != null) {
+        return false;
+      }
+    } else if (!mStartLocation.equals(other.mStartLocation)) {
+      return false;
+    }
+    return true;
+  }
 	
 	
 	

@@ -545,4 +545,60 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 		}
 	}
 
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + Float.floatToIntBits(mHingeAnticlockwiseConstraintDegs);
+    result = prime * result + Float.floatToIntBits(mHingeClockwiseConstraintDegs);
+    result = prime * result + ((mJointType == null) ? 0 : mJointType.hashCode());
+    result = prime * result + ((mReferenceAxisUV == null) ? 0 : mReferenceAxisUV.hashCode());
+    result = prime * result + ((mRotationAxisUV == null) ? 0 : mRotationAxisUV.hashCode());
+    result = prime * result + Float.floatToIntBits(mRotorConstraintDegs);
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    FabrikJoint3D other = (FabrikJoint3D) obj;
+    if (Float.floatToIntBits(mHingeAnticlockwiseConstraintDegs) != Float
+        .floatToIntBits(other.mHingeAnticlockwiseConstraintDegs)) {
+      return false;
+    }
+    if (Float.floatToIntBits(mHingeClockwiseConstraintDegs) != Float
+        .floatToIntBits(other.mHingeClockwiseConstraintDegs)) {
+      return false;
+    }
+    if (mJointType != other.mJointType) {
+      return false;
+    }
+    if (mReferenceAxisUV == null) {
+      if (other.mReferenceAxisUV != null) {
+        return false;
+      }
+    } else if (!mReferenceAxisUV.equals(other.mReferenceAxisUV)) {
+      return false;
+    }
+    if (mRotationAxisUV == null) {
+      if (other.mRotationAxisUV != null) {
+        return false;
+      }
+    } else if (!mRotationAxisUV.equals(other.mRotationAxisUV)) {
+      return false;
+    }
+    if (Float.floatToIntBits(mRotorConstraintDegs) != Float.floatToIntBits(other.mRotorConstraintDegs)) {
+      return false;
+    }
+    return true;
+  }
+
 } // End of FabrikJoint3D class

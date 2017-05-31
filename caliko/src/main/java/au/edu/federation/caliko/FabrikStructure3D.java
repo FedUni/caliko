@@ -407,4 +407,42 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 		return sb.toString();
 	}
 
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((mChains == null) ? 0 : mChains.hashCode());
+    result = prime * result + ((mName == null) ? 0 : mName.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    FabrikStructure3D other = (FabrikStructure3D) obj;
+    if (mChains == null) {
+      if (other.mChains != null) {
+        return false;
+      }
+    } else if (!mChains.equals(other.mChains)) {
+      return false;
+    }
+    if (mName == null) {
+      if (other.mName != null) {
+        return false;
+      }
+    } else if (!mName.equals(other.mName)) {
+      return false;
+    }
+    return true;
+  }
+
 } // End of FabrikStructure3D class
