@@ -16,7 +16,7 @@ import au.edu.federation.utils.Vec3f;
  * keep track of settings related to how we go about solving the IK chain.
  * 
  * @author Al Lansley
- * @version 0.5.1 - 01/07/2017
+ * @version 0.5.2 - 02/06/2017
  */
 public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint3D,BaseboneConstraintType3D>
 {	
@@ -829,7 +829,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * to - only we have no knowledge of that other chain! But, the FabrikStructure3D DOES have knowledge of that other
 	 * chain, and is hence able to calculate and update this relative basebone constraint direction for us.
 	 **/
-	void setBaseboneRelativeConstraintUV(Vec3f constraintUV) { mBaseboneRelativeConstraintUV = constraintUV;	}
+	void setBaseboneRelativeConstraintUV(Vec3f constraintUV) { mBaseboneRelativeConstraintUV = constraintUV; }
 	/** 
 	 * Set the relative basebone reference constraint UV - this direction should be relative to the coordinate space of the basebone.
 	 *
@@ -1313,7 +1313,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 				bestSolution = this.cloneIkChain();
 				
 				// If we are happy that this solution meets our distance requirements then we can exit the loop now
-				if (solveDistance < mSolveDistanceThreshold)
+				if (solveDistance <= mSolveDistanceThreshold)
 				{				
 					break;
 				}
