@@ -11,14 +11,13 @@
   <url>https://github.com/FedUni/caliko</url>
 
   <properties>
-		<maven-compiler-plugin.source>1.8</maven-compiler-plugin.source>
-		<maven-compiler-plugin.target>1.8</maven-compiler-plugin.target>  
+    <maven-compiler-plugin.source>1.8</maven-compiler-plugin.source>
+    <maven-compiler-plugin.target>1.8</maven-compiler-plugin.target>  
     <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.20</maven-failsafe-plugin.version>
     <maven-assemply-plugin.version>3.0.0</maven-assemply-plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <lwjgl.version>3.0.0b</lwjgl.version>
-    
+    <lwjgl.version>3.0.0b</lwjgl.version>    
     <lib.version.junit>4.12</lib.version.junit>
     <lib.version.mockito>1.8.5</lib.version.mockito>
   </properties>
@@ -78,47 +77,51 @@
     
   <build>
     <pluginManagement>
-   	  <plugins>
-	      <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-compiler-plugin</artifactId>
-	        <version>3.3</version>
-	      </plugin>
-	      <plugin>
-	        <artifactId>maven-jar-plugin</artifactId>
-	        <version>3.0.2</version>
-	      </plugin>
-	      <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-source-plugin</artifactId>
-	        <version>3.0.1</version>
-	        <executions>
-	          <execution>
-	            <id>bundle-sources</id>
-	            <phase>package</phase>
-	            <goals>
-	              <!-- produce source artifact for main project sources -->
-	              <goal>jar-no-fork</goal>
-	              <!-- produce source artifact for project test sources -->
-	              <goal>test-jar-no-fork</goal>
-	            </goals>
-	          </execution>
-	        </executions>
-	      </plugin>
+      <plugins>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
+	  <groupId>org.apache.maven.plugins</groupId>
+	  <artifactId>maven-compiler-plugin</artifactId>
+	  <version>3.3</version>
+	</plugin>
+
+	<plugin>
+	  <artifactId>maven-jar-plugin</artifactId>
+	  <version>3.0.2</version>
+	</plugin>
+
+	<plugin>
+	  <groupId>org.apache.maven.plugins</groupId>
+	  <artifactId>maven-source-plugin</artifactId>
+	  <version>3.0.1</version>
+	  <executions>
+	    <execution>
+	      <id>bundle-sources</id>
+	      <phase>package</phase>
+	      <goals>
+	        <!-- produce source artifact for main project sources -->
+	        <goal>jar-no-fork</goal>
+	        <!-- produce source artifact for project test sources -->
+	        <goal>test-jar-no-fork</goal>
+	      </goals>
+	    </execution>
+	  </executions>
+	</plugin>
+
+        <plugin>
+	  <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.10.4</version>
-	        <executions>
-	          <execution>
-	            <phase>package</phase>            
-	            <id>aggregate</id>
-	            <goals>
-	              <goal>jar</goal>              
-	            </goals>
-	          </execution>
-	         </executions>                   
-        </plugin>
+	  <version>2.10.4</version>
+	  <executions>
+	    <execution>
+	      <phase>package</phase>            
+	      <id>aggregate</id>
+	      <goals>
+	        <goal>jar</goal>              
+	      </goals>
+	    </execution>
+	  </executions>
+ 	</plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
@@ -127,16 +130,19 @@
             <forkCount>0</forkCount>
           </configuration>
         </plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
           <version>${maven-failsafe-plugin.version}</version>
         </plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
           <version>${maven-assemply-plugin.version}</version>
         </plugin>              	     
+
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
