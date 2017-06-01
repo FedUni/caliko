@@ -16,7 +16,7 @@ import au.edu.federation.utils.Vec3f;
  * keep track of settings related to how we go about solving the IK chain.
  * 
  * @author Al Lansley
- * @version 0.5 - 03/08/2016
+ * @version 0.5.1 - 01/07/2017
  */
 public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint3D,BaseboneConstraintType3D>
 {	
@@ -77,7 +77,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * @see  #minIterationChange
 	 * @see  #setFixedBaseLocation
 	 */
-	private float mSolveDistanceThreshold = 0.1f;
+	private float mSolveDistanceThreshold = 1.0f;
 
 	/**
 	 * maxIterationAttempts (int)	Specifies the maximum number of attempts that will be performed in order to solve the IK chain.
