@@ -1238,7 +1238,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 				bestSolution = this.cloneChainVector();
 				
 				// Did we solve for distance? Great! Break out of the loop.
-				if (solveDistance < mSolveDistanceThreshold) { 
+				if (solveDistance <= mSolveDistanceThreshold) { 
 				  break; 
 				}
 			}

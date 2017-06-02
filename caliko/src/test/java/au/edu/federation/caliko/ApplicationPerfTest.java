@@ -12,8 +12,8 @@ import au.edu.federation.utils.Vec3f;
 
 public class ApplicationPerfTest
 {	
-	// We'll run this many cycles, where each cycle is
-	static int totalCycles = 20;
+	// We'll run this many cycles
+	static int totalCycles = 10;
 			
 	// Each run will solve the chain for a pseudo-random location this many times
 	static int iterationsPerCycle = 50;
