@@ -39,8 +39,6 @@ public class MarshallingUtilTest {
 		File file = folder.newFile();
 		FileOutputStream fos = new FileOutputStream(file);
 		MarshallingUtil.marshall(chain, fos);
-		fos.flush();
-		fos.close();
 		
 		FileInputStream fis = new FileInputStream(file);
 		FabrikChain3D unmarhsalledChain = MarshallingUtil.unmarshallChain(fis, FabrikChain3D.class);
