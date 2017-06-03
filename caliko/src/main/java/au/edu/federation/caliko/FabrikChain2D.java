@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -20,7 +21,7 @@ import au.edu.federation.utils.Vec2f;
  * @author Al Lansley
  * @version 1.1 - 02/08/2016
  */
-@XmlRootElement(name="2dchain")
+@XmlRootElement(name="chain2d")
 @XmlAccessorType(XmlAccessType.NONE)
 public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint2D,BaseboneConstraintType2D>
 {	
@@ -45,8 +46,8 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * The core of a FabrikChain2D is a list of FabrikBone2D objects, where each bone contains a start and end location, and a joint
 	 * that stores any rotational constraints.
 	 */
-	@XmlElementWrapper(name="2dbones")
-	@XmlElement(name="2dbone")	
+	@XmlElementWrapper(name="bones2d")
+	@XmlElement(name="bone2d")	
 	private List<FabrikBone2D> mChain = new ArrayList<>();
 
 	/** 
@@ -80,6 +81,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * 
 	 * @see {@link #setSolveDistanceThreshold(float)}
 	 */
+	@XmlAttribute(name="solveDistanceThreshold")
 	private float mSolveDistanceThreshold = 1.0f;
 
 	/** 
@@ -128,6 +130,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * When a FabrikBone2D is added or removed from the chain using the addBone/addConsecutiveBone or removeBone methods, then
 	 * the chainLength is updated to reflect this. 
 	 */
+	@XmlAttribute(name="length")
 	private float mChainLength;
 
 	/** 
@@ -140,7 +143,8 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * Base locations do not <em>have</em> to be fixed - this property can be modified to via the setFixedBaseLocation method.
 	 * 
 	 * @see {@link #setFixedBaseMode(boolean)}
-	 */	
+	 */
+	@XmlElement(name="baseLocation")
 	private Vec2f mBaseLocation = new Vec2f();
 
 
@@ -153,6 +157,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * @default true
 	 * @see {@link #setFixedBaseMode(boolean)}
 	 */
+	@XmlAttribute(name="fixedBaseMode")
 	private boolean mFixedBaseMode = true;
 	
 	/**
@@ -160,6 +165,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * 
 	 * @default BaseboneConstraintType2D.NONE
 	 */
+	@XmlAttribute(name="baseBoneConstraintType")
 	private BaseboneConstraintType2D mBaseboneConstraintType = BaseboneConstraintType2D.NONE;
 	
 	/**
@@ -170,6 +176,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * @see {@link #setBoneConnectionPoint(BoneConnectionPoint)}
 	 * {see {@link FabrikStructure2D#connectChain(FabrikChain2D, int, int, BoneConnectionPoint)}
 	 */
+	@XmlAttribute(name="boneConnectionPoint")
 	private BoneConnectionPoint mBoneConnectionPoint = BoneConnectionPoint.END;
 	
 	/**
@@ -177,6 +184,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * 
 	 * @see {@link #setBaseboneConstraintUV(Vec2f)} 
 	 */
+	@XmlElement(name="baseBoneConstraint")
 	private Vec2f mBaseboneConstraintUV = new Vec2f();
 	
 	/**
@@ -185,6 +193,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * <p>
 	 * This property cannot be accessed by users and is updated in the FabrikStructure2D.updateForTarget() method.
 	 */
+	@XmlElement(name="baseBoneRelativeConstraint")
 	private Vec2f mBaseboneRelativeConstraintUV = new Vec2f();
 	
 	/**
@@ -193,6 +202,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * The last target location is used during the solve attempt and is specified as a property of the chain to avoid
 	 * memory allocation at runtime.
 	 */
+	@XmlElement(name="lastTargetLocation")
 	private Vec2f mLastTargetLocation = new Vec2f(Float.MAX_VALUE, Float.MAX_VALUE);
 	
 	/** 
@@ -200,7 +210,8 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * 
 	 * @default Vec2f(Float.MAX_VALUE, Float.MAX_VALUE)
 	 * @see {@link setFixedBaseLocation}
-	 */	
+	 */
+	@XmlElement(name="lastBaseLocation")
 	private Vec2f mLastBaseLocation = new Vec2f(Float.MAX_VALUE, Float.MAX_VALUE);
 	
 	/**
@@ -212,6 +223,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * 
 	 * @see {@link useEmbeddedTarget(boolean) }
 	 */
+	@XmlElement(name="embeddedTarget")
 	private Vec2f mEmbeddedTarget = new Vec2f();
 	
 	/**
@@ -222,6 +234,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * @default false
 	 * @see {@link setEmbeddedTargetMode(boolean) }
 	 */
+	@XmlAttribute(name="embeddedTargetMode")
 	private boolean mUseEmbeddedTarget = false;
 	
 	/**
@@ -230,6 +243,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * The current solve distance is updated when an attempt is made to solve IK chain as triggered by a call to the
 	 * {@link updateForTarget(Vec2f)} or (@link updateForTarget(float, float) methods.
 	 */
+	@XmlAttribute(name="currentSolveDistance")
 	private float mCurrentSolveDistance = Float.MAX_VALUE;
 	
 	/**
@@ -1077,7 +1091,8 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * performance implication on the typical execution cycle of a FabrikChain2D object,
 	 * as this method will not be called in any method which executes regularly. 
 	 */
-	private void updateChainLength()
+	@Override
+	public void updateChainLength()
 	{
 		mChainLength = 0.0f;
 		for (FabrikBone2D aBone : this.mChain)

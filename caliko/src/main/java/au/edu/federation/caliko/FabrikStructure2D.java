@@ -27,7 +27,7 @@ import au.edu.federation.utils.Vec2f;
  * @author Al Lansley
  * @version 1.0 - 02/08/2016
  **/
-@XmlRootElement(name="2dstructure")
+@XmlRootElement(name="structure2d")
 @XmlAccessorType(XmlAccessType.NONE)
 public class FabrikStructure2D implements FabrikStructure<FabrikChain2D,Vec2f>
 {	
@@ -40,8 +40,8 @@ public class FabrikStructure2D implements FabrikStructure<FabrikChain2D,Vec2f>
 	private String mName;
 
 	/** The main substance of a FabrikStructure2D is an ArrayList of FabrikChain2D objects. */
-	@XmlElementWrapper(name="2dchains")
-	@XmlElement(name="2dchain")
+	@XmlElementWrapper(name="chains2d")
+	@XmlElement(name="chain2d")
 	private List<FabrikChain2D> mChains = new ArrayList<>();
 
 	/** Property to indicate if the first chain (chain zero) in this structure has its basebone fixed in place or not. */

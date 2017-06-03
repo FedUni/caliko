@@ -2,6 +2,7 @@ package au.edu.federation.caliko;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -21,7 +22,7 @@ import au.edu.federation.utils.Vec3f;
  * @version 0.3.1 - 20/07/2016
  * @see FabrikJoint3D
  */
-@XmlRootElement(name="3dbone")
+@XmlRootElement(name="bone3d")
 @XmlAccessorType(XmlAccessType.NONE)
 public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 {
@@ -75,7 +76,7 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	 * During the backward (base-to-tip) pass, each bone is constrained by the joint angles
 	 * relative to the bone before it, ensuring that all constraints are enforced.
 	 */
-	@XmlElement(name="3djoint")
+	@XmlElement(name="joint3d")
 	private FabrikJoint3D mJoint = new FabrikJoint3D();
 
 	/**
@@ -109,13 +110,14 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	 * @see #FabrikBone3D(Vec3f, Vec3f, String)
 	 * @see #FabrikBone3D(Vec3f, Vec3f, float, String)
 	 */
-	@XmlElement(name="name")
+	@XmlAttribute(name="name")
 	private String mName;
 	
 	/**
 	 * The length of this bone from its start location to its end location. This is is calculated
 	 * in the constructor and remains constant for the lifetime of the object.
 	 */
+	@XmlAttribute(name="length")
 	private float mLength;
 
 	/**

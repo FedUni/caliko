@@ -25,7 +25,7 @@ import au.edu.federation.utils.Vec3f;
  * @author Al Lansley
  * @version 0.5.2 - 02/06/2017
  */
-@XmlRootElement(name="3dchain")
+@XmlRootElement(name="chain3d")
 @XmlAccessorType(XmlAccessType.NONE)
 public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint3D,BaseboneConstraintType3D>
 {	
@@ -49,8 +49,8 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * The core of a FabrikChain3D is a list of FabrikBone3D objects. It is this chain that we attempt to solve for a specified
 	 * target location via the {@link solveForTarget} method.
 	 */
-	@XmlElementWrapper(name="3dbones")
-	@XmlElement(name="3dbone")		
+	@XmlElementWrapper(name="bones3d")
+	@XmlElement(name="bone3d")		
 	private List<FabrikBone3D> mChain = new ArrayList<>();
 
 	/** 
@@ -89,6 +89,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * @see  #minIterationChange
 	 * @see  #setFixedBaseLocation
 	 */
+	@XmlAttribute(name="solveDistanceThreshold")
 	private float mSolveDistanceThreshold = 1.0f;
 
 	/**
@@ -117,6 +118,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * @see {@Link addBone}
 	 * @see {@Link removeBone}
 	 */
+	@XmlAttribute(name="length")
 	private float mChainLength;
 
 	/** 
@@ -130,6 +132,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * @default: Vec3f(0.f, 0.0f)
 	 * @see {@link setFixedBaseLocation}
 	 */	
+	@XmlElement(name="baseLocation")
 	private Vec3f mFixedBaseLocation = new Vec3f();
 
 	/** mFixedBaseMode	Whether this FabrikChain3D has a fixed (i.e. immovable) base location.
@@ -140,6 +143,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * 
 	 * @see {@link #setFixedBaseMode(boolean)}
 	 */
+	@XmlAttribute(name="fixedBaseMode")
 	private boolean mFixedBaseMode = true;
 	
 	/**
@@ -150,6 +154,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * - GLOBAL_HINGE, // World-space hinge constraint, or
 	 * - LOCAL_HINGE   // Hinge constraint which is relative to the coordinate space of the connected bone
 	 */ 
+	@XmlAttribute(name="baseBoneConstraintType")
 	private BaseboneConstraintType3D mBaseboneConstraintType = BaseboneConstraintType3D.NONE;
 	
 	/** mBaseboneConstraintUV	The direction around which we should constrain the basebone, as provided to the {@link constrainBasebone}
@@ -158,18 +163,21 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * To ensure correct operation, the provided Vec3f is normalised inside the {@link constBaseboneToDirectionUV} method. Passing a Vec3f
 	 * with a magnitude of zero will result in the constraint not being set.
 	 */
+	@XmlElement(name="baseBoneConstraint")
 	private Vec3f mBaseboneConstraintUV = new Vec3f();
 	
 	/**
 	 * mBaseboneRelativeConstraintUV	The basebone direction constraint in the coordinate space of the bone in another chain
 	 * that this chain is connected to.
 	 */
+	@XmlElement(name="baseBoneRelativeConstraint")
 	private Vec3f mBaseboneRelativeConstraintUV = new Vec3f();
 	
 	/**
 	 * mBaseboneRelativeReferenceConstraintUV	The basebone referencen constraint in the coordinate space of the bone in another chain
 	 * that this chain is connected to.
 	 */
+	@XmlElement(name="baseBoneRelativeReferenceConstraint")
 	private Vec3f mBaseboneRelativeReferenceConstraintUV = new Vec3f();
 	
 	/**
@@ -180,6 +188,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * 
 	 * @default Vec3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE)
 	 */
+	@XmlElement(name="lastTargetLocation")
 	private Vec3f mLastTargetLocation = new Vec3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
 	
 	/**
@@ -202,6 +211,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * @default Vec3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE)
 	 * @see {@link #setFixedBaseLocation}
 	 */	
+	@XmlElement(name="lastBaseLocation")
 	private Vec3f mLastBaseLocation = new Vec3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
 
 	/**
@@ -210,6 +220,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * The current solve distance is updated when an attempt is made to solve IK chain as triggered by a call to the
 	 * {@link updateTargtet(Vec3f)} or (@link solveForTarget(float, float) methods.
 	 */
+	@XmlAttribute(name="currentSolveDistance")
 	private float mCurrentSolveDistance = Float.MAX_VALUE;
 	
 	/**
@@ -239,6 +250,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * 
 	 * @see {@link setEmbeddedTargetMode(boolean) }
 	 */
+	@XmlElement(name="embeddedTarget")
 	private Vec3f mEmbeddedTarget = new Vec3f();
 	
 	/**
@@ -249,6 +261,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * @default false
 	 * @see {@link setEmbeddedTargetMode(boolean) }
 	 */
+	@XmlAttribute(name="embeddedTargetMode")
 	private boolean mUseEmbeddedTarget = false;
 
 	// ---------- Constructors ----------
@@ -1832,7 +1845,8 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * performance implication on the typical execution cycle of a FabrikChain3D object,
 	 * as this method will not be called in any method which executes regularly. 
 	 */
-	private void updateChainLength()
+	@Override
+	public void updateChainLength()
 	{
 		// We start adding up the length of the bones from an initial length of zero
 		mChainLength = 0.0f;

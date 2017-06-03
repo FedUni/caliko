@@ -47,7 +47,7 @@ import au.edu.federation.utils.Vec3f;
  * 
  * @version 0.4.1 - 20/07/2016
  */
-@XmlRootElement(name="3djoint")
+@XmlRootElement(name="joint3d")
 @XmlAccessorType(XmlAccessType.NONE)
 public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 {

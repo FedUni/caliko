@@ -1,0 +1,912 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<chain3d solveDistanceThreshold="1.0" length="1000.0" fixedBaseMode="true" baseBoneConstraintType="NONE" currentSolveDistance="1.5708799" embeddedTargetMode="false">
+    <bones3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="0.0" y="0.0" z="0.0"/>
+            <endLocation x="9.997258" y="-0.1104956" z="0.20643541"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="9.997258" y="-0.1104956" z="0.20643541"/>
+            <endLocation x="19.99445" y="-0.22231834" z="0.41535044"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="19.99445" y="-0.22231834" z="0.41535044"/>
+            <endLocation x="29.991507" y="-0.3368101" z="0.6292519"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="29.991507" y="-0.3368101" z="0.6292519"/>
+            <endLocation x="39.98835" y="-0.45534214" z="0.85070145"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="39.98835" y="-0.45534214" z="0.85070145"/>
+            <endLocation x="49.984898" y="-0.5793297" z="1.0823436"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="49.984898" y="-0.5793297" z="1.0823436"/>
+            <endLocation x="59.98105" y="-0.7102478" z="1.3269337"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="59.98105" y="-0.7102478" z="1.3269337"/>
+            <endLocation x="69.976685" y="-0.8496465" z="1.587368"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="69.976685" y="-0.8496465" z="1.587368"/>
+            <endLocation x="79.971664" y="-0.99916726" z="1.866713"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="79.971664" y="-0.99916726" z="1.866713"/>
+            <endLocation x="89.96581" y="-1.1605593" z="2.1682367"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="89.96581" y="-1.1605593" z="2.1682367"/>
+            <endLocation x="99.95892" y="-1.3356973" z="2.4954414"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="99.95892" y="-1.3356973" z="2.4954414"/>
+            <endLocation x="109.95074" y="-1.5265999" z="2.8520985"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="109.95074" y="-1.5265999" z="2.8520985"/>
+            <endLocation x="119.94094" y="-1.7354469" z="3.242281"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="119.94094" y="-1.7354469" z="3.242281"/>
+            <endLocation x="129.92914" y="-1.9646006" z="3.6704016"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="129.92914" y="-1.9646006" z="3.6704016"/>
+            <endLocation x="139.91487" y="-2.2166247" z="4.1412506"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="139.91487" y="-2.2166247" z="4.1412506"/>
+            <endLocation x="149.89754" y="-2.4943066" z="4.6600347"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="149.89754" y="-2.4943066" z="4.6600347"/>
+            <endLocation x="159.87643" y="-2.8006759" z="5.232415"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="159.87643" y="-2.8006759" z="5.232415"/>
+            <endLocation x="169.8507" y="-3.139029" z="5.8645496"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="169.8507" y="-3.139029" z="5.8645496"/>
+            <endLocation x="179.81924" y="-3.5129495" z="6.5631332"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="179.81924" y="-3.5129495" z="6.5631332"/>
+            <endLocation x="189.7808" y="-3.9263303" z="7.3354397"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="189.7808" y="-3.9263303" z="7.3354397"/>
+            <endLocation x="199.7338" y="-4.3833933" z="8.189357"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="199.7338" y="-4.3833933" z="8.189357"/>
+            <endLocation x="209.6763" y="-4.888711" z="9.133426"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="209.6763" y="-4.888711" z="9.133426"/>
+            <endLocation x="219.60602" y="-5.4472203" z="10.176871"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="219.60602" y="-5.4472203" z="10.176871"/>
+            <endLocation x="229.52017" y="-6.06424" z="11.32963"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="229.52017" y="-6.06424" z="11.32963"/>
+            <endLocation x="239.41542" y="-6.7454824" z="12.602374"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="239.41542" y="-6.7454824" z="12.602374"/>
+            <endLocation x="249.28778" y="-7.497057" z="14.006516"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="249.28778" y="-7.497057" z="14.006516"/>
+            <endLocation x="259.1325" y="-8.325468" z="15.554209"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="259.1325" y="-8.325468" z="15.554209"/>
+            <endLocation x="268.94394" y="-9.237605" z="17.258326"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="268.94394" y="-9.237605" z="17.258326"/>
+            <endLocation x="278.7154" y="-10.240734" z="19.132439"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="278.7154" y="-10.240734" z="19.132439"/>
+            <endLocation x="288.43906" y="-11.34245" z="21.190744"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="288.43906" y="-11.34245" z="21.190744"/>
+            <endLocation x="298.10577" y="-12.550644" z="23.447973"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="298.10577" y="-12.550644" z="23.447973"/>
+            <endLocation x="307.70486" y="-13.873432" z="25.9193"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="307.70486" y="-13.873432" z="25.9193"/>
+            <endLocation x="317.2241" y="-15.319075" z="28.620146"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="317.2241" y="-15.319075" z="28.620146"/>
+            <endLocation x="326.64932" y="-16.89589" z="31.566057"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="326.64932" y="-16.89589" z="31.566057"/>
+            <endLocation x="335.96457" y="-18.612097" z="34.772392"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="335.96457" y="-18.612097" z="34.772392"/>
+            <endLocation x="345.15176" y="-20.475708" z="38.254124"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="345.15176" y="-20.475708" z="38.254124"/>
+            <endLocation x="354.19067" y="-22.494345" z="42.02547"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="354.19067" y="-22.494345" z="42.02547"/>
+            <endLocation x="363.05893" y="-24.675041" z="46.099598"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="363.05893" y="-24.675041" z="46.099598"/>
+            <endLocation x="371.73203" y="-27.024038" z="50.48816"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="371.73203" y="-27.024038" z="50.48816"/>
+            <endLocation x="380.18347" y="-29.546568" z="55.20092"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="380.18347" y="-29.546568" z="55.20092"/>
+            <endLocation x="388.3849" y="-32.246643" z="60.245377"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="388.3849" y="-32.246643" z="60.245377"/>
+            <endLocation x="396.3064" y="-35.126812" z="65.6263"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="396.3064" y="-35.126812" z="65.6263"/>
+            <endLocation x="403.91702" y="-38.18797" z="71.34537"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="403.91702" y="-38.18797" z="71.34537"/>
+            <endLocation x="411.1851" y="-41.42922" z="77.400894"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="411.1851" y="-41.42922" z="77.400894"/>
+            <endLocation x="418.07898" y="-44.84767" z="83.78748"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="418.07898" y="-44.84767" z="83.78748"/>
+            <endLocation x="424.56763" y="-48.43844" z="90.49599"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="424.56763" y="-48.43844" z="90.49599"/>
+            <endLocation x="430.6213" y="-52.19456" z="97.51343"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="430.6213" y="-52.19456" z="97.51343"/>
+            <endLocation x="436.21237" y="-56.107124" z="104.82314"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="436.21237" y="-56.107124" z="104.82314"/>
+            <endLocation x="441.31586" y="-60.16537" z="112.40504"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="441.31586" y="-60.16537" z="112.40504"/>
+            <endLocation x="445.91025" y="-64.35689" z="120.235916"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="445.91025" y="-64.35689" z="120.235916"/>
+            <endLocation x="449.9779" y="-68.66791" z="128.29005"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="449.9779" y="-68.66791" z="128.29005"/>
+            <endLocation x="453.50555" y="-73.083595" z="136.53975"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="453.50555" y="-73.083595" z="136.53975"/>
+            <endLocation x="456.48438" y="-77.58843" z="144.95598"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="456.48438" y="-77.58843" z="144.95598"/>
+            <endLocation x="458.91037" y="-82.16653" z="153.50908"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="458.91037" y="-82.16653" z="153.50908"/>
+            <endLocation x="460.78397" y="-86.802025" z="162.16945"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="460.78397" y="-86.802025" z="162.16945"/>
+            <endLocation x="462.11014" y="-91.479416" z="170.90805"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="462.11014" y="-91.479416" z="170.90805"/>
+            <endLocation x="462.89774" y="-96.18382" z="179.69714"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="462.89774" y="-96.18382" z="179.69714"/>
+            <endLocation x="463.15918" y="-100.90126" z="188.51062"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="463.15918" y="-100.90126" z="188.51062"/>
+            <endLocation x="462.91013" y="-105.618866" z="197.32437"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="462.91013" y="-105.618866" z="197.32437"/>
+            <endLocation x="462.16858" y="-110.32494" z="206.11658"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="462.16858" y="-110.32494" z="206.11658"/>
+            <endLocation x="460.95462" y="-115.00911" z="214.86786"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="460.95462" y="-115.00911" z="214.86786"/>
+            <endLocation x="459.28973" y="-119.66232" z="223.5613"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="459.28973" y="-119.66232" z="223.5613"/>
+            <endLocation x="457.19632" y="-124.27683" z="232.18242"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="457.19632" y="-124.27683" z="232.18242"/>
+            <endLocation x="454.69733" y="-128.84618" z="240.71916"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="454.69733" y="-128.84618" z="240.71916"/>
+            <endLocation x="451.81567" y="-133.36505" z="249.16167"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="451.81567" y="-133.36505" z="249.16167"/>
+            <endLocation x="448.57425" y="-137.82933" z="257.50214"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="448.57425" y="-137.82933" z="257.50214"/>
+            <endLocation x="444.9953" y="-142.23581" z="265.73462"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="444.9953" y="-142.23581" z="265.73462"/>
+            <endLocation x="441.1004" y="-146.5822" z="273.8549"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="441.1004" y="-146.5822" z="273.8549"/>
+            <endLocation x="436.91025" y="-150.86702" z="281.86008"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="436.91025" y="-150.86702" z="281.86008"/>
+            <endLocation x="432.44458" y="-155.08942" z="289.74863"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="432.44458" y="-155.08942" z="289.74863"/>
+            <endLocation x="427.7221" y="-159.24915" z="297.52005"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="427.7221" y="-159.24915" z="297.52005"/>
+            <endLocation x="422.76053" y="-163.34639" z="305.1748"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="422.76053" y="-163.34639" z="305.1748"/>
+            <endLocation x="417.57626" y="-167.38177" z="312.714"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="417.57626" y="-167.38177" z="312.714"/>
+            <endLocation x="412.1849" y="-171.35626" z="320.1394"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="412.1849" y="-171.35626" z="320.1394"/>
+            <endLocation x="406.60083" y="-175.27106" z="327.45328"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="406.60083" y="-175.27106" z="327.45328"/>
+            <endLocation x="400.83755" y="-179.12756" z="334.6583"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="400.83755" y="-179.12756" z="334.6583"/>
+            <endLocation x="394.90756" y="-182.92737" z="341.75735"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="394.90756" y="-182.92737" z="341.75735"/>
+            <endLocation x="388.82245" y="-186.67216" z="348.75363"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="388.82245" y="-186.67216" z="348.75363"/>
+            <endLocation x="382.5931" y="-190.36377" z="355.65054"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="382.5931" y="-190.36377" z="355.65054"/>
+            <endLocation x="376.22946" y="-194.00401" z="362.45148"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="376.22946" y="-194.00401" z="362.45148"/>
+            <endLocation x="369.74097" y="-197.59483" z="369.16006"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="369.74097" y="-197.59483" z="369.16006"/>
+            <endLocation x="363.13632" y="-201.13818" z="375.78"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="363.13632" y="-201.13818" z="375.78"/>
+            <endLocation x="356.42374" y="-204.63605" z="382.315"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="356.42374" y="-204.63605" z="382.315"/>
+            <endLocation x="349.61078" y="-208.09045" z="388.76874"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="349.61078" y="-208.09045" z="388.76874"/>
+            <endLocation x="342.7047" y="-211.50343" z="395.14508"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="342.7047" y="-211.50343" z="395.14508"/>
+            <endLocation x="335.7123" y="-214.87703" z="401.44788"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="335.7123" y="-214.87703" z="401.44788"/>
+            <endLocation x="328.64" y="-218.21335" z="407.681"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="328.64" y="-218.21335" z="407.681"/>
+            <endLocation x="321.49402" y="-221.5145" z="413.84842"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="321.49402" y="-221.5145" z="413.84842"/>
+            <endLocation x="314.2802" y="-224.78261" z="419.9542"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="314.2802" y="-224.78261" z="419.9542"/>
+            <endLocation x="307.00424" y="-228.0199" z="426.00235"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="307.00424" y="-228.0199" z="426.00235"/>
+            <endLocation x="299.67163" y="-231.22862" z="431.9971"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="299.67163" y="-231.22862" z="431.9971"/>
+            <endLocation x="292.28772" y="-234.41104" z="437.9427"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="292.28772" y="-234.41104" z="437.9427"/>
+            <endLocation x="284.8578" y="-237.5695" z="443.84357"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="284.8578" y="-237.5695" z="443.84357"/>
+            <endLocation x="277.38696" y="-240.7064" z="449.70416"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="277.38696" y="-240.7064" z="449.70416"/>
+            <endLocation x="269.88034" y="-243.82425" z="455.52908"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="269.88034" y="-243.82425" z="455.52908"/>
+            <endLocation x="262.34302" y="-246.92555" z="461.32312"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="262.34302" y="-246.92555" z="461.32312"/>
+            <endLocation x="254.77998" y="-250.01286" z="467.09103"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="254.77998" y="-250.01286" z="467.09103"/>
+            <endLocation x="247.19623" y="-253.08884" z="472.83777"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="247.19623" y="-253.08884" z="472.83777"/>
+            <endLocation x="239.59674" y="-256.15613" z="478.56836"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="239.59674" y="-256.15613" z="478.56836"/>
+            <endLocation x="231.9865" y="-259.21753" z="484.2878"/>
+            <length>10.0</length>
+        </bone3d>
+        <bone3d>
+            <joint3d hingeClockwiseConstraintDegrees="180.0" hingeAnticlockwiseConstraintDegrees="180.0" jointType="BALL">
+                <rotationAxis x="0.0" y="0.0" z="0.0"/>
+                <referenceAxis x="0.0" y="0.0" z="0.0"/>
+            </joint3d>
+            <startLocation x="231.9865" y="-259.21753" z="484.2878"/>
+            <endLocation x="224.37051" y="-262.2757" z="490.00134"/>
+            <length>10.0</length>
+        </bone3d>
+    </bones3d>
+    <baseLocation x="0.0" y="0.0" z="0.0"/>
+    <baseBoneConstraint x="1.0" y="0.0" z="0.0"/>
+    <baseBoneRelativeConstraint x="0.0" y="0.0" z="0.0"/>
+    <baseBoneRelativeReferenceConstraint x="0.0" y="0.0" z="0.0"/>
+    <lastTargetLocation x="223.17413" y="-262.7561" z="490.89886"/>
+    <lastBaseLocation x="0.0" y="0.0" z="0.0"/>
+    <embeddedTarget x="0.0" y="0.0" z="0.0"/>
+</chain3d>

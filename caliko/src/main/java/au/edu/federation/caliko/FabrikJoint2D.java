@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Al Lansley
  * @version 0.8 - 16/12/2015
  */
-@XmlRootElement(name="2djoint")
+@XmlRootElement(name="joint2d")
 @XmlAccessorType(XmlAccessType.NONE)
 public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 {

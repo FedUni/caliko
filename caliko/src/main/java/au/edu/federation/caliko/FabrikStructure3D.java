@@ -30,7 +30,7 @@ import au.edu.federation.utils.Vec3f;
  * @author Al Lansley
  * @version 0.4 - 29/12/2015
  **/
-@XmlRootElement(name="3dstructure")
+@XmlRootElement(name="structure3d")
 @XmlAccessorType(XmlAccessType.NONE)
 public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 {
@@ -48,8 +48,8 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 	 * Each FabrikChain3D in the mChains vector is independent of all others, but shares the same target location as any/all other chains
 	 * which exist in this structure.
 	 */
-	@XmlElementWrapper(name="3dchains")
-	@XmlElement(name="3dchain")	
+	@XmlElementWrapper(name="chains3d")
+	@XmlElement(name="chain3d")	
 	private List<FabrikChain3D> mChains = new ArrayList<>();
 
 	// --------- Public Methods ----------

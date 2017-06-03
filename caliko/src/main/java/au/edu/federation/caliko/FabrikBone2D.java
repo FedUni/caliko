@@ -2,6 +2,7 @@ package au.edu.federation.caliko;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -20,7 +21,7 @@ import au.edu.federation.utils.Vec2f;
  * @author Al Lansley
  * @version 0.9.1 - 20/07/2016
  */
-@XmlRootElement(name="2dbone")
+@XmlRootElement(name="bone2d")
 @XmlAccessorType(XmlAccessType.NONE)
 public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 {
@@ -42,6 +43,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * be constrained). In this way the single joint which can be considered to be at the
 	 * start location of each bone controls the allowable range of motion for that bone alone.
 	 */
+	@XmlElement(name="joint2d")
 	private FabrikJoint2D mJoint = new FabrikJoint2D();
 
 	/**
@@ -70,6 +72,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * <p>
 	 * Names exceeding 100 characters will be truncated.
 	 */
+	@XmlAttribute(name="name")
 	private String mName;
 	
 	/**
@@ -84,6 +87,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * Attempting to set a bone length of less than zero, either explicitly or implicitly, will result
 	 * in an IllegalArgumentException or 
 	 */
+	@XmlAttribute(name="length")
 	private float mLength;
 
 	/**
@@ -455,7 +459,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * 
 	 * @param	length	The value to set on the {@link #mLength} property.
 	 */
-	void setLength(float length)
+	private void setLength(float length)
 	{
 		if (length >= 0.0f)
 		{
