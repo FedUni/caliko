@@ -2,6 +2,10 @@ package au.edu.federation.utils;
 
 import java.text.DecimalFormat;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+
 /** 
  * A two-dimensional vector consisting of x and and y values stored as floats.
  * <p>
@@ -9,6 +13,7 @@ import java.text.DecimalFormat;
  *  @author Al Lansley
  *  @version 0.3 - 15/10/2014
  */
+@XmlAccessorType(XmlAccessType.NONE)
 public class Vec2f implements Vectorf<Vec2f>
 {	
 	// Conversion constants to/from degrees and radians
@@ -19,6 +24,7 @@ public class Vec2f implements Vectorf<Vec2f>
 	// Note: '0' means put a 0 there if it's zero, '#' means omit if zero.
 	private static DecimalFormat df = new DecimalFormat("0.000");
 
+	@XmlAttribute
 	public float x, y;
 	
 	// ---------- Constructors ----------

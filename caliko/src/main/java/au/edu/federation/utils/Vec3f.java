@@ -2,8 +2,11 @@ package au.edu.federation.utils;
 
 import java.text.DecimalFormat;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+
 //FIXME: Need to incorporate the following into Vec2f / FabrikChain2D:
-// - Correct mNumBones (doesn't always get inc'd when adding bones)
 // - NORMALISE corrected constraint angle to stop jitter / flip-out
 // - Stop Vec2f dot product producing NAN by capping to -1..+1
 
@@ -14,6 +17,7 @@ import java.text.DecimalFormat;
  * Date   : 29/12/2015
  */
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class Vec3f implements Vectorf<Vec3f>
 {
 	// ----- Static Properties -----
@@ -29,6 +33,7 @@ public class Vec3f implements Vectorf<Vec3f>
 	// ----- Properties -----
 
 	// A Vec3 simply has three properties called x, y and z - these are public so we can access them directly for speed
+	@XmlAttribute
 	public float x, y, z;
 
 	// ----- Methods -----

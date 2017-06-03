@@ -311,7 +311,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 		mChain.add(bone);
 
 		// If this is the basebone...
-		if (mChain.size() == 1)
+		if (this.mChain.size()==1)
 		{
 			// ...then keep a copy of the fixed start location...
 			mBaseLocation.set( bone.getStartLocation() );
@@ -371,10 +371,10 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 		Utils.validateLength(length);
 				
 		// If we have at least one bone already in the chain...
-		if (mChain.size() > 0)
+		if (!this.mChain.isEmpty())
 		{		
 			// Get the end location of the last bone, which will be used as the start location of the new bone
-			Vec2f prevBoneEnd = mChain.get(mChain.size()-1).getEndLocation();
+			Vec2f prevBoneEnd = mChain.get(this.mChain.size()-1).getEndLocation();
 				
 			// Add a bone to the end of this IK chain
 			addBone( new FabrikBone2D(prevBoneEnd, Vec2f.normalised(directionUV), length, clockwiseDegs, anticlockwiseDegs, colour) );
@@ -433,7 +433,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	@Override
 	public Vec2f getBaseLocation() 
 	{
-		if (mChain.size() > 0)
+		if (!this.mChain.isEmpty())
 		{
 			return mChain.get(0).getStartLocation();
 		}
@@ -514,9 +514,9 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	@Override
 	public Vec2f getEffectorLocation()
 	{
-		if (mChain.size() > 0)
+		if (!this.mChain.isEmpty())
 		{
-			return mChain.get(mChain.size()-1).getEndLocation();
+			return mChain.get(this.mChain.size()-1).getEndLocation();
 		}
 		else
 		{
@@ -571,7 +571,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * @return	The number of bones in the FabrikChain2D.
 	 */
 	@Override
-	public int getNumBones() { return mChain.size(); }
+	public int getNumBones() { return this.mChain.size(); }
 	
 	/**
 	 * Remove a bone from this IK chain.
@@ -590,7 +590,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	public void removeBone(int boneNumber)
 	{
 		// If the bone number is a bone which exists...
-		if (boneNumber < mChain.size())
+		if (boneNumber < this.mChain.size())
 		{
 			
 			// ...then remove the bone, decrease the bone count and update the chain length.
@@ -669,9 +669,9 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 */
 	public void setColour(Colour4f colour)
 	{			
-		for (int loop = 0; loop < mChain.size(); ++loop)
+		for (FabrikBone2D aBone : this.mChain)
 		{
-			getBone(loop).setColour(colour);
+			aBone.setColour(colour);
 		}
 	}
 	
@@ -815,13 +815,13 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 		// ---------- Step 1 of 2 - Forward pass from end-effector to base -----------
 
 		// Loop over all bones in the chain, from the end effector (numBones-1) back to the base bone (0)		
-		for (int loop = mChain.size()-1; loop >= 0; --loop)
+		for (int loop = this.mChain.size()-1; loop >= 0; --loop)
 		{
 			// Get the length of the bone we're working on
 			float boneLength = mChain.get(loop).length();
 
 			// If we are not working on the end effector bone
-			if (loop != mChain.size() - 1)
+			if (loop != this.mChain.size() - 1)
 			{
 				// Get the outer-to-inner unit vector of the bone further out
 				Vec2f outerBoneOuterToInnerUV = mChain.get(loop+1).getDirectionUV().negated();
@@ -876,7 +876,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 
 		// ---------- Step 2 of 2 - Backward pass from base to end effector -----------
 
-		for (int loop = 0; loop < mChain.size(); ++loop)
+		for (int loop = 0; loop < this.mChain.size(); ++loop)
 		{
 			// Get the length of the bone we're working on
 			float boneLength = mChain.get(loop).length();
@@ -905,7 +905,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 				// If we are not working on the end bone, then we set the start joint location of
 				// the next bone in the chain (i.e. the bone closer to the end effector) to be the
 				// new end joint location of this bone also.
-				if (loop < mChain.size()-1)
+				if (loop < this.mChain.size()-1)
 				{
 					mChain.get(loop+1).setStartLocation(newEndLocation);
 				}
@@ -985,7 +985,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 					// If we are not working on the end bone, then we set the start joint location of
 					// the next bone in the chain (i.e. the bone closer to the end effector) to be the
 					// new end joint location of this bone.
-					if (loop < mChain.size()-1)
+					if (loop < this.mChain.size()-1)
 					{
 						mChain.get(loop+1).setStartLocation(newEndLocation);
 					}					
@@ -999,7 +999,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 		mLastTargetLocation.set(target);
 		
 		// Finally, get the current effector location...
-		Vec2f currentEffectorLocation = mChain.get(mChain.size()-1).getEndLocation();
+		Vec2f currentEffectorLocation = mChain.get(this.mChain.size()-1).getEndLocation();
 				
 		// ...and calculate and return the distance between the current effector location and the target.
 		return Vec2f.distanceBetween(currentEffectorLocation, target);
@@ -1023,7 +1023,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 		StringBuilder sb = new StringBuilder();
 		
 			sb.append("----- FabrikChain2D: " + mName + " -----" + Utils.NEW_LINE);				
-			sb.append("Number of bones: " + mChain.size() + Utils.NEW_LINE);
+			sb.append("Number of bones: " + this.mChain.size() + Utils.NEW_LINE);
 			
 			sb.append("Fixed base mode: ");
 			if (mFixedBaseMode) { 
@@ -1080,9 +1080,9 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	private void updateChainLength()
 	{
 		mChainLength = 0.0f;
-		for (int loop = 0; loop < mChain.size(); ++loop)
+		for (FabrikBone2D aBone : this.mChain)
 		{
-			mChainLength += mChain.get(loop).length();
+			mChainLength += aBone.length();
 		}
 	}
 	
@@ -1223,7 +1223,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 				bestSolution = this.cloneChainVector();
 				
 				// Did we solve for distance? Great! Break out of the loop.
-				if (solveDistance < mSolveDistanceThreshold) { 
+				if (solveDistance <= mSolveDistanceThreshold) { 
 				  break; 
 				}
 			}

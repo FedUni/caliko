@@ -23,7 +23,7 @@ import au.edu.federation.utils.Vec3f;
  * keep track of settings related to how we go about solving the IK chain.
  * 
  * @author Al Lansley
- * @version 0.5 - 03/08/2016
+ * @version 0.5.2 - 02/06/2017
  */
 @XmlRootElement(name="3dchain")
 @XmlAccessorType(XmlAccessType.NONE)
@@ -89,7 +89,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * @see  #minIterationChange
 	 * @see  #setFixedBaseLocation
 	 */
-	private float mSolveDistanceThreshold = 0.1f;
+	private float mSolveDistanceThreshold = 1.0f;
 
 	/**
 	 * maxIterationAttempts (int)	Specifies the maximum number of attempts that will be performed in order to solve the IK chain.
@@ -380,7 +380,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 		Utils.validateLength(length);
 				
 		// If we have at least one bone already in the chain...
-		if (mChain.size() > 0)
+		if (!mChain.isEmpty())
 		{				
 			// Get the end location of the last bone, which will be used as the start location of the new bone
 			Vec3f prevBoneEnd = mChain.get(mChain.size()-1).getEndLocation();
@@ -482,7 +482,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 		Utils.validateLength(length);
 				
 		// Cannot add a consectuive bone of any kind if the there is no basebone
-		if (mChain.size() == 0) { 
+		if (mChain.isEmpty()) { 
 		  throw new RuntimeException("You must add a basebone before adding a consectutive bone."); 
 		}
 		
@@ -571,7 +571,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 		// Validate the bone direction and length and that we have a basebone
 		Utils.validateDirectionUV(boneDirectionUV);
 		Utils.validateLength(boneLength);
-		if (mChain.size() == 0) { 
+		if (mChain.isEmpty()) { 
 		  throw new RuntimeException("Add a basebone before attempting to add consectuive bones."); 
 		}
 				
@@ -775,9 +775,9 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	public float getLiveChainLength()
 	{
 		float length = 0.0f;		
-		for (int loop = 0; loop < mChain.size(); ++loop)
+		for (FabrikBone3D aBone : this.mChain)
 		{  
-			length += mChain.get(loop).liveLength();
+			length += aBone.liveLength();
 		}		
 		return length;
 	}	
@@ -835,7 +835,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 * to - only we have no knowledge of that other chain! But, the FabrikStructure3D DOES have knowledge of that other
 	 * chain, and is hence able to calculate and update this relative basebone constraint direction for us.
 	 **/
-	void setBaseboneRelativeConstraintUV(Vec3f constraintUV) { mBaseboneRelativeConstraintUV = constraintUV;	}
+	void setBaseboneRelativeConstraintUV(Vec3f constraintUV) { mBaseboneRelativeConstraintUV = constraintUV; }
 	/** 
 	 * Set the relative basebone reference constraint UV - this direction should be relative to the coordinate space of the basebone.
 	 *
@@ -885,7 +885,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	public void setRotorBaseboneConstraint(BaseboneConstraintType3D rotorType, Vec3f constraintAxis, float angleDegs)
 	{
 		// Sanity checking
-		if (mChain.size() == 0)	{ 
+		if (mChain.isEmpty())	{ 
 		  throw new RuntimeException("Chain must contain a basebone before we can specify the basebone constraint type."); 
 		}		
 		if ( constraintAxis.length() <= 0.0f ) { 
@@ -926,7 +926,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	public void setHingeBaseboneConstraint(BaseboneConstraintType3D hingeType, Vec3f hingeRotationAxis, float cwConstraintDegs, float acwConstraintDegs, Vec3f hingeReferenceAxis)
 	{
 		// Sanity checking
-		if (mChain.size() == 0)	{ 
+		if (mChain.isEmpty())	{ 
 		  throw new RuntimeException("Chain must contain a basebone before we can specify the basebone constraint type."); 
 		}		
 		if ( hingeRotationAxis.length() <= 0.0f )  { 
@@ -1222,9 +1222,9 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	 */
 	public void setColour(Colour4f colour)
 	{			
-		for (int loop = 0; loop < mChain.size(); ++loop)
+		for (FabrikBone3D aBone : this.mChain)
 		{
-			getBone(loop).setColour(colour);
+			aBone.setColour(colour);
 		}
 	}
 	
@@ -1319,7 +1319,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 				bestSolution = this.cloneIkChain();
 				
 				// If we are happy that this solution meets our distance requirements then we can exit the loop now
-				if (solveDistance < mSolveDistanceThreshold)
+				if (solveDistance <= mSolveDistanceThreshold)
 				{				
 					break;
 				}
@@ -1357,7 +1357,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 		StringBuilder sb = new StringBuilder();		
 		sb.append("--- FabrikChain3D: " + mName + " ---" + NEW_LINE);
 			
-		if (mChain.size() > 0)
+		if (!mChain.isEmpty())
 		{
 			sb.append("Bone count:    : " + mChain.size()         + NEW_LINE);			
 			sb.append("Base location  : " + getBaseLocation() + NEW_LINE);
@@ -1370,10 +1370,10 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 			  sb.append("Fixed base mode: No"  + NEW_LINE); 
 			}
 			
-			for (int loop = 0; loop < mChain.size(); ++loop)
+			for (FabrikBone3D aBone : this.mChain)
 			{
-				sb.append("--- Bone: " + loop + " ---" + NEW_LINE );
-				sb.append( getBone(loop).toString()    + NEW_LINE );
+				sb.append("--- Bone: " + aBone + " ---" + NEW_LINE );
+				sb.append( aBone.toString()    + NEW_LINE );
 			}
 		}
 		else
@@ -1396,7 +1396,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 	private float solveIK(Vec3f target)
 	{	
 		// Sanity check that there are bones in the chain
-		if (mChain.size() == 0) { 
+		if (mChain.isEmpty()) { 
 		  throw new RuntimeException("It makes no sense to solve an IK chain with zero bones."); 
 		}
 		
@@ -1838,9 +1838,9 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 		mChainLength = 0.0f;
 
 		// Loop over all the bones in the chain, adding the length of each bone to the mChainLength property
-		for (int loop = 0; loop < mChain.size(); ++loop)
+		for (FabrikBone3D aBone : this.mChain)
 		{
-			mChainLength += mChain.get(loop).length();
+			mChainLength += aBone.length();
 		}
 	}
 	
@@ -1901,11 +1901,11 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 		List<FabrikBone3D> clonedChain = new ArrayList<>(numBones);
 
 		// For each bone in the chain being cloned...		
-		for (int loop = 0; loop < numBones; ++loop)
+		for (FabrikBone3D aBone : this.mChain)
 		{
 			// Use the copy constructor to create a new FabrikBone3D with the values set from the source FabrikBone3D.
 			// and add it to the cloned chain.
-			clonedChain.add( new FabrikBone3D( mChain.get(loop) ) );
+			clonedChain.add( new FabrikBone3D( aBone ) );
 		}
 		
 		return clonedChain;
