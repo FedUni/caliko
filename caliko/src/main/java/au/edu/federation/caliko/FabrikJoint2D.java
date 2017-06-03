@@ -1,5 +1,10 @@
 package au.edu.federation.caliko;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /** 
  * Class to represent a joint used to constrain the relative angle between FabrikBone2D objects in an IK chain.
  * <p>
@@ -33,6 +38,8 @@ package au.edu.federation.caliko;
  * @author Al Lansley
  * @version 0.8 - 16/12/2015
  */
+@XmlRootElement(name="joint2d")
+@XmlAccessorType(XmlAccessType.NONE)
 public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 {
 	/** The minimum valid constraint angle for both clockwise and anticlockwise rotation is 0 degrees. */
@@ -55,6 +62,7 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	 * 
 	 * @default 180.0f
 	 */
+	@XmlAttribute(name="clockwiseConstraintDegrees")
 	private float mClockwiseConstraintDegs = MAX_2D_CONSTRAINT_ANGLE_DEGS;
 
 	/**
@@ -67,6 +75,7 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	 * 
 	 * @default 180.0f
 	 */
+	@XmlAttribute(name="anticlockwiseConstraintDegrees")
 	private float mAnticlockwiseConstraintDegs = MAX_2D_CONSTRAINT_ANGLE_DEGS;
 
 	// ---------- Constructors ----------
@@ -78,7 +87,9 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	 * constrained in its rotation. To specify joint constraints, use the {@link #setClockwiseConstraintDegs(float)} and
 	 * {@link #setAnticlockwiseConstraintDegs(float)} methods.
 	 */
-	public FabrikJoint2D() { }
+	public FabrikJoint2D() {
+	  //
+	}
 	
 	/**
 	 * Two parameter constructor which sets the constraint angles.
@@ -158,5 +169,36 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	 * @return	The anticlockwise constraint angle of this joint in degrees.
 	 */
 	public float getAnticlockwiseConstraintDegs() {	return mAnticlockwiseConstraintDegs; }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + Float.floatToIntBits(mAnticlockwiseConstraintDegs);
+    result = prime * result + Float.floatToIntBits(mClockwiseConstraintDegs);
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    FabrikJoint2D other = (FabrikJoint2D) obj;
+    if (Float.floatToIntBits(mAnticlockwiseConstraintDegs) != Float
+        .floatToIntBits(other.mAnticlockwiseConstraintDegs)) {
+      return false;
+    }
+    if (Float.floatToIntBits(mClockwiseConstraintDegs) != Float.floatToIntBits(other.mClockwiseConstraintDegs)) {
+      return false;
+    }
+    return true;
+  }
 
 } // End of FabrikJoint2D class

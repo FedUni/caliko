@@ -188,7 +188,7 @@ public class Colour4f
 	
 	/** Return a concise, human-readable description of the Colour4f object. */
 	@Override
-	public String toString() { return new String("Red: " + r + ", Green: " + g  + ", Blue: " + b + ", Alpha: " + a); }
+	public String toString() { return "Red: " + r + ", Green: " + g  + ", Blue: " + b + ", Alpha: " + a; }
 
 	// ---------- Static Methods -----------
 
@@ -210,4 +210,42 @@ public class Colour4f
 		else if (componentValue < MIN_COMPONENT_VALUE) { return MIN_COMPONENT_VALUE; }
 		else    { return componentValue; }
 	}
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + Float.floatToIntBits(a);
+    result = prime * result + Float.floatToIntBits(b);
+    result = prime * result + Float.floatToIntBits(g);
+    result = prime * result + Float.floatToIntBits(r);
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    Colour4f other = (Colour4f) obj;
+    if (Float.floatToIntBits(a) != Float.floatToIntBits(other.a)) {
+      return false;
+    }
+    if (Float.floatToIntBits(b) != Float.floatToIntBits(other.b)) {
+      return false;
+    }
+    if (Float.floatToIntBits(g) != Float.floatToIntBits(other.g)) {
+      return false;
+    }
+    if (Float.floatToIntBits(r) != Float.floatToIntBits(other.r)) {
+      return false;
+    }
+    return true;
+  }
 }

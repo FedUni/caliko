@@ -2,8 +2,11 @@ package au.edu.federation.utils;
 
 import java.text.DecimalFormat;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+
 //FIXME: Need to incorporate the following into Vec2f / FabrikChain2D:
-// - Correct mNumBones (doesn't always get inc'd when adding bones)
 // - NORMALISE corrected constraint angle to stop jitter / flip-out
 // - Stop Vec2f dot product producing NAN by capping to -1..+1
 
@@ -14,6 +17,7 @@ import java.text.DecimalFormat;
  * Date   : 29/12/2015
  */
 
+@XmlAccessorType(XmlAccessType.NONE)
 public class Vec3f implements Vectorf<Vec3f>
 {
 	// ----- Static Properties -----
@@ -29,6 +33,7 @@ public class Vec3f implements Vectorf<Vec3f>
 	// ----- Properties -----
 
 	// A Vec3 simply has three properties called x, y and z - these are public so we can access them directly for speed
+	@XmlAttribute
 	public float x, y, z;
 
 	// ----- Methods -----
@@ -796,6 +801,40 @@ public class Vec3f implements Vectorf<Vec3f>
 		this.x = Utils.randRange(min, max);
 		this.y = Utils.randRange(min, max);
 		this.z = Utils.randRange(min, max);
-	}	
+	}
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + Float.floatToIntBits(x);
+    result = prime * result + Float.floatToIntBits(y);
+    result = prime * result + Float.floatToIntBits(z);
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    Vec3f other = (Vec3f) obj;
+    if (Float.floatToIntBits(x) != Float.floatToIntBits(other.x)) {
+      return false;
+    }
+    if (Float.floatToIntBits(y) != Float.floatToIntBits(other.y)) {
+      return false;
+    }
+    if (Float.floatToIntBits(z) != Float.floatToIntBits(other.z)) {
+      return false;
+    }
+    return true;
+  }	
 	
 } // End of Vec3f class

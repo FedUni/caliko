@@ -328,5 +328,16 @@ public interface FabrikChain<B extends FabrikBone<V,J>, V extends Vectorf, J ext
 	 * @param newEmbeddedTarget	The location of the embedded target.
 	 */
 	void updateEmbeddedTarget(V newEmbeddedTarget);	
+	
+	/***
+	 * Calculate the length of this IK chain by adding up the lengths of each bone.
+	 * <p>
+	 * The resulting chain length is returned by the {@link #getChainLength()} property.
+	 * <p>
+	 * This method is called each time a bone is added to the chain. In addition, the
+	 * length of each bone is recalculated during the process to ensure that our chain
+	 * length is accurate.
+	 */
+	void updateChainLength();	
 
 }

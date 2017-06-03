@@ -1,5 +1,11 @@
 package au.edu.federation.caliko;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import au.edu.federation.utils.Utils;
 import au.edu.federation.utils.Vec3f;
 
@@ -41,6 +47,8 @@ import au.edu.federation.utils.Vec3f;
  * 
  * @version 0.4.1 - 20/07/2016
  */
+@XmlRootElement(name="joint3d")
+@XmlAccessorType(XmlAccessType.NONE)
 public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 {
 	// A line separator for the current system running this code
@@ -106,6 +114,7 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 	 * @default 180.0f.
 	 * @see mHingeAxis
 	 */
+	@XmlAttribute(name="hingeClockwiseConstraintDegrees")
 	private float mHingeClockwiseConstraintDegs = MAX_CONSTRAINT_ANGLE_DEGS;
 	
 	/**
@@ -118,12 +127,15 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 	 * <p>
 	 * @default 180.0f.
 	 */
+	@XmlAttribute(name="hingeAnticlockwiseConstraintDegrees")
 	private float mHingeAnticlockwiseConstraintDegs = MAX_CONSTRAINT_ANGLE_DEGS;
 	
 	/** The unit vector axis about which a hinged joint may rotate. */
+	@XmlElement(name="rotationAxis")
 	private Vec3f mRotationAxisUV = new Vec3f();
 	
 	/** For a hinged joint, this is the axis used as a point of reference for rotation (it is NOT the axis about which the hinge rotates). */
+	@XmlElement(name="referenceAxis")
 	private Vec3f mReferenceAxisUV = new Vec3f();
 	
 	/**
@@ -133,6 +145,7 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 	 * 
 	 * @default	JointType.BALL
 	 */
+	@XmlAttribute(name="jointType")
 	private JointType mJointType = JointType.BALL;
 
 	// ---------- Constructors ----------
@@ -531,5 +544,61 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 			throw new IllegalArgumentException("Provided axis is illegal - it has a magnitude of zero.");
 		}
 	}
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + Float.floatToIntBits(mHingeAnticlockwiseConstraintDegs);
+    result = prime * result + Float.floatToIntBits(mHingeClockwiseConstraintDegs);
+    result = prime * result + ((mJointType == null) ? 0 : mJointType.hashCode());
+    result = prime * result + ((mReferenceAxisUV == null) ? 0 : mReferenceAxisUV.hashCode());
+    result = prime * result + ((mRotationAxisUV == null) ? 0 : mRotationAxisUV.hashCode());
+    result = prime * result + Float.floatToIntBits(mRotorConstraintDegs);
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    FabrikJoint3D other = (FabrikJoint3D) obj;
+    if (Float.floatToIntBits(mHingeAnticlockwiseConstraintDegs) != Float
+        .floatToIntBits(other.mHingeAnticlockwiseConstraintDegs)) {
+      return false;
+    }
+    if (Float.floatToIntBits(mHingeClockwiseConstraintDegs) != Float
+        .floatToIntBits(other.mHingeClockwiseConstraintDegs)) {
+      return false;
+    }
+    if (mJointType != other.mJointType) {
+      return false;
+    }
+    if (mReferenceAxisUV == null) {
+      if (other.mReferenceAxisUV != null) {
+        return false;
+      }
+    } else if (!mReferenceAxisUV.equals(other.mReferenceAxisUV)) {
+      return false;
+    }
+    if (mRotationAxisUV == null) {
+      if (other.mRotationAxisUV != null) {
+        return false;
+      }
+    } else if (!mRotationAxisUV.equals(other.mRotationAxisUV)) {
+      return false;
+    }
+    if (Float.floatToIntBits(mRotorConstraintDegs) != Float.floatToIntBits(other.mRotorConstraintDegs)) {
+      return false;
+    }
+    return true;
+  }
 
 } // End of FabrikJoint3D class

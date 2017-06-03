@@ -1,5 +1,11 @@
 package au.edu.federation.caliko;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import au.edu.federation.utils.Colour4f;
 import au.edu.federation.utils.Mat4f;
 import au.edu.federation.utils.Utils;
@@ -15,6 +21,8 @@ import au.edu.federation.utils.Vec2f;
  * @author Al Lansley
  * @version 0.9.1 - 20/07/2016
  */
+@XmlRootElement(name="bone2d")
+@XmlAccessorType(XmlAccessType.NONE)
 public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 {
 	/**
@@ -35,6 +43,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * be constrained). In this way the single joint which can be considered to be at the
 	 * start location of each bone controls the allowable range of motion for that bone alone.
 	 */
+	@XmlElement(name="joint2d")
 	private FabrikJoint2D mJoint = new FabrikJoint2D();
 
 	/**
@@ -43,6 +52,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * The start location of a bone may only be set through a constructor or via an 'addBone'
 	 * or 'addConsecutiveBone' method provided by the {@link FabrikChain2D} class.
 	 */
+	@XmlElement(name="startLocation")
 	private Vec2f mStartLocation = new Vec2f();
 	
 	/**
@@ -51,6 +61,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * The end location of a bone may only be set through a constructor or indirectly via an
 	 * 'addBone' method provided by the {@link FabrikChain2D} class.
 	 */
+	@XmlElement(name="endLocation")
 	private Vec2f mEndLocation = new Vec2f();
 
 	/**
@@ -61,6 +72,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * <p>
 	 * Names exceeding 100 characters will be truncated.
 	 */
+	@XmlAttribute(name="name")
 	private String mName;
 	
 	/**
@@ -75,6 +87,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * Attempting to set a bone length of less than zero, either explicitly or implicitly, will result
 	 * in an IllegalArgumentException or 
 	 */
+	@XmlAttribute(name="length")
 	private float mLength;
 
 	/**
@@ -446,7 +459,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * 
 	 * @param	length	The value to set on the {@link #mLength} property.
 	 */
-	void setLength(float length)
+	private void setLength(float length)
 	{
 		if (length >= 0.0f)
 		{
@@ -457,5 +470,75 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 			throw new IllegalArgumentException("Bone length must be a positive value.");
 		}
 	}
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((mColour == null) ? 0 : mColour.hashCode());
+    result = prime * result + ((mEndLocation == null) ? 0 : mEndLocation.hashCode());
+    result = prime * result + ((mJoint == null) ? 0 : mJoint.hashCode());
+    result = prime * result + Float.floatToIntBits(mLength);
+    result = prime * result + Float.floatToIntBits(mLineWidth);
+    result = prime * result + ((mName == null) ? 0 : mName.hashCode());
+    result = prime * result + ((mStartLocation == null) ? 0 : mStartLocation.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    FabrikBone2D other = (FabrikBone2D) obj;
+    if (mColour == null) {
+      if (other.mColour != null) {
+        return false;
+      }
+    } else if (!mColour.equals(other.mColour)) {
+      return false;
+    }
+    if (mEndLocation == null) {
+      if (other.mEndLocation != null) {
+        return false;
+      }
+    } else if (!mEndLocation.equals(other.mEndLocation)) {
+      return false;
+    }
+    if (mJoint == null) {
+      if (other.mJoint != null) {
+        return false;
+      }
+    } else if (!mJoint.equals(other.mJoint)) {
+      return false;
+    }
+    if (Float.floatToIntBits(mLength) != Float.floatToIntBits(other.mLength)) {
+      return false;
+    }
+    if (Float.floatToIntBits(mLineWidth) != Float.floatToIntBits(other.mLineWidth)) {
+      return false;
+    }
+    if (mName == null) {
+      if (other.mName != null) {
+        return false;
+      }
+    } else if (!mName.equals(other.mName)) {
+      return false;
+    }
+    if (mStartLocation == null) {
+      if (other.mStartLocation != null) {
+        return false;
+      }
+    } else if (!mStartLocation.equals(other.mStartLocation)) {
+      return false;
+    }
+    return true;
+  }
 	
 } // End of FabrikBone2D class
