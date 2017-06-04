@@ -1,12 +1,17 @@
 package au.edu.federation.caliko;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.xml.bind.JAXBException;
+
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import au.edu.federation.utils.MarshallingUtil;
 import au.edu.federation.utils.Utils;
 import au.edu.federation.utils.Vec3f;
 
@@ -28,7 +33,7 @@ public class ApplicationPerfTest
 	public TemporaryFolder folder = new TemporaryFolder();
 	
 	@Test
-	public void runTests() throws IOException
+	public void runTests() throws IOException, JAXBException
 	{	
 		System.out.println("---------- Caliko CPU Performance Analysis ----------");
 		
@@ -45,7 +50,7 @@ public class ApplicationPerfTest
 		writer.close();		
 	}
 	
-	public static void performTest(int testNumber)
+	private void performTest(int testNumber) throws IOException, JAXBException
 	{
 		// Set a fixed random seed for repeatability across cycles
 		Utils.setSeed(123);
@@ -124,10 +129,22 @@ public class ApplicationPerfTest
 			System.out.println("Average solve duration (Milliseconds): " + averageMS);			
 			writer.println(chain.getNumBones() + "\t" + averageMS);
 		}
-		System.out.println("*** Test completed. ***");		
+		System.out.println("*** Test completed. ***");
+		
+		assertChain(chain, testNumber);
 	}
 	
-	static double solveChain(FabrikChain3D chain, int numIterations)
+	private void assertChain(FabrikChain3D chain, int testNumber) throws IOException, JAXBException {
+		MarshallingUtil.marshall(chain, new FileOutputStream(folder.newFile("perftest-marshalled-" + testNumber + ".xml")));
+		
+		FabrikChain3D presavedChain = MarshallingUtil.unmarshallChain(
+			ApplicationPerfTest.class.getResourceAsStream("/perftest-presaved-marshalled-" + testNumber + ".xml"),
+			FabrikChain3D.class);
+		
+		Assert.assertEquals(chain, presavedChain);
+	}
+	
+	private double solveChain(FabrikChain3D chain, int numIterations)
 	{
 		// Get half the length of the chain (to ensure target can be reached)
 		float len = chain.getChainLength() / 2.0f;
