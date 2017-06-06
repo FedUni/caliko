@@ -101,6 +101,7 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 	 * 
 	 * @default 180.0f.
 	 */
+	@XmlAttribute(name="rotorConstraintDegrees")
 	private float mRotorConstraintDegs = MAX_CONSTRAINT_ANGLE_DEGS;
 
 	/**
