@@ -40,6 +40,39 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+		    <executions>
+		      <execution>
+            <id>default-1.7</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <phase>compile</phase>
+		        <configuration>
+              <source>1.7</source>
+              <target>1.7</target>
+		          <outputDirectory>${project.build.outputDirectory}_jdk7</outputDirectory>
+		        </configuration>
+		      </execution>
+		    </executions>
+		  </plugin>
+		  <plugin>
+		    <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>1.7</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classesDirectory>${project.build.outputDirectory}_jdk7</classesDirectory>
+              <classifier>jdk7</classifier>
+            </configuration>
+          </execution>
+        </executions>		    
+		  </plugin>               
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
       </plugin>    
       <plugin>
