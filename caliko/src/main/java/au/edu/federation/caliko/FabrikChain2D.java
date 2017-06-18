@@ -865,17 +865,27 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 					mChain.get(loop-1).setEndLocation(newStartLocation);
 				}
 			}
-			else // If we are working on the end effector bone (which we do not constrain during this forward pass)...
+			else // If we are working on the end effector bone ...
 			{
 				// Snap the end effector's end location to the target
 				mChain.get(loop).setEndLocation(target);
 				
 				// Get the UV between the target / end-location (which are now the same) and the start location of this bone
 				Vec2f thisBoneOuterToInnerUV = mChain.get(loop).getDirectionUV().negated();
+				
+				// Get the outer-to-inner unit vector of the bone further out
+				Vec2f innerBoneOuterToInnerUV = mChain.get(loop-1).getDirectionUV().negated();
+				
+				// Constrain the angle between the outer bone and this bone.
+				// Note: On the forward pass we constrain to the limits imposed by the first joint of the outer bone.
+				float clockwiseConstraintDegs     = mChain.get(loop-1).getJoint().getClockwiseConstraintDegs();
+				float antiClockwiseConstraintDegs = mChain.get(loop-1).getJoint().getAnticlockwiseConstraintDegs();
+				Vec2f constrainedUV = Vec2f.getConstrainedUV( innerBoneOuterToInnerUV, thisBoneOuterToInnerUV, clockwiseConstraintDegs, antiClockwiseConstraintDegs);				
+				
 								
 				// Calculate the new start joint location as the end joint location plus the outer-to-inner direction UV
 				// multiplied by the length of the bone.
-				Vec2f newStartLocation = mChain.get(loop).getEndLocation().plus( thisBoneOuterToInnerUV.times(boneLength) );
+				Vec2f newStartLocation = mChain.get(loop).getEndLocation().plus( constrainedUV.times(boneLength) );
 				
 				// Set the new start joint location for this bone to be new start location...
 				mChain.get(loop).setStartLocation(newStartLocation);
