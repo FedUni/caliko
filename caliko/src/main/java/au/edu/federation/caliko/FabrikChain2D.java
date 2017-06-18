@@ -875,6 +875,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 				
 				Vec2f constrainedUV;
 				if(loop > 0) {
+					// The end-effector bone is NOT the basebone as well
 					// Get the inner-to-outer unit vector of the bone further in
 					Vec2f innerBoneInnerToOuterUV = mChain.get(loop-1).getDirectionUV().negated();
 					
@@ -884,6 +885,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 					float antiClockwiseConstraintDegs = mChain.get(loop-1).getJoint().getAnticlockwiseConstraintDegs();
 					constrainedUV = Vec2f.getConstrainedUV( innerBoneInnerToOuterUV, thisBoneOuterToInnerUV, clockwiseConstraintDegs, antiClockwiseConstraintDegs);				
 				} else {
+					// There is only one bone in the chain, and the bone is both the basebone and the end-effector bone.
 					constrainedUV = thisBoneOuterToInnerUV;
 				}
 								
