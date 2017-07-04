@@ -1218,6 +1218,8 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * <li>We successfully solve for distance, or</li>
 	 * <li>We grind to a halt (i.e. low iteration change compared to previous solution).</li>
 	 * </ul>
+	 *  
+	 * The solution may NOT change we cannot improve upon the calculated distance between the new target location and the existing solution.
 	 * 
 	 * @param newTarget	The target location to solve this IK chain for.
 	 * 
@@ -1232,6 +1234,22 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 		if ( mLastTargetLocation.approximatelyEquals(newTarget, 0.001f) && mLastBaseLocation.approximatelyEquals(mBaseLocation, 0.001f) )
 		{
 			return mCurrentSolveDistance;
+		}
+		
+		// Keep starting solutions and distance
+		float startingDistance;
+		List<FabrikBone2D> startingSolution = null;
+		
+		// If the base location of a chain hasn't moved then we may opt to keep the current solution if our 
+		// best new solution is worse...
+		if (mLastBaseLocation.approximatelyEquals(mBaseLocation, 0.001f))
+		{			
+			startingDistance  = Vec2f.distanceBetween(mChain.get(mChain.size() - 1).getEndLocation(), newTarget);
+			startingSolution = this.cloneChainVector();
+		}
+		else // Base has changed? Then we have little choice but to recalc the solution and take that new solution.
+		{
+			startingDistance = Float.MAX_VALUE;
 		}
 		
 		// Not the same target? Then we must solve the chain for the new target.
@@ -1273,9 +1291,18 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 			lastPassSolveDistance = solveDistance;
 		}
 		
-		// At this point the best distance and best solution are our stored best values, so set them accordingly on this chain
-		mCurrentSolveDistance = bestSolveDistance;
-		mChain                = bestSolution;		
+		// Did we get a solution that's better than the starting solution's to the new target location?
+		if (bestSolveDistance < startingDistance)
+		{
+			// If so, set the newly found solve distance and solution as the best found.
+			mCurrentSolveDistance = bestSolveDistance;
+			mChain                = bestSolution;
+		}
+		else // Did we make things worse? Then we keep our starting distance and solution!
+		{
+			mCurrentSolveDistance = startingDistance;
+			mChain                = startingSolution; 
+		}				
 		
 		// Update our last base and target locations so we know whether we need to solve for this start/end configuration next time
 		mLastBaseLocation.set(mBaseLocation);
@@ -1284,6 +1311,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 		// Finally, return the solve distance we ended up with
 		return mCurrentSolveDistance;
 	}
+
 	
 	/**
 	 * Return the relative constraint UV about which this bone connects to a bone in another chain.
