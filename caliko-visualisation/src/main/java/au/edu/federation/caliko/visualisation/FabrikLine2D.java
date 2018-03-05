@@ -3,6 +3,7 @@ package au.edu.federation.caliko.visualisation;
 import au.edu.federation.caliko.FabrikBone2D;
 import au.edu.federation.caliko.FabrikChain2D;
 import au.edu.federation.caliko.FabrikChain2D.BaseboneConstraintType2D;
+import au.edu.federation.caliko.FabrikJoint2D.ConstraintCoordinateSystem;
 import au.edu.federation.caliko.FabrikStructure2D;
 import au.edu.federation.utils.Colour4f;
 import au.edu.federation.utils.Mat4f;
@@ -190,7 +191,15 @@ public class FabrikLine2D
 				// If we're not working on the base bone then we draw the constraints
 				// with regard to the direction of the previous bone in the chain.
 				// ...then get the base bone constraint unit vector
-				Vec2f baselineUV = chain.getBone(loop - 1).getDirectionUV();
+				Vec2f baselineUV;
+				if (chain.getBone(loop).getJointConstraintCoordinateSystem() == ConstraintCoordinateSystem.LOCAL)
+				{
+					baselineUV = chain.getBone(loop - 1).getDirectionUV();
+				}
+				else // Global constraint UV
+				{
+					baselineUV = chain.getBone(loop).getGlobalConstraintUV();
+				}
 				
 				// Draw the anti-clockwise constraint in red
 				// Note: anti-clockwise rotation angles are positive

@@ -7,7 +7,7 @@ public class CalikoDemoStructure2DFactory {
 	
 	public static CalikoDemoStructure2D makeDemoStructure2D(int demoNumber) throws ReflectiveOperationException {
 		CalikoDemoStructure2DEnum aDemo = findEnumForDemoNumber(demoNumber);
-		if(aDemo !=null ) {
+		if(aDemo != null) {
 			return aDemo.getClazz().newInstance();
 		}
 		return null;
@@ -31,8 +31,8 @@ public class CalikoDemoStructure2DFactory {
 		MULTIPLECONNECTEDCHAINS_LOCALRELATIVEBASEBONE_CONSTRAINTS(MultipleConnectedChainsLocalRelativeBaseBoneConstraints.class),
 		MULTIPLECONNECTEDCHAINS_LOCALABSOLUTEBASEBONE_CONSTRAINTS(MultipleConnectedChainsLocalAbsoluteBaseBoneConstraints.class),
 		VARYINGOFFSET_FIXEDCHAINS_WITHEMBEDDED_TARGETS(VaryingOffsetFixedChainsWithEmbeddedTargets.class),
-		MULTIPLENESTEDCHAINS_SEMIRANDOM(MultipleNestedChainsSemiRandom.class);
-		
+		MULTIPLENESTEDCHAINS_SEMIRANDOM(MultipleNestedChainsSemiRandom.class),
+		WORLDSPACE_BONE_CONSTRAINTS(WorldSpaceBoneConstraints.class);		
 		
 		Class<? extends CalikoDemoStructure2D> clazz;
 		

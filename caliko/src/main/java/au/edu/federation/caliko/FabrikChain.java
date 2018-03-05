@@ -40,6 +40,21 @@ public interface FabrikChain<B extends FabrikBone<V,J>, V extends Vectorf, J ext
 	 */
 	void addConsecutiveBone(V directionUV, float length);
 	
+	/**
+	 * Add a pre-created bone to the end of this IK chain.
+	 * <p>
+	 * This method can only be used when the IK chain contains a basebone, as without it we do not
+	 * have a start location for this bone (i.e. the end location of the previous bone).
+	 * <p>
+	 * If this method is executed on a chain which does not contain a basebone then a {@link RuntimeException}
+	 * is thrown.
+	 * <p>
+	 * If this method is provided with a direction unit vector of zero, or a bone length of zero then then an
+	 * {@link IllegalArgumentException} is thrown.
+	 * 
+	 * @param	bone		The bone to add to the end of the chain.
+	 */
+	void addConsecutiveBone(B bone);	
 	
 	/**
 	 * Return the basebone constraint type of this chain.
@@ -338,6 +353,6 @@ public interface FabrikChain<B extends FabrikBone<V,J>, V extends Vectorf, J ext
 	 * length of each bone is recalculated during the process to ensure that our chain
 	 * length is accurate.
 	 */
-	void updateChainLength();	
+	void updateChainLength();		
 
 }

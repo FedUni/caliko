@@ -90,6 +90,19 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	@XmlAttribute(name="length")
 	private float mLength;
 
+	@XmlAttribute(name="globalConstraintUV")
+	private Vec2f mGlobalConstraintUV = new Vec2f(1.0f, 0.0f);
+	
+	public Vec2f getGlobalConstraintUV()
+	{
+		return mGlobalConstraintUV;
+	}
+	
+	public void setGlobalConstraintUV(Vec2f v)
+	{
+		this.mGlobalConstraintUV = v;
+	}
+	
 	/**
 	 * The colour used to draw the bone.
 	 * <p>
@@ -269,9 +282,10 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 		mColour.set(source.mColour);
 		
 		// Set the remaining properties by value via assignment
-		mName      = source.mName;
-		mLength    = source.mLength;
-		mLineWidth = source.mLineWidth;		
+		mName               = source.mName;
+		mLength             = source.mLength;
+		mLineWidth          = source.mLineWidth;		
+		mGlobalConstraintUV = source.mGlobalConstraintUV;
 	}
 	
 	// ---------- Methods ----------
@@ -419,6 +433,27 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 */
 	public String getName()	{ return mName; }
 		
+	
+	/**
+	 * Return the coordinate system to use for any constraints applied to the joint of this bone.
+	 *
+	 * @return	The coordinate system to use for any constraints applied to the joint of this bone.
+	 */
+	public FabrikJoint2D.ConstraintCoordinateSystem getJointConstraintCoordinateSystem()
+	{
+		return this.mJoint.getConstraintCoordinateSystem();
+	}
+	
+	/**
+	 * Set the coordinate system to use for any constraints applied to the joint of this bone.
+	 *
+	 * @param	coordSystem		The coordinate system to use for any constraints applied to the joint of this bone.
+	 */
+	public void setJointConstraintCoordinateSystem(FabrikJoint2D.ConstraintCoordinateSystem coordSystem)
+	{
+		this.mJoint.setConstraintCoordinateSystem(coordSystem);
+	}	
+	
 	/**
 	 * Return a concise, human readable description of this FabrikBone2D as a String.
 	 * 

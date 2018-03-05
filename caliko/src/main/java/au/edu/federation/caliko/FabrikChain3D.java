@@ -15,6 +15,7 @@ import au.edu.federation.caliko.FabrikJoint3D.JointType;
 import au.edu.federation.utils.Colour4f;
 import au.edu.federation.utils.Mat3f;
 import au.edu.federation.utils.Utils;
+import au.edu.federation.utils.Vec2f;
 import au.edu.federation.utils.Vec3f;
 
 /** Class to represent a 3D Inverse Kinematics (IK) chain that can be solved for a given target using the FABRIK algorithm.
@@ -27,7 +28,7 @@ import au.edu.federation.utils.Vec3f;
  */
 @XmlRootElement(name="chain3d")
 @XmlAccessorType(XmlAccessType.NONE)
-public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint3D,BaseboneConstraintType3D>
+public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoint3D, BaseboneConstraintType3D>
 {	
 	private static final String NEW_LINE = System.lineSeparator();
 	
@@ -406,6 +407,48 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D,Vec3f,FabrikJoint
 		{
 			throw new RuntimeException("You cannot add the basebone as a consecutive bone as it does not provide a start location. Use the addBone() method instead.");
 		}
+	}
+	
+	/**
+	 * Add a pre-created consecutive bone to the end of this IK chain.
+	 * <p>
+	 * This method can only be used when the IK chain contains a basebone, as without it we do not
+	 * have a start location for this bone (i.e. the end location of the previous bone).
+	 * <p>
+	 * If this method is executed on a chain which does not contain a basebone then a {@link RuntimeException}
+	 * is thrown.
+	 * <p>
+	 * If this method is provided with a direction unit vector of zero, or a bone length of zero then then an
+	 * {@link IllegalArgumentException} is thrown.
+	 * 
+	 * @param	bone		The bone to add to the end of the chain.
+	 */
+	public void addConsecutiveBone(FabrikBone3D bone)
+	{
+		// Validate the direction unit vector - throws an IllegalArgumentException if it has a magnitude of zero
+		Vec3f dir = bone.getDirectionUV();
+		Utils.validateDirectionUV(dir);
+		
+		// Validate the length of the bone - throws an IllegalArgumentException if it is not a positive value
+		float len = bone.liveLength();
+		Utils.validateLength(len);
+			
+		// If we have at least one bone already in the chain...
+		if (!this.mChain.isEmpty())
+		{		
+			// Get the end location of the last bone, which will be used as the start location of the new bone
+			Vec3f prevBoneEnd = mChain.get(this.mChain.size()-1).getEndLocation();
+						
+			bone.setStartLocation(prevBoneEnd);
+			bone.setEndLocation( prevBoneEnd.plus( dir.times(len)) );
+					
+			// Add a bone to the end of this IK chain
+			addBone(bone);
+		}
+		else // Attempting to add a relative bone when there is no base bone for it to be relative to?
+		{
+			throw new RuntimeException("You cannot add the base bone to a chain using this method as it does not provide a start location.");
+		}		
 	}
 
 	/**

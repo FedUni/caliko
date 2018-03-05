@@ -77,6 +77,23 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	 */
 	@XmlAttribute(name="anticlockwiseConstraintDegrees")
 	private float mAnticlockwiseConstraintDegs = MAX_2D_CONSTRAINT_ANGLE_DEGS;
+	
+	
+	/**
+	 * ConstraintCoordinateSystem	The coordinate system within which to interpret constraint directions.
+	 * <p>
+	 * Options are LOCAL (default), where constraints are relative to the direction of the previous bone
+	 * in the chain, or GLOBAL - where constraints are in the world-space coordinate system.
+	 */
+	public static enum ConstraintCoordinateSystem { LOCAL, GLOBAL };
+	
+	/**
+	 * mConstraintCoordinateSystem	The coordinate system within which to interpret constraint directions for t.
+	 * <p>
+	 * Options are LOCAL (default), where constraints are relative to the direction of the previous bone
+	 * in the chain, or GLOBAL - where constraints are in the world-space coordinate system.
+	 */
+	private ConstraintCoordinateSystem mConstraintCoordinateSystem = ConstraintCoordinateSystem.LOCAL;	
 
 	// ---------- Constructors ----------
 	
@@ -99,10 +116,11 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	 * @param clockwiseConstraintDegs		The clockwise constraint angle specified in degrees.
 	 * @param antiClockwiseConstraintDegs	The anticlockwise constraint angle specified in degrees.
 	 */
-	public FabrikJoint2D(float clockwiseConstraintDegs, float antiClockwiseConstraintDegs)
+	public FabrikJoint2D(float clockwiseConstraintDegs, float antiClockwiseConstraintDegs, ConstraintCoordinateSystem constraintCoordSystem)
 	{
 		setClockwiseConstraintDegs(clockwiseConstraintDegs);
 		setAnticlockwiseConstraintDegs(antiClockwiseConstraintDegs);
+		mConstraintCoordinateSystem = constraintCoordSystem;
 	}
 
 	// ---------- Methods ----------
@@ -116,6 +134,7 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	{	
 		setClockwiseConstraintDegs(sourceJoint.mClockwiseConstraintDegs);
 		setAnticlockwiseConstraintDegs(sourceJoint.mAnticlockwiseConstraintDegs);
+		this.mConstraintCoordinateSystem = sourceJoint.mConstraintCoordinateSystem;
 	}
 
 	/**
@@ -132,7 +151,7 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 		} else if (angleDegs > MAX_2D_CONSTRAINT_ANGLE_DEGS) { 
 		  mClockwiseConstraintDegs = MAX_2D_CONSTRAINT_ANGLE_DEGS; 
 		} else {
-	    mClockwiseConstraintDegs = angleDegs;
+	      mClockwiseConstraintDegs = angleDegs;
 		}
 	}
  
@@ -152,7 +171,7 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 		else if (angleDegs > MAX_2D_CONSTRAINT_ANGLE_DEGS) { 
 		  mAnticlockwiseConstraintDegs = MAX_2D_CONSTRAINT_ANGLE_DEGS; 
 		} else {
-	    mAnticlockwiseConstraintDegs = angleDegs;
+	      mAnticlockwiseConstraintDegs = angleDegs;
 		}
 	}
 	
@@ -169,6 +188,26 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	 * @return	The anticlockwise constraint angle of this joint in degrees.
 	 */
 	public float getAnticlockwiseConstraintDegs() {	return mAnticlockwiseConstraintDegs; }
+	
+	/**
+	 * Return the coordinate system to use for any constraints applied to the joint of this bone.
+	 *
+	 * @return	The coordinate system to use for any constraints applied to the joint of this bone.
+	 */
+	public ConstraintCoordinateSystem getConstraintCoordinateSystem()
+	{
+		return mConstraintCoordinateSystem;
+	}
+	
+	/**
+	 * Set the coordinate system to use for any constraints applied to the joint of this bone.
+	 *
+	 * @param	coordSystem		The coordinate system to use for any constraints applied to the joint of this bone.
+	 */
+	public void setConstraintCoordinateSystem(ConstraintCoordinateSystem coordSystem)
+	{
+		mConstraintCoordinateSystem = coordSystem;
+	}
 
   @Override
   public int hashCode() {
