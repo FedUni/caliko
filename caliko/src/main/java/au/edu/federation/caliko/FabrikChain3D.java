@@ -1476,8 +1476,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 				// Get the outer-to-inner unit vector of this bone
 				Vec3f thisBoneOuterToInnerUV = thisBone.getDirectionUV().negated();
 				
-				// Get the joint type for this bone and handle constraints on thisBoneInnerToOuterUV
-				
+				// Get the joint type for this bone and handle constraints on thisBoneInnerToOuterUV				
 				if (thisBoneJointType == JointType.BALL)
 				{	
 					// Constrain to relative angle between this bone and the outer bone if required
@@ -1787,8 +1786,8 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 						Vec3f thisBoneInnerToOuterUV = thisBone.getDirectionUV().projectOntoPlane(hingeRotationAxis);
 								
 						// If we have a global hinge which is not freely rotating then we must constrain about the reference axis
-						if ( !( Utils.approximatelyEquals(cwConstraintDegs , FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGS, 0.01f) &&
-							    Utils.approximatelyEquals(acwConstraintDegs, FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGS, 0.01f) ) )
+						if ( !( Utils.approximatelyEquals(cwConstraintDegs , -FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGS, 0.01f) &&
+							    Utils.approximatelyEquals(acwConstraintDegs,  FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGS, 0.01f) ) )
 						{
 							// Grab the hinge reference axis and calculate the current signed angle between it and our bone direction (about the hinge
 							// rotation axis). Note: ACW rotation is positive, CW rotation is negative.
@@ -1825,9 +1824,9 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 						// Get the inner-to-outer direction of this bone and project it onto the global hinge rotation axis
 						Vec3f thisBoneInnerToOuterUV = thisBone.getDirectionUV().projectOntoPlane(hingeRotationAxis);
 						
-						//If we have a local hinge which is not freely rotating then we must constrain about the reference axis
-						if ( !( Utils.approximatelyEquals(cwConstraintDegs , FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGS, 0.01f) &&
-							    Utils.approximatelyEquals(acwConstraintDegs, FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGS, 0.01f) ) )
+						// If we have a local hinge which is not freely rotating then we must constrain about the reference axis
+						if ( !( Utils.approximatelyEquals(cwConstraintDegs , -FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGS, 0.01f) &&
+							    Utils.approximatelyEquals(acwConstraintDegs,  FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGS, 0.01f) ) )
 						{
 							// Grab the hinge reference axis and calculate the current signed angle between it and our bone direction (about the hinge
 							// rotation axis). Note: ACW rotation is positive, CW rotation is negative.
