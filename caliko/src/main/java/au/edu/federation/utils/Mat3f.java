@@ -15,7 +15,7 @@ import java.text.DecimalFormat;
  * mXX properties are publicly accessible for performance reasons.
  * 
  * @author Al Lansley
- * @version 0.3 - 16/12/2015
+ * @version 0.4 - 28/10/2018
  */
 
 public class Mat3f
@@ -138,6 +138,7 @@ public class Mat3f
 	
 	public static Mat3f createRotationMatrix(Vec3f referenceDirection)
 	{	
+		/*** OLD VERSION 1.3.4 and earlier
 		Vec3f xAxis;
 		Vec3f yAxis;
 		Vec3f zAxis = referenceDirection.normalise();
@@ -157,6 +158,22 @@ public class Mat3f
 		}
 		 
 		return new Mat3f(xAxis, yAxis, zAxis);
+		***/
+
+		/*** NEW VERSION - 1.3.5 onwards ***/
+		Mat3f rotMat = new Mat3f();
+
+		// Bone direction is bang on the Y-axis singularity? Give it a tiny nudge because you can't cross product two identical vectors.
+		if (referenceDirection.y == 1.0f) {
+			referenceDirection.y -= 0.0001f;
+			referenceDirection.normalise();
+		}
+
+		rotMat.setZBasis( referenceDirection );		
+		rotMat.setXBasis( Vec3f.crossProduct( referenceDirection, new Vec3f(0.0f, 1.0f, 0.0f) ).normalised() );
+		rotMat.setYBasis( Vec3f.crossProduct( rotMat.getXBasis(), rotMat.getZBasis() ).normalised() );
+
+		return rotMat;
 	}
 	
 //	THIS IS WAAAAAY BETTER THAN THE COMMENTED OUT ABOVE - BUT I THINK REFERENCE ANGLES **MUST** BE HONOURED IN THE

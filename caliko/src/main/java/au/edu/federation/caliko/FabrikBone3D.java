@@ -19,7 +19,7 @@ import au.edu.federation.utils.Vec3f;
  * the rotation of the bone with regard to a previous bone in an IK chain either as a ball joint or as
  * a hinge joint constrained about a local or global axis.
  * 
- * @version 0.3.1 - 20/07/2016
+ * @version 0.3.2 - 28/10/2018
  * @see FabrikJoint3D
  */
 @XmlRootElement(name="bone3d")
@@ -454,7 +454,28 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	{
 		return Vec3f.getDirectionUV(mStartLocation, mEndLocation);
 	}
-	
+
+
+	/**
+	 * Get the global pitch of this bone with regard to the X-Axis. Pitch returned is in the range -179.9f to 180.0f.
+	 * 
+	 * @return  The global pitch of this bone in degrees.
+	 */
+	public float getGlobalPitchDegs()
+	{
+		return  Vec3f.getDirectionUV(mStartLocation, mEndLocation).getGlobalPitchDegs();
+	}
+
+	/**
+	 * Get the global yaw of this bone with regard to the Y-Axis. Yaw returned is in the range -179.9f to 180.0f.
+	 * 
+	 * @return  The global yaw of this bone in degrees.
+	 */
+	public float getGlobalYawDegs()
+	{
+		return  Vec3f.getDirectionUV(mStartLocation, mEndLocation).getGlobalYawDegs();
+	}
+
 	/**
 	 * Set the line width with which to draw this bone.
 	 * <p>

@@ -13,8 +13,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 /**
  * Class  : Simple vec3 class with common operations and utility / helper methods.
  *
- * Version: 0.7
- * Date   : 29/12/2015
+ * Version: 0.8
+ * Date   : 28/10/2018
  */
 
 @XmlAccessorType(XmlAccessType.NONE)
@@ -29,6 +29,11 @@ public class Vec3f implements Vectorf<Vec3f>
 	// Conversion constants to/from degrees and radians
 	private static final float DEGS_TO_RADS = (float)Math.PI / 180.0f;
 	private static final float RADS_TO_DEGS = 180.0f / (float)Math.PI;
+
+	// Cardinal axes
+	private static Vec3f X_AXIS = new Vec3f(1.0f, 0.0f, 0.0f);
+	private static Vec3f Y_AXIS = new Vec3f(0.0f, 1.0f, 0.0f);
+	private static Vec3f Z_AXIS = new Vec3f(0.0f, 0.0f, 1.0f);
 	
 	// ----- Properties -----
 
@@ -536,6 +541,34 @@ public class Vec3f implements Vectorf<Vec3f>
             return vecToLimit.normalised();
         }
     }
+
+	/**
+	 * Return the global pitch of this vector about the global X-Axis. The returned value is within the range -179.9f..180.0f 
+degrees.
+	 *
+	 * @return	The pitch of the vector in degrees.
+	 **/
+	public float getGlobalPitchDegs()
+	{
+		Vec3f xProjected = this.projectOntoPlane(X_AXIS);
+		float pitch = Vec3f.getAngleBetweenDegs( Z_AXIS.negated(), xProjected);
+		return xProjected.y < 0.0f ? -pitch : pitch;
+	}
+
+	/**
+	 * Return the global yaw of this vector about the global Y-Axis. The returned value is within the range -179.9f..180.0f 
+degrees.
+	 *
+	 * @return	The yaw of the vector in degrees.
+	 **/
+	public float getGlobalYawDegs()
+	{
+		Vec3f yProjected = this.projectOntoPlane(Y_AXIS);
+		float yaw = Vec3f.getAngleBetweenDegs( Z_AXIS.negated(), yProjected);
+		return yProjected.x < 0.0f ? -yaw : yaw;
+	}
+
+
 
     /**
      * Rotate a Vec3f about the world-space X-axis by a given angle specified in radians.

@@ -14,7 +14,7 @@ import au.edu.federation.caliko.FabrikBone3D;
 import au.edu.federation.caliko.FabrikChain3D;
 
 /**
- * @author jsalvo
+ * @author jsalvo / alansley
  */
 public class MarshallingUtilTest {
 	
@@ -55,6 +55,38 @@ public class MarshallingUtilTest {
 		FabrikChain3D unmarhsalledChain = MarshallingUtil.unmarshallChain(is, FabrikChain3D.class);
 		
 		Assert.assertNotNull(unmarhsalledChain);
+	}
+
+	/** Test for pitch / yaw functionality 
+	 */
+	@Test
+	public void testPitchAndYaw() throws Exception
+	{
+		Vec3f X_AXIS = new Vec3f(1.0f, 0.0f, 0.0f);
+		Vec3f Y_AXIS = new Vec3f(0.0f, 1.0f, 0.0f);
+
+		Vec3f boneDirection = new Vec3f(0.0f, 0.0f, -1.0f); // Bone direction (obtain via 'getDirectionUV()') points directly INTO screen
+		
+		// Test pitch around global X-axis in 30 degree increments		
+		System.out.println("---------- Pitch ----------");
+		float pitch = 0.0f;
+		for (int loop = 0; loop < 12; loop++)
+		{	
+			boneDirection = Vec3f.rotateXDegs(boneDirection, 30.0f).normalise();
+			pitch = boneDirection.getGlobalPitchDegs();			
+			System.out.println("After " + (loop + 1) * 30 + " degrees rotation bone pitch is: " + pitch + " degrees. Direction: " + boneDirection);
+		}
+		
+		// Test yaw around global Y-axis in 30 degree increments
+		System.out.println("\n---------- Yaw ----------");
+		float yaw = 0.0f;		
+		for (int loop = 0; loop < 12; loop++)
+		{	
+			// Rotate bone by 30 degrees around Y-axis
+			boneDirection = Vec3f.rotateYDegs(boneDirection, 30.0f).normalise();
+			yaw = boneDirection.getGlobalYawDegs();
+			System.out.println("After " + (loop + 1) * 30 + " degrees rotation bone yaw is: " + yaw + " degrees. Direction: " + boneDirection);
+		}
 	}
 
 	void solveChain(FabrikChain3D chain) throws Exception {

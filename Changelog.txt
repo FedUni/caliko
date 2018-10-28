@@ -1,3 +1,8 @@
+1.3.5 (2018/10/28)
+- Added functions to get the global pitch & yaw of vectors or bones to the respective Vec3f and FabrikBone3D classes.
+- Modified Mat3f createRotationMatrix method to use a technique that results in less roll / 'spin' of the bones.
+- Updated user docs to mention said pitch & yaw values.
+
 1.2
 - [MAJOR] Added embedded targets for 2D/3D chains so that chains in the same structure do not have to all use/be-solved-for the same target location.
   By enabling embedded target mode for a chain, when it's time to solve it the embedded target is used rather than any provided target. See
