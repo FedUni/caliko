@@ -43,7 +43,7 @@ To use the library in your own Maven project, declare the following dependencies
     <dependency>
       <groupId>au.edu.federation.caliko</groupId>
       <artifactId>caliko</artifactId>
-      <version>1.3.2</version>
+      <version>1.3.5</version>
     </dependency> 
 ```
 
@@ -53,7 +53,7 @@ To use the library in your own Maven project, declare the following dependencies
     <dependency>
       <groupId>au.edu.federation.caliko.visualisation</groupId>
       <artifactId>caliko-visualisation</artifactId>
-      <version>1.3.2</version>
+      <version>1.3.5</version>
     </dependency> 
 ```
 
