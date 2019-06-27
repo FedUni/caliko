@@ -16,11 +16,9 @@ The library is a Maven multi-module project with the following modules:
 
 The **caliko** module contains the core IK portion of the library and is capable of running without any visualisation or external dependencies. 
 
-The **caliko-visualisation** module contains the optional visualisation component of the library which provides the ability to draw various IK structures/chains/bones and depends on the 
-core caliko functionality as well as the LWJGL3 library.
+The **caliko-visualisation** module contains the optional visualisation component of the library which provides the ability to draw various IK structures/chains/bones and depends on the core caliko functionality as well as the LWJGL 3.2.2 library.
 
-The **caliko-demo** module contains a demonstration of the library utilising both 2D and 3D IK chains in various configurations. It requires the caliko, caliko-visualisation and LWJGL3 
-libraries.
+The **caliko-demo** module contains a demonstration of the library utilising both 2D and 3D IK chains in various configurations. It requires the caliko, caliko-visualisation and LWJGL 3.2.2 libraries.
 
 ## Build and Setup
 
@@ -43,7 +41,7 @@ To use the library in your own Maven project, declare the following dependencies
     <dependency>
       <groupId>au.edu.federation.caliko</groupId>
       <artifactId>caliko</artifactId>
-      <version>1.3.2</version>
+      <version>1.3.6</version>
     </dependency> 
 ```
 
@@ -53,7 +51,7 @@ To use the library in your own Maven project, declare the following dependencies
     <dependency>
       <groupId>au.edu.federation.caliko.visualisation</groupId>
       <artifactId>caliko-visualisation</artifactId>
-      <version>1.3.2</version>
+      <version>1.3.6</version>
     </dependency> 
 ```
 
