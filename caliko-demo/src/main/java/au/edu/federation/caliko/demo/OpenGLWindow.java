@@ -83,7 +83,7 @@ public class OpenGLWindow
     	glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
  
         // Initialize GLFW. Most GLFW functions will not work before doing this.
-        if (glfwInit() != GL_TRUE) { throw new IllegalStateException("Unable to initialize GLFW"); }
+        if ( !glfwInit() ) { throw new IllegalStateException("Unable to initialize GLFW"); }
  
         // ----- Specify window hints -----
         // Note: Window hints must be specified after glfwInit() (which resets them) and before glfwCreateWindow where the context is created.
@@ -91,9 +91,9 @@ public class OpenGLWindow
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // We want a core profile without any deprecated functionality...
         //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);         // ...however we do NOT want a forward compatible profile as they've removed line widths!
-        glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);                       // We want the window to be resizable
-        glfwWindowHint(GLFW_VISIBLE, GL_TRUE);                         // We want the window to be visible (false makes it hidden after creation)
-        glfwWindowHint(GLFW_FOCUSED, GL_TRUE);                         // We want the window to take focus on creation
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);                       // We want the window to be resizable
+        glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);                         // We want the window to be visible (false makes it hidden after creation)
+        glfwWindowHint(GLFW_FOCUSED, GLFW_TRUE);                         // We want the window to take focus on creation
         glfwWindowHint(GLFW_SAMPLES, 4);                               // Ask for 4x anti-aliasing (this doesn't mean we'll get it, though) 
                 
         // Create the window
@@ -144,7 +144,7 @@ public class OpenGLWindow
     }
     
     // Constructor with some sensible projection matrix values hard-coded
-    public OpenGLWindow(int width, int height) { this(width, height, 35.0f, 1.0f, 5000.0f, 120.0f);                    }
+    public OpenGLWindow(int width, int height) { this(width, height, 35.0f, 1.0f, 5000.0f, 120.0f); }
 	
     /** Return a calculated ModelViewProjection matrix.
      * <p>
@@ -178,14 +178,18 @@ public class OpenGLWindow
 	/** Destroy the window, finish up glfw and release all callback methods. */
 	public void cleanup()
 	{
-		glfwDestroyWindow(mWindowId);
-		glfwTerminate();
+		// Free the window callbacks and destroy the window
+		//glfwFreeCallbacks(mWindowId);
+		cursorPosCallback.close();
+		mouseButtonCallback.close();
+		windowSizeCallback.close();
+        keyCallback.close();   
 		
-		cursorPosCallback.release();
-		mouseButtonCallback.release();
-		windowSizeCallback.release();
-        keyCallback.release();
-        errorCallback.release();   
+		glfwDestroyWindow(mWindowId);
+		
+		// Terminate GLFW and free the error callback
+		glfwTerminate();
+		glfwSetErrorCallback(null).free();
 	}
 	
 	// Setup keyboard, mouse cursor, mouse button and window resize callback methods.
@@ -260,7 +264,7 @@ public class OpenGLWindow
             			
             		// Close the window
             		case GLFW_KEY_ESCAPE:
-            			glfwSetWindowShouldClose(window, GL_TRUE);
+            			glfwSetWindowShouldClose(window, true);
             			break;
             			
             		// Cycle through / switch between 2D and 3D demos with the up and down cursors

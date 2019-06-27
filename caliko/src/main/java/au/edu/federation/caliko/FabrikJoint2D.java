@@ -1,9 +1,6 @@
 package au.edu.federation.caliko;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /** 
  * Class to represent a joint used to constrain the relative angle between FabrikBone2D objects in an IK chain.
@@ -36,12 +33,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  * this separate joint class was created. 
  * 
  * @author Al Lansley
- * @version 0.8 - 16/12/2015
+ * @version 0.9 - 19/06/2019
  */
-@XmlRootElement(name="joint2d")
-@XmlAccessorType(XmlAccessType.NONE)
-public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
+
+public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>, Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	/** The minimum valid constraint angle for both clockwise and anticlockwise rotation is 0 degrees. */
 	public static final float MIN_2D_CONSTRAINT_ANGLE_DEGS = 0.0f;
 
@@ -60,9 +58,8 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	 * is treated as being a negative value as, in accordance with the right-hand rule, when rotating around
 	 * the z-axis (which points outwards from the screen) clockwise rotation is negative.
 	 * 
-	 * @default 180.0f
+	 * The default is 180.0f.
 	 */
-	@XmlAttribute(name="clockwiseConstraintDegrees")
 	private float mClockwiseConstraintDegs = MAX_2D_CONSTRAINT_ANGLE_DEGS;
 
 	/**
@@ -73,9 +70,8 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	 * <p>
 	 *  The valid range of this property is 0.0f degrees to 180.0f degrees.
 	 * 
-	 * @default 180.0f
+	 * The default is 180.0f.
 	 */
-	@XmlAttribute(name="anticlockwiseConstraintDegrees")
 	private float mAnticlockwiseConstraintDegs = MAX_2D_CONSTRAINT_ANGLE_DEGS;
 	
 	
@@ -113,8 +109,10 @@ public class FabrikJoint2D implements FabrikJoint<FabrikJoint2D>
 	 * <p>
 	 * Constraint angles should be specified in the valid range 0.0f to 180.0f inclusive. Values outside of this range will
 	 * be clamped to be within it.
+	 *
 	 * @param clockwiseConstraintDegs		The clockwise constraint angle specified in degrees.
 	 * @param antiClockwiseConstraintDegs	The anticlockwise constraint angle specified in degrees.
+	 * @param constraintCoordSystem			The coordinate system within which the constraints are specified (LOCAL or GLOBAL).
 	 */
 	public FabrikJoint2D(float clockwiseConstraintDegs, float antiClockwiseConstraintDegs, ConstraintCoordinateSystem constraintCoordSystem)
 	{

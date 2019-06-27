@@ -1,14 +1,9 @@
 package au.edu.federation.caliko;
 
+import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import au.edu.federation.caliko.FabrikChain3D.BaseboneConstraintType3D;
 import au.edu.federation.caliko.FabrikJoint3D.JointType;
@@ -24,12 +19,13 @@ import au.edu.federation.utils.Vec3f;
  * keep track of settings related to how we go about solving the IK chain.
  * 
  * @author Al Lansley
- * @version 0.5.2 - 02/06/2017
+ * @version 0.5.3 - 19/06/2019
  */
-@XmlRootElement(name="chain3d")
-@XmlAccessorType(XmlAccessType.NONE)
-public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoint3D, BaseboneConstraintType3D>
-{	
+
+public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoint3D, BaseboneConstraintType3D>, Serializable
+{
+	private static final long serialVersionUID = 1L;
+	
 	private static final String NEW_LINE = System.lineSeparator();
 	
 	/**
@@ -48,10 +44,8 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 	
 	/**
 	 * The core of a FabrikChain3D is a list of FabrikBone3D objects. It is this chain that we attempt to solve for a specified
-	 * target location via the {@link solveForTarget} method.
+	 * target location via the solveForTarget method(s).
 	 */
-	@XmlElementWrapper(name="bones3d")
-	@XmlElement(name="bone3d")		
 	private List<FabrikBone3D> mChain = new ArrayList<>();
 
 	/** 
@@ -63,7 +57,6 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 	 * @see  #setName
 	 * @see  #getName
 	 */
-	@XmlAttribute(name="name")
 	private String mName;
 
 	/** 
@@ -84,21 +77,19 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 	 * performance of the algorithm in situations where we may not be able to solve a given IK chain. Such situations may arise
 	 * when bones in the chain are highly constrained, or when the target is further away than the length of a chain which has
 	 * a fixed base location.
-	 * 
-	 * @see  #setSolveDistanceThreshold(float)
-	 * @see  #maxIterationAttempts
-	 * @see  #minIterationChange
-	 * @see  #setFixedBaseLocation
+	 * <p>
+	 * See {@link #setSolveDistanceThreshold(float) }
+	 * See {@link #mMaxIterationAttempts }
+	 * See {@link #mMinIterationChange }
 	 */
-	@XmlAttribute(name="solveDistanceThreshold")
 	private float mSolveDistanceThreshold = 1.0f;
 
 	/**
 	 * maxIterationAttempts (int)	Specifies the maximum number of attempts that will be performed in order to solve the IK chain.
 	 * If we have not solved the chain to within the solve distance threshold after this many attempts then we accept the best
 	 * solution we have best on solve distance to target.
-	 * 
-	 * @default 20
+	 * <p>
+	 * The default is 20 iteration attempts.
 	 */
 	private int mMaxIterationAttempts  = 20;
 
@@ -107,19 +98,20 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 	 * worthwhile to continue making attempts to solve the IK chain. If this iteration change is not exceeded then we abort any further solve
 	 * attempts and accept the best solution we have based on solve distance to target.
 	 * 
-	 * @default 0.01f
+	 * The default is 0.01f.
 	 */
 	private float mMinIterationChange = 0.01f;
 
 	/**
 	 * chainLength	(float)	The chainLength is the combined length of all bones in this FabrikChain3D object.
-	 *
-	 * When a FabrikBone3D is added or removed from the chain using the {@Link addBone} or {@Link removeBone) methods, then
+	 * <p>
+	 * When a FabrikBone3D is added or removed from the chain using the addBone, addConsecutiveBone or removeBone methods, then
 	 * the chainLength is updated to reflect this.
-	 * @see {@Link addBone}
-	 * @see {@Link removeBone}
+	 * <p>
+	 * See {@link #addBone(FabrikBone3D)}
+	 * See {@link #addConsecutiveBone(FabrikBone3D)}
+	 * See {@link #removeBone(int)}
 	 */
-	@XmlAttribute(name="length")
 	private float mChainLength;
 
 	/** 
@@ -127,13 +119,13 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 	 * <p>
 	 * By default, FabrikChain3D objects are created with a fixed base location, that is the start joint
 	 * of the first bone in the chain is not moved during the solving process. A user may still move this
-	 * base location by calling setFixedBaseLocation(some_location) and the FABRIK algorithm will then
+	 * base location by calling setFixedBaseMode(boolean) and the FABRIK algorithm will then
 	 * honour this new location as the 'fixed' base location.
-	 * 
-	 * @default: Vec3f(0.f, 0.0f)
-	 * @see {@link setFixedBaseLocation}
+	 * <p>
+	 * The default is Vec3f(0.f, 0.0f).
+	 * <p>
+	 * See {@link #setFixedBaseMode(boolean)}
 	 */	
-	@XmlElement(name="baseLocation")
 	private Vec3f mFixedBaseLocation = new Vec3f();
 
 	/** mFixedBaseMode	Whether this FabrikChain3D has a fixed (i.e. immovable) base location.
@@ -142,9 +134,8 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 	 * 'anchors' the base of the chain in place. Optionally, a user may toggle this behaviour by calling
 	 * {@link #setFixedBaseMode(boolean)} to enable or disable locking the basebone to a fixed starting location.
 	 * 
-	 * @see {@link #setFixedBaseMode(boolean)}
+	 * See {@link #setFixedBaseMode(boolean)}
 	 */
-	@XmlAttribute(name="fixedBaseMode")
 	private boolean mFixedBaseMode = true;
 	
 	/**
@@ -155,49 +146,43 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 	 * - GLOBAL_HINGE, // World-space hinge constraint, or
 	 * - LOCAL_HINGE   // Hinge constraint which is relative to the coordinate space of the connected bone
 	 */ 
-	@XmlAttribute(name="baseBoneConstraintType")
 	private BaseboneConstraintType3D mBaseboneConstraintType = BaseboneConstraintType3D.NONE;
 	
-	/** mBaseboneConstraintUV	The direction around which we should constrain the basebone, as provided to the {@link constrainBasebone}
-	 * method.
+	/** mBaseboneConstraintUV	The direction around which we should constrain the basebone.
 	 * <p>
-	 * To ensure correct operation, the provided Vec3f is normalised inside the {@link constBaseboneToDirectionUV} method. Passing a Vec3f
+	 * To ensure correct operation, the provided Vec3f is normalised inside the {@link #setBaseboneConstraintUV(Vec3f)} method. Passing a Vec3f
 	 * with a magnitude of zero will result in the constraint not being set.
 	 */
-	@XmlElement(name="baseBoneConstraint")
 	private Vec3f mBaseboneConstraintUV = new Vec3f();
 	
 	/**
 	 * mBaseboneRelativeConstraintUV	The basebone direction constraint in the coordinate space of the bone in another chain
 	 * that this chain is connected to.
 	 */
-	@XmlElement(name="baseBoneRelativeConstraint")
 	private Vec3f mBaseboneRelativeConstraintUV = new Vec3f();
 	
 	/**
-	 * mBaseboneRelativeReferenceConstraintUV	The basebone referencen constraint in the coordinate space of the bone in another chain
+	 * mBaseboneRelativeReferenceConstraintUV	The basebone reference constraint in the coordinate space of the bone in another chain
 	 * that this chain is connected to.
 	 */
-	@XmlElement(name="baseBoneRelativeReferenceConstraint")
 	private Vec3f mBaseboneRelativeReferenceConstraintUV = new Vec3f();
 	
 	/**
-	 * mTargetLocation	The target location for the end effector of this IK chain.
+	 * mTargetlastLocation	The last target location for the end effector of this IK chain.
 	 * <p>
-	 * The target location can be updated via the {@link updateTargtet(Vec3f)} or (@link solveForTarget(float, float)}  methods, which in turn
+	 * The target location can be updated via the {@link #solveForTarget(Vec3f)} or {@link #solveForTarget(float, float, float)} methods, which in turn
 	 * will call the solveIK(Vec3f) method to attempt to solve the IK chain, resulting in an updated chain configuration.
-	 * 
-	 * @default Vec3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE)
+	 * <p>
+	 * The default is Vec3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE)
 	 */
-	@XmlElement(name="lastTargetLocation")
 	private Vec3f mLastTargetLocation = new Vec3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
 	
 	/**
 	 * The width in pixels of the line used to draw constraints for this chain.
-	 * 
+	 * <p>
 	 * The valid range is 1.0f to 32.0f inclusive.
-	 * 
-	 * @default 2.0 
+	 * <p>
+	 * The default is 2.0f pixels.
 	 */
 	private float mConstraintLineWidth = 2.0f;
 	
@@ -208,20 +193,19 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 	 * previous base location are the same, i.e. has the base location moved between the last run to this run? If
 	 * the base location has moved, then we MUST solve the IK chain for this new base location - even if the target
 	 * location has remained the same between runs.
-	 * 
-	 * @default Vec3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE)
-	 * @see {@link #setFixedBaseLocation}
+	 * <p>
+	 * The default is Vec3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE).
+	 * <p>
+	 * See {@link #setFixedBaseMode(boolean)}
 	 */	
-	@XmlElement(name="lastBaseLocation")
 	private Vec3f mLastBaseLocation = new Vec3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
 
 	/**
 	 * mCurrentSolveDistance	The current distance between the end effector and the target location for this IK chain.
 	 * <p>
-	 * The current solve distance is updated when an attempt is made to solve IK chain as triggered by a call to the
-	 * {@link updateTargtet(Vec3f)} or (@link solveForTarget(float, float) methods.
+	 * The current solve distance is updated when an attempt is made to solve the IK chain as triggered by a call to the
+	 * {@link #solveForTarget(Vec3f)} or (@link #solveForTarget(float, float, float) methods.
 	 */
-	@XmlAttribute(name="currentSolveDistance")
 	private float mCurrentSolveDistance = Float.MAX_VALUE;
 	
 	/**
@@ -229,7 +213,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 	 * <p>
 	 * If the value is -1 then it's not connected to another bone or chain.
 	 * 
-	 * @default -1
+	 * The default is -1.
 	 */
 	private int mConnectedChainNumber = -1;
 	
@@ -238,7 +222,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 	 * <p>
 	 * If the value is -1 then it's not connected to another bone or chain.
 	 * 
-	 * @default -1
+	 * The default is -1.
 	 */ 
 	private int mConnectedBoneNumber  = -1;
 	
@@ -249,20 +233,19 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 	 * rather than all chains being solved for the same target. To use embedded targets, the mUseEmbeddedTargets flag
 	 * must be true (which is not the default) - this flag can be set via a call to setEmbeddedTargetMode(true).
 	 * 
-	 * @see {@link setEmbeddedTargetMode(boolean) }
+	 * See (@link #setEmbeddedTargetMode(boolean) }
 	 */
-	@XmlElement(name="embeddedTarget")
 	private Vec3f mEmbeddedTarget = new Vec3f();
 	
 	/**
 	 * mUseEmbeddedTarget	Whether or not to use the mEmbeddedTarget location when solving this chain.
 	 * <p>
 	 * This flag may be toggled by calling the setEmbeddedTargetMode(true) on the chain.
-	 * 
-	 * @default false
-	 * @see {@link setEmbeddedTargetMode(boolean) }
+	 * <p>
+	 * The default is false.
+	 * <p>
+	 * See {@link #setEmbeddedTargetMode(boolean) }
 	 */
-	@XmlAttribute(name="embeddedTargetMode")
 	private boolean mUseEmbeddedTarget = false;
 
 	// ---------- Constructors ----------
@@ -514,9 +497,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 	 * 
 	 * @param	directionUV			The initial direction of the new bone.
 	 * @param	length				The length of the new bone.
-	 * @param	jointType			The joint type of the new bone.
-	 * @param	clockwiseDegs		The clockwise constraint angle in degrees.
-	 * @param	anticlockwiseDegs	The anticlockwise constraint angle in degrees.
+	 * @param	jointType			The joint type of the new bone.	 
 	 * @param	hingeRotationAxis	The axis about which the hinge rotates.
 	 * @param	clockwiseDegs		The clockwise constraint angle in degrees.
 	 * @param	anticlockwiseDegs	The anticlockwise constraint angle in degrees.
@@ -590,11 +571,9 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 	 * @param	directionUV						The initial direction of the new bone.
 	 * @param	length							The length of the new bone.
 	 * @param	jointType						The joint type of the new bone. 
-	 * @param	clockwiseDegs					The clockwise constraint angle in degrees.
-	 * @param	anticlockwiseDegs				The anticlockwise constraint angle in degrees.
 	 * @param	hingeRotationAxis				The axis about which the hinge rotates.
 	 * @param	clockwiseDegs					The clockwise constraint angle in degrees.
-	 * @param	anticlockwiseDegs				The anticlockwise constraint angle in degrees.
+	 * @param	anticlockwiseDegs				The anticlockwise constraint angle in degrees.	 
 	 * @param	hingeConstraintReferenceAxis	The reference axis about which any clockwise/anticlockwise rotation constraints are enforced.
 	 */
 	public void addConsecutiveHingedBone(Vec3f directionUV,

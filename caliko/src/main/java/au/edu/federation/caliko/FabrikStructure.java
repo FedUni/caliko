@@ -1,5 +1,7 @@
 package au.edu.federation.caliko;
 
+import java.io.Serializable;
+
 import au.edu.federation.utils.Vectorf;
 
 /**
@@ -8,8 +10,9 @@ import au.edu.federation.utils.Vectorf;
  * @author jsalvo
  *
  */
-@SuppressWarnings("rawtypes")
-public interface FabrikStructure<T extends FabrikChain,V extends Vectorf> {
+//@SuppressWarnings("rawtypes")
+public interface FabrikStructure<T extends FabrikChain,V extends Vectorf>
+{
 	
   /**
    * Add a FabrikChain object to a FabrikStructure object.

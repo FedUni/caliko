@@ -1,14 +1,9 @@
 package au.edu.federation.caliko;
 
+import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import au.edu.federation.caliko.FabrikChain3D.BaseboneConstraintType3D;
 import au.edu.federation.utils.Mat3f;
@@ -28,18 +23,18 @@ import au.edu.federation.utils.Vec3f;
  * objects directly.
  * 
  * @author Al Lansley
- * @version 0.4 - 29/12/2015
+ * @version 0.5 - 19/06/2019
  **/
-@XmlRootElement(name="structure3d")
-@XmlAccessorType(XmlAccessType.NONE)
-public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
+
+public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>, Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	// ---------- Private Properties ----------
 	
 	private static final String NEW_LINE = System.lineSeparator();
 	
 	/** The string name of this FabrikStructure3D - can be used for creating Maps, if required. */
-	@XmlAttribute(name="name")
 	private String mName;
 	
 	/**
@@ -48,8 +43,6 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D,Vec3f>
 	 * Each FabrikChain3D in the mChains vector is independent of all others, but shares the same target location as any/all other chains
 	 * which exist in this structure.
 	 */
-	@XmlElementWrapper(name="chains3d")
-	@XmlElement(name="chain3d")	
 	private List<FabrikChain3D> mChains = new ArrayList<>();
 
 	// --------- Public Methods ----------

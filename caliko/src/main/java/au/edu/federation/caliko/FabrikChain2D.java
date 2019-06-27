@@ -1,14 +1,9 @@
 package au.edu.federation.caliko;
 
+import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import au.edu.federation.caliko.FabrikChain2D.BaseboneConstraintType2D;
 import au.edu.federation.caliko.FabrikJoint2D.ConstraintCoordinateSystem;
@@ -20,12 +15,13 @@ import au.edu.federation.utils.Vec2f;
  * Class to represent a 2D Inverse Kinematics (IK) chain that can be solved for a given target using the FABRIK algorithm.
  *  
  * @author Al Lansley
- * @version 1.1 - 02/08/2016
+ * @version 1.2 - 19/06/2019
  */
-@XmlRootElement(name="chain2d")
-@XmlAccessorType(XmlAccessType.NONE)
-public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint2D,BaseboneConstraintType2D>
-{	
+ 
+public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint2D,BaseboneConstraintType2D>, Serializable
+{
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Basebone constraint types.
 	 *
@@ -37,7 +33,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * <li>LOCAL_ABSOLUTE - Constrained about a direction with relative to the direction of the connected bone.</li>
 	 * </ul>
 	 * 
-	 * @see #setBaseboneConstraintType(BaseboneConstraintType2D)
+	 * See {@link #setBaseboneConstraintType(BaseboneConstraintType2D)}
 	 */
 	public enum BaseboneConstraintType2D	implements BaseboneConstraintType { NONE, GLOBAL_ABSOLUTE, LOCAL_RELATIVE, LOCAL_ABSOLUTE }
 	
@@ -47,8 +43,6 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * The core of a FabrikChain2D is a list of FabrikBone2D objects, where each bone contains a start and end location, and a joint
 	 * that stores any rotational constraints.
 	 */
-	@XmlElementWrapper(name="bones2d")
-	@XmlElement(name="bone2d")	
 	private List<FabrikBone2D> mChain = new ArrayList<>();
 
 	/** 
@@ -57,8 +51,8 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * Although entirely optional, it may be used to uniquely identify a specific FabrikChain2D in an an array/vector/map
 	 * or such.
 	 * 
-	 * @see #setName(String)
-	 * @see #getName(String)
+	 * See {@link au.edu.federation.caliko.FabrikChain#setName(String)}
+	 * See {@link au.edu.federation.caliko.FabrikChain#getName()}
 	 */
 	private String mName;
 
@@ -78,11 +72,10 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * when bones in the chain are highly constrained, or when the target is further away than the length of a chain which has
 	 * a fixed base location.
 	 * 
-	 * @default 1.0f
+	 * The default value is 1.0f.
 	 * 
-	 * @see {@link #setSolveDistanceThreshold(float)}
+	 * See {@link #setSolveDistanceThreshold(float)}
 	 */
-	@XmlAttribute(name="solveDistanceThreshold")
 	private float mSolveDistanceThreshold = 1.0f;
 
 	/** 
@@ -100,8 +93,9 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * Further, we may find that we are making unacceptably low progress towards solving the chain, then will also abort solving the chain based on the
 	 * {@link mMinIterationChange} threshold.
 	 * 
-	 * @default 15
-	 * @see {@link #setMaxIterationAttempts(int)}
+	 * The default value is 15.
+	 *
+	 * See {@link #setMaxIterationAttempts(int)}
 	 */
 	private int mMaxIterationAttempts  = 15;
 
@@ -120,8 +114,9 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * <p> 
 	 * This property must be greater than or equal to zero.
 	 *
-	 * @default 0.01f
-	 * @see {@link #setMinIterationChange(float)}
+	 * The default value is 0.01f.
+	 *
+	 * See {@link #setMinIterationChange(float)}
 	 */
 	private float mMinIterationChange = 0.01f;
 
@@ -131,7 +126,6 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * When a FabrikBone2D is added or removed from the chain using the addBone/addConsecutiveBone or removeBone methods, then
 	 * the chainLength is updated to reflect this. 
 	 */
-	@XmlAttribute(name="length")
 	private float mChainLength;
 
 	/** 
@@ -143,9 +137,8 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * <p>
 	 * Base locations do not <em>have</em> to be fixed - this property can be modified to via the setFixedBaseLocation method.
 	 * 
-	 * @see {@link #setFixedBaseMode(boolean)}
+	 * See {@link #setFixedBaseMode(boolean)}
 	 */
-	@XmlElement(name="baseLocation")
 	private Vec2f mBaseLocation = new Vec2f();
 
 
@@ -155,46 +148,43 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * 'anchors' the base of the chain in place. Optionally, a user may call the setFixedBaseMode method to disable
 	 * fixing the base bone start location in place.
 	 * 
-	 * @default true
-	 * @see {@link #setFixedBaseMode(boolean)}
+	 * The default value is true (i.e. the basebone of the chain is fxied in place).
+	 *
+	 * See {@link #setFixedBaseMode(boolean)}
 	 */
-	@XmlAttribute(name="fixedBaseMode")
 	private boolean mFixedBaseMode = true;
 	
 	/**
 	 * The type of constraint applied to the basebone of this chain.
 	 * 
-	 * @default BaseboneConstraintType2D.NONE
+	 * The default value is BaseboneConstraintType2D.NONE.
 	 */
-	@XmlAttribute(name="baseBoneConstraintType")
 	private BaseboneConstraintType2D mBaseboneConstraintType = BaseboneConstraintType2D.NONE;
 	
 	/**
 	 * If this chain is connected to a bone in another chain, then this property controls whether
 	 * it should connect to the start end location of the host bone.
 	 * 
-	 * @default BoneConnectionPoint.END
-	 * @see {@link #setBoneConnectionPoint(BoneConnectionPoint)}
-	 * {see {@link FabrikStructure2D#connectChain(FabrikChain2D, int, int, BoneConnectionPoint)}
+	 * The default value is BoneConnectionPoint.END.
+	 *
+	 * See {@link #setBoneConnectionPoint(BoneConnectionPoint)}
+	 * See {@link FabrikStructure2D#connectChain(FabrikChain2D, int, int, BoneConnectionPoint)}
 	 */
-	@XmlAttribute(name="boneConnectionPoint")
 	private BoneConnectionPoint mBoneConnectionPoint = BoneConnectionPoint.END;
 	
 	/**
 	 * The direction around which we should constrain the base bone, as provided to the setBaseboneConstraintUV method.
 	 * 
-	 * @see {@link #setBaseboneConstraintUV(Vec2f)} 
+	 * See {@link #setBaseboneConstraintUV(Vec2f)} 
 	 */
-	@XmlElement(name="baseboneConstraintUV")
 	private Vec2f mBaseboneConstraintUV = new Vec2f();
 	
 	/**
 	 * The (internally used) constraint unit vector when this chain is connected to another chain in either
 	 * LOCAL_ABSOLUTE or LOCAL_RELATIVE modes.
 	 * <p>
-	 * This property cannot be accessed by users and is updated in the FabrikStructure2D.updateForTarget() method.
+	 * This property cannot be accessed by users and is updated in the FabrikStructure2D.solveForTarget() method.
 	 */
-	@XmlElement(name="baseboneRelativeConstraintUV")
 	private Vec2f mBaseboneRelativeConstraintUV = new Vec2f();
 	
 	/**
@@ -203,16 +193,13 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * The last target location is used during the solve attempt and is specified as a property of the chain to avoid
 	 * memory allocation at runtime.
 	 */
-	@XmlElement(name="lastTargetLocation")
 	private Vec2f mLastTargetLocation = new Vec2f(Float.MAX_VALUE, Float.MAX_VALUE);
 	
 	/** 
 	 * mLastBaseLocation - The previous base location of the chain from the last solve attempt.
 	 * 
-	 * @default Vec2f(Float.MAX_VALUE, Float.MAX_VALUE)
-	 * @see {@link setFixedBaseLocation}
+	 * The default value is Vec2f(Float.MAX_VALUE, Float.MAX_VALUE).
 	 */
-	@XmlElement(name="lastBaseLocation")
 	private Vec2f mLastBaseLocation = new Vec2f(Float.MAX_VALUE, Float.MAX_VALUE);
 	
 	/**
@@ -222,9 +209,8 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * rather than all chains being solved for the same target. To use embedded targets, the mUseEmbeddedTargets flag
 	 * must be true (which is not the default) - this flag can be set via a call to setEmbeddedTarget(true).
 	 * 
-	 * @see {@link useEmbeddedTarget(boolean) }
+	 * See {@link #setEmbeddedTargetMode(boolean)}
 	 */
-	@XmlElement(name="embeddedTarget")
 	private Vec2f mEmbeddedTarget = new Vec2f();
 	
 	/**
@@ -232,36 +218,35 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * <p>
 	 * This flag may be toggled by calling the setEmbeddedTargetMode(boolean) method on the chain.
 	 * 
-	 * @default false
-	 * @see {@link setEmbeddedTargetMode(boolean) }
+	 * The default value is false.
+	 *
+	 * See {@link #setEmbeddedTargetMode(boolean)}
 	 */
-	@XmlAttribute(name="embeddedTargetMode")
 	private boolean mUseEmbeddedTarget = false;
 	
 	/**
 	 * mCurrentSolveDistance	The current distance between the end effector and the target location for this IK chain.
 	 * <p>
 	 * The current solve distance is updated when an attempt is made to solve IK chain as triggered by a call to the
-	 * {@link updateForTarget(Vec2f)} or (@link updateForTarget(float, float) methods.
+	 * {@link #solveForTarget(Vec2f)} or (@link #solveForTarget(float, float) methods.
 	 */
-	@XmlAttribute(name="currentSolveDistance")
 	private float mCurrentSolveDistance = Float.MAX_VALUE;
 	
 	/**
 	 * The zero-indexed number of the chain this chain is connected to in a FabrikStructure2D.
 	 * <p>	 * 
-	 * If this value is -1 (default) then this chain is not connected to another chain.
+	 * If this value is -1 then this chain is not connected to another chain.
 	 * 
-	 * @default -1
+	 * The default value is -1.
 	 */
 	private int mConnectedChainNumber = -1;
 	
 	/**
 	 * The zero-indexed number of the bone that this chain is connected to, if it's connected to another chain at all.
 	 * <p>
-	 * If the value is -1 (default) then it's not connected to another bone or chain.
+	 * If the value is -1 then it's not connected to another bone in another chain.
 	 * 
-	 * @default -1
+	 * The default value is -1.
 	 */ 
 	private int mConnectedBoneNumber  = -1;
 
@@ -1286,7 +1271,7 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * <li>We grind to a halt (i.e. low iteration change compared to previous solution).</li>
 	 * </ul>
 	 * <p>
-	 * This method simply constructs a Vec2f from the provided arguments and calls the {@link Vec2f} version of the updateForTarget method.
+	 * This method simply constructs a Vec2f from the provided arguments and calls the {@link Vec2f} version of the solveForTarget method.
 	 * By making this available, the user does not need to use our custom {@link Vec2f} class in their application.
 	 * 
 	 * @param targetX	(float)	The x location of the target.
@@ -1417,8 +1402,6 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	
 	/**
 	 * Set the constraint UV about which this bone connects to a bone in another chain.
-	 * <p>
-	 * This method is used by the FabrikStructure2D.updateForTarget() method.
 	 *
 	 * @param	constraintUV	The basebone relative constraint unit vector to set.
 	 */

@@ -7,21 +7,37 @@
     <format>zip</format>
   </formats>
   <includeBaseDirectory>false</includeBaseDirectory>
+  
+  <files>
+    <file>
+      <source>../LICENSE.txt</source>
+      <outputDirectory>./caliko</outputDirectory>      
+    </file>
+	<file>
+      <source>../Changelog.txt</source>
+      <outputDirectory>./caliko</outputDirectory>      
+    </file>
+  </files>
+  
   <moduleSets>
     <moduleSet>
       <useAllReactorProjects>true</useAllReactorProjects>
+	  
       <includes>
         <include>au.edu.federation.caliko:caliko</include>
         <include>au.edu.federation.caliko.visualisation:caliko-visualisation</include>
         <include>au.edu.federation.caliko.demo:caliko-demo</include>
       </includes>
+	  
       <binaries>
         <outputDirectory>caliko/jar</outputDirectory>
         <unpack>false</unpack>
         <!--  Do not include lwjgl*jars. Instead, they are in the -with-dependencies.jar -->
         <includeDependencies>false</includeDependencies>
       </binaries>      
+	  
     </moduleSet>
+	
     <moduleSet>
       <useAllReactorProjects>true</useAllReactorProjects>
       <includes>
@@ -45,9 +61,12 @@
           </fileSet>
         </fileSets>
       </sources>
-    </moduleSet>        
+    </moduleSet>
+	
   </moduleSets> 
+  
   <fileSets>
+  
     <fileSet>
       <directory>${project.basedir}/src/site/docs</directory>
       <outputDirectory>caliko/doc</outputDirectory>
@@ -55,6 +74,7 @@
         <include>*.pdf</include>
       </includes>            
     </fileSet>    
+	
     <fileSet>
       <directory>${project.basedir}/target</directory>
       <outputDirectory>caliko/doc</outputDirectory>
@@ -62,12 +82,14 @@
         <include>*-javadoc.jar</include>
       </includes>            
     </fileSet>
+	
     <fileSet>
       <directory>${project.basedir}/target</directory>
       <outputDirectory>caliko</outputDirectory>
       <includes>
         <include>*-sources.zip</include>
       </includes>            
-    </fileSet>     
+    </fileSet>
+	
   </fileSets>
 </assembly>

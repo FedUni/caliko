@@ -1,11 +1,5 @@
 package au.edu.federation.caliko;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import au.edu.federation.utils.Colour4f;
 import au.edu.federation.utils.Mat4f;
 import au.edu.federation.utils.Utils;
@@ -17,12 +11,11 @@ import au.edu.federation.utils.Vec2f;
  * A FabrikBone2D consists of a start location, an end location and a FabrikJoint2D which can constrain
  * the rotation of the bone with regard to either the previous bone in the same chain or with regard
  * to the direction of a bone in another chain which this bone is connected to.
- * 
+ *
  * @author Al Lansley
- * @version 0.9.1 - 20/07/2016
+ * @version 0.9.2 - 19/06/2019
  */
-@XmlRootElement(name="bone2d")
-@XmlAccessorType(XmlAccessType.NONE)
+
 public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 {
 	/**
@@ -43,7 +36,6 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * be constrained). In this way the single joint which can be considered to be at the
 	 * start location of each bone controls the allowable range of motion for that bone alone.
 	 */
-	@XmlElement(name="joint2d")
 	private FabrikJoint2D mJoint = new FabrikJoint2D();
 
 	/**
@@ -52,16 +44,14 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * The start location of a bone may only be set through a constructor or via an 'addBone'
 	 * or 'addConsecutiveBone' method provided by the {@link FabrikChain2D} class.
 	 */
-	@XmlElement(name="startLocation")
 	private Vec2f mStartLocation = new Vec2f();
-	
+
 	/**
 	 * mEndLocation	The end location of this FabrikBone2D object.
 	 * <p>
 	 * The end location of a bone may only be set through a constructor or indirectly via an
 	 * 'addBone' method provided by the {@link FabrikChain2D} class.
 	 */
-	@XmlElement(name="endLocation")
 	private Vec2f mEndLocation = new Vec2f();
 
 	/**
@@ -72,9 +62,8 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * <p>
 	 * Names exceeding 100 characters will be truncated.
 	 */
-	@XmlAttribute(name="name")
 	private String mName;
-	
+
 	/**
 	 * mLength	The length of this bone from its start location to its end location.
 	 * <p>
@@ -85,24 +74,15 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * of a bone.
 	 * <p>
 	 * Attempting to set a bone length of less than zero, either explicitly or implicitly, will result
-	 * in an IllegalArgumentException or 
+	 * in an IllegalArgumentException or
 	 */
-	@XmlAttribute(name="length")
 	private float mLength;
 
-	@XmlAttribute(name="globalConstraintUV")
+    /**
+	 * mGlobalConstraintUV	The world-space constraint unit-vector of this 2D bone.
+	 */
 	private Vec2f mGlobalConstraintUV = new Vec2f(1.0f, 0.0f);
-	
-	public Vec2f getGlobalConstraintUV()
-	{
-		return mGlobalConstraintUV;
-	}
-	
-	public void setGlobalConstraintUV(Vec2f v)
-	{
-		this.mGlobalConstraintUV = v;
-	}
-	
+
 	/**
 	 * The colour used to draw the bone.
 	 * <p>
@@ -140,17 +120,17 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * <p>
 	 * Instantiating a FabrikBone2D with the exact same start and end location, and hence a length of zero,
 	 * may result in undefined behaviour.
-	 * 
+	 *
 	 * @param	startLocation	The start location of the bone in world space.
 	 * @param	endLocation		The end location of the bone in world space.
 	 */
 	public FabrikBone2D(Vec2f startLocation, Vec2f endLocation)
 	{
 		mStartLocation.set(startLocation);
-		mEndLocation.set(endLocation);		
+		mEndLocation.set(endLocation);
 		setLength( Vec2f.distanceBetween(startLocation, endLocation) );
 	}
-	
+
 	/**
 	 * Constructor to create a new FabrikBone2D from a start and end location as provided by a four floats.
 	 * <p>
@@ -159,7 +139,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * <p>
 	 * Instantiating a FabrikBone2D with the exact same start and end location, and hence a length of zero,
 	 * may result in undefined behaviour.
-	 * 
+	 *
 	 * @param	startX	The horizontal start location of the bone in world space.
 	 * @param	startY	The vertical   start location of the bone in world space.
 	 * @param	endX	The horizontal end   location of the bone in world space.
@@ -169,7 +149,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	{
 		this( new Vec2f(startX, startY), new Vec2f(endX, endY) );
 	}
-	
+
 	/**
 	 * Constructor to create a new FabrikBone2D from a start location, a direction unit vector and a length.
 	 * <p>
@@ -179,7 +159,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * If the provided length argument is less than zero then an IllegalArgumentException is thrown.
 	 * <p>
 	 * Instantiating a FabrikBone3D with a length of precisely zero may result in undefined behaviour.
-	 * 
+	 *
 	 * @param	startLocation	The start location of the bone in world-space.
 	 * @param	directionUV		The direction unit vector of the bone in world-space.
 	 * @param	length			The length of the bone in world-space units.
@@ -188,15 +168,15 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	{
 		// Sanity checking
 		Utils.validateDirectionUV(directionUV);
-		
+
 		// Set the start and end locations
 		mStartLocation.set(startLocation);
 		mEndLocation.set( mStartLocation.plus( Vec2f.normalised(directionUV).times(length) ) );
-		
+
 		// Set the bone length via the setLength method rather than directly on the mLength property so that validation is performed
 		setLength(length);
 	}
-	
+
 	/**
 	 * Constructor to create a new FabrikBone2D from a start location, a direction unit vector, a length and
 	 * a pair of constraint angles specified in degrees.
@@ -205,7 +185,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * in the chain which this bone exists in UNLESS the bone is a basebone (i.e. the first bone in a chain)
 	 * in which case, the constraint angles can optionally be made relative to either a world-space direction,
 	 * the direction of the bone to which this bone may be connected, or to a direction relative to the coordinate
-	 * space of the bone to which this bone may be connected. 
+	 * space of the bone to which this bone may be connected.
 	 * <p>
 	 * If the direction unit vector argument is zero then an IllegalArgumentException is thrown.
 	 * If the length argument is less than zero then an IllegalArgumentException is thrown.
@@ -213,25 +193,25 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * to 180.0f degrees then an IllegalArgumentException is thrown.
 	 * <p>
 	 * Instantiating a FabrikBone3D with a length of precisely zero may result in undefined behaviour.
-	 * 
+	 *
 	 * @param	startLocation		The start location of the bone in world-space.
 	 * @param	directionUV			The direction unit vector of the bone in world-space.
 	 * @param	length				The length of the bone in world-space units.
 	 * @param	cwConstraintDegs	The clockwise constraint angle in degrees.
 	 * @param	acwConstraintDegs	The anticlockwise constraint angle in degrees.
-	 * 
+	 *
 	 * @see FabrikChain2D.BaseboneConstraintType2D
 	 */
 	public FabrikBone2D(Vec2f startLocation, Vec2f directionUV, float length, float cwConstraintDegs, float acwConstraintDegs)
 	{
 		// Set up as per previous constructor - IllegalArgumentExceptions will be thrown for invalid directions or lengths
 		this(startLocation, directionUV, length);
-		
+
 		// Set the constraint angles - IllegalArgumentExceptions will be thrown for invalid constraint angles
 		setClockwiseConstraintDegs(cwConstraintDegs);
 		setAnticlockwiseConstraintDegs(acwConstraintDegs);
 	}
-	
+
 	/**
 	 * Constructor to create a new FabrikBone2D from a start location, a direction unit vector, a length, a pair
 	 * of constraint angles specified in degrees and a colour.
@@ -240,7 +220,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * in the chain which this bone exists in UNLESS the bone is a basebone (i.e. the first bone in a chain)
 	 * in which case, the constraint angles can optionally be made relative to either a world-space direction,
 	 * the direction of the bone to which this bone may be connected, or to a direction relative to the coordinate
-	 * space of the bone to which this bone may be connected. 
+	 * space of the bone to which this bone may be connected.
 	 * <p>
 	 * If the direction unit vector argument is zero then an IllegalArgumentException is thrown.
 	 * If the length argument is less than zero then an IllegalArgumentException is thrown.
@@ -248,14 +228,14 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * to 180.0f degrees then an IllegalArgumentException is thrown.
 	 * <p>
 	 * Instantiating a FabrikBone3D with a length of precisely zero may result in undefined behaviour.
-	 * 
+	 *
 	 * @param	startLocation		The start location of the bone in world-space.
 	 * @param	directionUV			The direction unit vector of the bone in world-space.
 	 * @param	length				The length of the bone in world-space units.
 	 * @param	cwConstraintDegs	The clockwise constraint angle in degrees.
 	 * @param	acwConstraintDegs	The anticlockwise constraint angle in degrees.
 	 * @param	colour				The colour with which to draw the bone.
-	 * 
+	 *
 	 * @see FabrikChain2D.BaseboneConstraintType2D
 	 */
 	public FabrikBone2D(Vec2f startLocation, Vec2f directionUV, float length, float cwConstraintDegs, float acwConstraintDegs, Colour4f colour)
@@ -263,14 +243,14 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 		this(startLocation, directionUV, length, cwConstraintDegs, acwConstraintDegs);
 		mColour.set(colour);
 	}
-	
+
 	/**
 	 * Copy constructor.
 	 * <p>
 	 * Takes a source FabrikBone2D object and copies all properties into the new FabrikBone2D by value.
 	 * Once this is done, there are no shared references between the source and the new object, and they are
 	 * exact copies of each other.
-	 * 
+	 *
 	 * @param	source	The FabrikBone2D to clone.
 	 */
 	public FabrikBone2D(FabrikBone2D source)
@@ -280,14 +260,14 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 		mEndLocation.set(source.mEndLocation);
 		mJoint.set(source.mJoint);
 		mColour.set(source.mColour);
-		
+
 		// Set the remaining properties by value via assignment
 		mName               = source.mName;
 		mLength             = source.mLength;
-		mLineWidth          = source.mLineWidth;		
+		mLineWidth          = source.mLineWidth;
 		mGlobalConstraintUV = source.mGlobalConstraintUV;
 	}
-	
+
 	// ---------- Methods ----------
 
 	/**
@@ -298,55 +278,55 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 
 	/**
 	 * Get the colour of this bone as a Colour4f.
-	 * 
+	 *
 	 * @return  The colour of the bone.
 	 */
 	public Colour4f getColour() { return mColour; }
-	
+
 	/**
 	 * Set the colour used to draw this bone.
 	 * <p>
 	 * Any colour component values outside the valid range of 0.0f to 1.0f inclusive are clamped to that range.
-	 *  
+	 *
 	 * @param	colour	The colour with which to draw this bone.
 	 */
 	public void setColour(Colour4f colour) { mColour.set(colour); }
-	
+
 	/**
 	 * Get the line width with which to draw this line
-	 * 
+	 *
 	 * @return  The width of the line in pixels which should be used to draw this bone.
 	 */
 	public float getLineWidth()	{ return mLineWidth; }
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public Vec2f getStartLocation() { return mStartLocation; }
-	
+
 	/**
 	 * Get the start location of this bone in world-space as an array of two floats.
-	 * 
-	 * @return  The start location of this bone.                 
+	 *
+	 * @return  The start location of this bone.
 	 */
 	public float[] getStartLocationAsArray() { return new float[] { mStartLocation.x, mStartLocation.y }; }
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public Vec2f getEndLocation() { return mEndLocation; }
-	
+
 	/** Get the end location of the bone in world-space as an array of two floats.
-	 * 
+	 *
 	 * @return  The end location of this bone.
 	 */
 	public float[] getEndLocationAsArray() { return new float[] { mEndLocation.x, mEndLocation.y }; }
-	
+
 	/**
 	 * Set the FabrikJoint2D object of this bone.
-	 * 
+	 *
 	 * @param  joint  The FabrikJoint2D which this bone should use.
 	 */
 	public void setJoint(FabrikJoint2D joint) {	mJoint.set(joint); }
@@ -360,34 +340,34 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	/**
 	 * Set the clockwise constraint angle of this bone's joint in degrees.
 	 * <p>
-	 * The valid range of constraint angle is 0.0f degrees to 180.0f degrees inclusive, angles outside this range are clamped. 
-	 * 
-	 * @param  angleDegs  The clockwise constraint angle specified in degrees.	
+	 * The valid range of constraint angle is 0.0f degrees to 180.0f degrees inclusive, angles outside this range are clamped.
+	 *
+	 * @param  angleDegs  The clockwise constraint angle specified in degrees.
 	 */
 	public void setClockwiseConstraintDegs(float angleDegs) { mJoint.setClockwiseConstraintDegs(angleDegs); }
-	
+
 	/**
 	 * Get the clockwise constraint angle of this bone's joint in degrees.
-	 *  
-	 * @return  the clockwise constraint angle in degrees.	
+	 *
+	 * @return  the clockwise constraint angle in degrees.
 	 */
 	public float getClockwiseConstraintDegs() { return mJoint.getClockwiseConstraintDegs(); }
-	
+
 	/**
 	 * Set the anticlockwise constraint angle of this bone's joint in degrees.
 	 * <p>
 	 * The valid range of constraint angle is 0.0f degrees to 180.0f degrees inclusive.
 	 * <p>
 	 * If a constraint angle outside of this range is provided then an IllegalArgumentException is thrown.
-	 * 
-	 * @param  angleDegs  The anticlockwise constraint angle specified in degrees.	
+	 *
+	 * @param  angleDegs  The anticlockwise constraint angle specified in degrees.
 	 */
 	public void setAnticlockwiseConstraintDegs(float angleDegs) { mJoint.setAnticlockwiseConstraintDegs(angleDegs); }
-	
+
 	/**
 	 * Get the anticlockwise constraint angle of this bone's joint in degrees.
-	 *  
-	 * @return  the anticlockwise constraint angle in degrees.	
+	 *
+	 * @return  the anticlockwise constraint angle in degrees.
 	 */
 	public float getAnticlockwiseConstraintDegs() { return mJoint.getAnticlockwiseConstraintDegs(); }
 
@@ -395,45 +375,65 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	 * Get the direction unit vector between the start location and end location of this bone.
 	 * <p>
 	 * If the opposite (i.e. end to start) location is required then you can simply negate the provided direction.
-	 * 
+	 *
 	 * @return  The direction unit vector of this bone.
 	 * @see		Vec2f#negated()
 	 */
 	public Vec2f getDirectionUV() {	return Vec2f.getDirectionUV(mStartLocation, mEndLocation); }
-	
+
+	/**
+	 * Get the world-space constraint unit-vector of this bone.
+	 *
+	 * @return  The world-space constraint unit-vector of this bone.
+	 */
+	public Vec2f getGlobalConstraintUV()
+	{
+		return mGlobalConstraintUV;
+	}
+
+	/**
+	 * Set the world-space constraint unit-vector of this bone.
+	 *
+	 * @param	v	The world-space constraint unit vector.
+	 */
+	public void setGlobalConstraintUV(Vec2f v)
+	{
+		this.mGlobalConstraintUV = v;
+	}
+
 	/**
 	 * Set the line width with which to draw this bone.
 	 * <p>
 	 * The value set is clamped to be between 1.0f and 64.0f inclusive, if necessary.
-	 * 
+	 *
 	 * @param	lineWidth	The width of the line to draw this bone in pixels.
 	 */
 	public void setLineWidth(float lineWidth)
 	{
-		if (lineWidth < 1.0f ) { 
-		  mLineWidth = 1.0f;  
-		} else if (lineWidth > 64.0f) { 
-		  mLineWidth = 64.0f; 
+		if (lineWidth < 1.0f ) {
+		  mLineWidth = 1.0f;
+		} else if (lineWidth > 64.0f) {
+		  mLineWidth = 64.0f;
 		} else {
 	    mLineWidth = lineWidth;
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Set the name of this bone, capped to 100 characters if required.
-	 * 
+	 *
 	 * @param	name	The name to set.
 	 */
 	public void setName(String name) { mName = Utils.getValidatedName(name); }
-	
+
 	/**
 	 * Return the name of this bone.
 	 *
 	 * @return	The name of this bone.
 	 */
 	public String getName()	{ return mName; }
-		
-	
+
+
 	/**
 	 * Return the coordinate system to use for any constraints applied to the joint of this bone.
 	 *
@@ -443,7 +443,7 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	{
 		return this.mJoint.getConstraintCoordinateSystem();
 	}
-	
+
 	/**
 	 * Set the coordinate system to use for any constraints applied to the joint of this bone.
 	 *
@@ -452,11 +452,11 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	public void setJointConstraintCoordinateSystem(FabrikJoint2D.ConstraintCoordinateSystem coordSystem)
 	{
 		this.mJoint.setConstraintCoordinateSystem(coordSystem);
-	}	
-	
+	}
+
 	/**
 	 * Return a concise, human readable description of this FabrikBone2D as a String.
-	 * 
+	 *
 	 * The colour and line-width are not included in this output, but can be queried separately
 	 * via the getColour and getLineWidth methods.
 	 */
@@ -464,34 +464,34 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
 	public String toString()
 	{
 		StringBuilder sb = new StringBuilder();
-		
+
 		sb.append("Start joint location : " + mStartLocation                                     + Utils.NEW_LINE);
 		sb.append("End   joint location : " + mEndLocation                                       + Utils.NEW_LINE);
 		sb.append("Bone direction       : " + Vec2f.getDirectionUV(mStartLocation, mEndLocation) + Utils.NEW_LINE);
 		sb.append("Bone length          : " + mLength                                            + Utils.NEW_LINE);
 		sb.append( mJoint.toString() );
-		
+
 		return sb.toString();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void setStartLocation(Vec2f location) { mStartLocation.set(location); }
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void setEndLocation(Vec2f location) { mEndLocation.set(location); }
-	
+
 	/**
 	 * Set the length of the bone.
 	 * <p>
 	 * If the length argument is not greater then zero an IllegalArgumentException is thrown.
 	 * If the length argument is precisely zero then
-	 * 
+	 *
 	 * @param	length	The value to set on the {@link #mLength} property.
 	 */
 	private void setLength(float length)
@@ -575,5 +575,5 @@ public class FabrikBone2D implements FabrikBone<Vec2f,FabrikJoint2D>
     }
     return true;
   }
-	
+
 } // End of FabrikBone2D class

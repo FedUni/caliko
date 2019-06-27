@@ -59,7 +59,7 @@ public class Application
 	private static void mainLoop()
 	{
 		// Run the rendering loop until the user closes the window or presses Escape
-		while (glfwWindowShouldClose(Application.window.mWindowId) == GL_FALSE)
+		while ( !glfwWindowShouldClose(Application.window.mWindowId) )
 		{
 			// Clear the screen and depth buffer then draw the demo
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

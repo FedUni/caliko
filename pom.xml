@@ -3,23 +3,32 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>au.edu.federation.caliko</groupId>
+  
+  <!-- This POM (e.g. this file) is the parent of all the other POMs (which are defined as modules below!) -->
   <artifactId>caliko-aggregate</artifactId>
+  
   <packaging>pom</packaging>
-  <version>1.3.5</version>
+  <version>1.3.6</version>
   <name>Caliko library Aggregate POM</name>
   <description>POM to build the Caliko library including the visualisation component, demo application, source and documentation archives.</description>
   <url>https://github.com/FedUni/caliko</url>
-
-  <properties>
-    <maven-compiler-plugin.source>1.8</maven-compiler-plugin.source>
-    <maven-compiler-plugin.target>1.8</maven-compiler-plugin.target>  
-    <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
-    <maven-failsafe-plugin.version>2.20</maven-failsafe-plugin.version>
-    <maven-assemply-plugin.version>3.0.0</maven-assemply-plugin.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <lwjgl.version>3.0.0b</lwjgl.version>    
-    <lib.version.junit>4.12</lib.version.junit>
-    <lib.version.mockito>1.8.5</lib.version.mockito>
+  
+  <!-- Version numbers we can grab to keep them consistent throughout our maven build files -->
+  <properties> 
+	
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	
+	<!-- Maven plugin versions -->
+	<maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
+	<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+	<maven-source-plugin.version>3.1.0</maven-source-plugin.version>    
+    <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
+    <maven-javadoc-plugin.version>3.1.0</maven-javadoc-plugin.version>
+	
+	<!-- Lib versions -->
+    <lwjgl.version>3.2.2</lwjgl.version>    
+    <!-- <junit.version>4.12</junit.version>	 -->
+	
   </properties>
 
   <!-- The order of the build is defined by the dependencies in each module -->
@@ -32,158 +41,101 @@
 
   <dependencyManagement>
     <dependencies>
+	
       <dependency>
         <groupId>au.edu.federation.caliko</groupId>
         <artifactId>caliko</artifactId>
         <version>${project.version}</version>
       </dependency>
+	  
       <dependency>
         <groupId>au.edu.federation.caliko.visualisation</groupId>
         <artifactId>caliko-visualisation</artifactId>
         <version>${project.version}</version>
       </dependency>
+	  
       <dependency>
         <groupId>au.edu.federation.caliko.demo</groupId>
         <artifactId>caliko-demo</artifactId>
         <version>${project.version}</version>
       </dependency>
-      
-      <!-- Test dependencies -->
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>${lib.version.junit}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-all</artifactId>
-        <version>${lib.version.mockito}</version>
-        <scope>test</scope>
-      </dependency>
+	  
     </dependencies>
   </dependencyManagement>
-  
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-all</artifactId>
-    </dependency>
-  </dependencies>
     
   <build>
     <pluginManagement>
       <plugins>
-        <plugin>
-	  <groupId>org.apache.maven.plugins</groupId>
-	  <artifactId>maven-compiler-plugin</artifactId>
-	  <version>3.3</version>
-	</plugin>
-
-	<plugin>
-	  <artifactId>maven-jar-plugin</artifactId>
-	  <version>3.0.2</version>
-	</plugin>
-
-	<plugin>
-	  <groupId>org.apache.maven.plugins</groupId>
-	  <artifactId>maven-source-plugin</artifactId>
-	  <version>3.0.1</version>
-	  <executions>
-	    <execution>
-	      <id>bundle-sources</id>
-	      <phase>package</phase>
-	      <goals>
-	        <!-- produce source artifact for main project sources -->
-	        <goal>jar-no-fork</goal>
-	        <!-- produce source artifact for project test sources -->
-	        <goal>test-jar-no-fork</goal>
-	      </goals>
-	    </execution>
-	  </executions>
-	</plugin>
-
-        <plugin>
-	  <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-	  <version>2.10.4</version>
-	  <executions>
-	    <execution>
-	      <phase>package</phase>            
-	      <id>aggregate</id>
-	      <goals>
-	        <goal>jar</goal>              
-	      </goals>
-	    </execution>
-	  </executions>
- 	</plugin>
-
-        <plugin>
+	  	  
+	    <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>${maven-surefire-plugin.version}</version>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin.version}</version>
           <configuration>
-            <forkCount>0</forkCount>
+            <release>11</release> <!-- Change version as required -->
           </configuration>
         </plugin>
+		
+	    <plugin>
+	      <artifactId>maven-jar-plugin</artifactId>
+	      <version>${maven-jar-plugin.version}</version>
+	    </plugin>
+
+	    <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-source-plugin</artifactId>
+	      <version>${maven-source-plugin.version}</version>
+	      <executions>
+  	        <execution>
+              <id>bundle-sources</id>
+	          <phase>package</phase>
+	          <goals>
+	            <!-- produce source artifact for main project sources -->
+	            <goal>jar-no-fork</goal>
+	            <!-- produce source artifact for project test sources -->
+	            <goal>test-jar-no-fork</goal>
+	          </goals>
+	        </execution>
+	      </executions>
+	    </plugin>
 
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-failsafe-plugin</artifactId>
-          <version>${maven-failsafe-plugin.version}</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-assembly-plugin</artifactId>
-          <version>${maven-assemply-plugin.version}</version>
-        </plugin>              	     
-
-        <plugin>
-          <groupId>org.jacoco</groupId>
-          <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.7.9</version>
-          <executions>
-            <execution>
-              <id>default-prepare-agent</id>
-              <goals><goal>prepare-agent</goal></goals>
-            </execution>
-            <execution>
-              <id>default-report</id>
-              <phase>prepare-package</phase>
-              <goals><goal>report</goal></goals>
-            </execution>
-          </executions>          
-        </plugin>        
-      </plugins>
-    </pluginManagement>
-   
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>${maven-compiler-plugin.source}</source>
-          <target>${maven-compiler-plugin.target}</target>
-        </configuration>
-      </plugin>
-        <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+	        <version>${maven-javadoc-plugin.version}</version>
+	        <executions>
+	          <execution>
+                <phase>package</phase>            
+	            <id>aggregate</id>
+	            <goals>
+				  <goal>javadoc</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+ 	    </plugin>
+		
+		<plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-failsafe-plugin</artifactId>
-        </plugin>
-        <plugin>
-          <groupId>org.jacoco</groupId>
-          <artifactId>jacoco-maven-plugin</artifactId>
-        </plugin>        
-    </plugins>
+          <version>3.0.0-M3</version>
+		</plugin>
+		
+		<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.0.0-M3</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+         
+      </plugins>	  
+    </pluginManagement>
   </build>
-
+	
 </project>

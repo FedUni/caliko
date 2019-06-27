@@ -2,31 +2,26 @@ package au.edu.federation.utils;
 
 import java.text.DecimalFormat;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-
-/** 
+/**
  * A two-dimensional vector consisting of x and and y values stored as floats.
  * <p>
  * The x and y properties are declared publicly for performance reasons.
  *  @author Al Lansley
- *  @version 0.3 - 15/10/2014
+ *  @version 0.4 - 19/06/2019
  */
-@XmlAccessorType(XmlAccessType.NONE)
+
 public class Vec2f implements Vectorf<Vec2f>
-{	
+{
 	// Conversion constants to/from degrees and radians
 	private static final float DEGS_TO_RADS = (float)Math.PI / 180.0f;
 	private static final float RADS_TO_DEGS = 180.0f / (float)Math.PI;
-	
+
 	/** Decimal format which prints values to three decimal places, used in the toString method. */
 	// Note: '0' means put a 0 there if it's zero, '#' means omit if zero.
 	private static DecimalFormat df = new DecimalFormat("0.000");
 
-	@XmlAttribute
 	public float x, y;
-	
+
 	// ---------- Constructors ----------
 
 	/**
@@ -60,11 +55,11 @@ public class Vec2f implements Vectorf<Vec2f>
 	 */
 	@Override
 	public boolean approximatelyEquals(Vec2f v, float tolerance)
-	{	
+	{
 		if (tolerance < 0.0f) {	throw new IllegalArgumentException("Equality threshold must be greater than or equal to 0.0f");	}
 		return (Math.abs(this.x - v.x) < tolerance &&  Math.abs(this.y - v.y) < tolerance);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -115,7 +110,7 @@ public class Vec2f implements Vectorf<Vec2f>
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float length() { return (float)Math.sqrt(x * x + y * y);	}	
+	public float length() { return (float)Math.sqrt(x * x + y * y);	}
 
 	/**
 	 * {@inheritDoc}
@@ -134,12 +129,12 @@ public class Vec2f implements Vectorf<Vec2f>
 
 		return this;
 	}
-	
+
 	/**
 	 * Return a normalised version of the provided vector. The provided vector argument itself remains unchanged.
 	 * <p>
 	 * If the magnitude of the vector is zero then the original vector is returned.
-	 * 
+	 *
 	 * @param	source	The vector to normalise.
 	 * @return		A normalised version of this vector.
 	 */
@@ -155,7 +150,7 @@ public class Vec2f implements Vectorf<Vec2f>
 	 * @return		FIX THIS
 	 * @see		Vec2f#negated()
 	 */
-	public static Vec2f getDirectionUV(Vec2f a, Vec2f b) { return b.minus(a).normalise(); }	
+	public static Vec2f getDirectionUV(Vec2f a, Vec2f b) { return b.minus(a).normalise(); }
 
 	/**
 	 * Calculate and return the distance between two Vec2f objects.
@@ -237,7 +232,7 @@ public class Vec2f implements Vectorf<Vec2f>
 
 		// Calculate the unsigned angle between the vectors as the arc-cosine of their dot product
 		float unsignedAngleDegs = (float)Math.acos( thisVectorUV.dot(otherVectorUV) ) * RADS_TO_DEGS;
-		
+
 		// Calculate and return the signed angle between the two vectors using the zcross method
 		if ( Vec2f.zcross(thisVectorUV, otherVectorUV) == 1)
 		{
@@ -248,7 +243,7 @@ public class Vec2f implements Vectorf<Vec2f>
 			return -unsignedAngleDegs;
 		}
 	}
-	
+
 	/**
 	 * Constrain a direction unit vector to be within the clockwise and anti-clockwise rotational constraints of a baseline unit vector.
 	 * <p>
@@ -275,20 +270,20 @@ public class Vec2f implements Vectorf<Vec2f>
 
 		// If we've exceeded the anti-clockwise (positive) constraint angle...
 		if (signedAngleDegs > antiClockwiseConstraintDegs)
-		{			
+		{
 			// ...then our constrained unit vector is the baseline rotated by the anti-clockwise constraint angle.
 			// Note: We could do this by calculating a correction angle to apply to the directionUV, but it's simpler to work from the baseline.
 			return Vec2f.rotateDegs(baselineUV, antiClockwiseConstraintDegs);
 		}
-		
+
 		// If we've exceeded the clockwise (negative) constraint angle...
 		if (signedAngleDegs < -clockwiseConstraintDegs)
-		{	
+		{
 			// ...then our constrained unit vector is the baseline rotated by the clockwise constraint angle.
 			// Note: Again, we could do this by calculating a correction angle to apply to the directionUV, but it's simpler to work from the baseline.
 			return Vec2f.rotateDegs(baselineUV, -clockwiseConstraintDegs);
 		}
-		
+
 		// If we have not exceeded any constraint then we simply return the original direction unit vector
 		return directionUV;
 	}
@@ -339,7 +334,7 @@ public class Vec2f implements Vectorf<Vec2f>
 	 * This method does not convert degrees to radians and call rotateRads() - instead it performs a degrees to radians
 	 * conversion and then uses identical code from the rotateRads() method to rotate the vector whilst avoiding the
 	 * additional function call overhead.
-	 * 
+	 *
 	 * @param	source		The vector to rotate.
 	 * @param	angleDegs	The angle to rotate the source vector specified in degrees.
 	 * @return	Vec2f
@@ -365,7 +360,7 @@ public class Vec2f implements Vectorf<Vec2f>
 		return new Vec2f(source.x * cosTheta - source.y * sinTheta,  // x
 				         source.x * sinTheta + source.y * cosTheta); // y
 	}
-	
+
 	/**
 	 * Return a concise, human-readable description of this Vec2f as a String.
 	 * <p>
@@ -408,5 +403,5 @@ public class Vec2f implements Vectorf<Vec2f>
     }
     return true;
   }
-	
+
 } // End of Vec2f class

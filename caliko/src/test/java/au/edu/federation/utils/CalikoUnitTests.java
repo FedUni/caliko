@@ -16,13 +16,16 @@ import au.edu.federation.caliko.FabrikChain3D;
 /**
  * @author jsalvo / alansley
  */
-public class MarshallingUtilTest {
+public class CalikoUnitTests {
 	
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();	
 
+	/**
+	 * Unit-test that we can successfully serialize and unserialize a chain
+	 */
 	@Test
-	public void testMarshalling() throws Exception {
+	public void testSerialization() throws Exception {
 		Vec3f RIGHT      = new Vec3f(1.0f, 0.0f, 0.0f);
 		float boneLength = 10.0f;		
 		int bonesToAdd   = 100;
@@ -36,32 +39,38 @@ public class MarshallingUtilTest {
 		}
 		solveChain(chain);
 		
-		File file = folder.newFile();
+		File file = folder.newFile("SerializationTest.bin");
 		FileOutputStream fos = new FileOutputStream(file);
-		MarshallingUtil.marshall(chain, fos);
+		SerializationUtil.serializeChain(chain, fos);
 		
 		FileInputStream fis = new FileInputStream(file);
-		FabrikChain3D unmarhsalledChain = MarshallingUtil.unmarshallChain(fis, FabrikChain3D.class);
+		FabrikChain3D unserializedChain = SerializationUtil.unserializeChain(fis, FabrikChain3D.class);
 		
-		Assert.assertEquals(chain, unmarhsalledChain);
+		Assert.assertEquals(chain, unserializedChain);
 	}
 
-	/**
-	 * Unit-test that we can successfully unmarshall a chain from an XML source. 
-	 */
+	/* Unit-test to ensure we can deserialize a chain */
 	@Test
-	public void testUnmarshalling() throws Exception {
-		InputStream is = MarshallingUtilTest.class.getResourceAsStream("/sampleMarshalledChain.xml");
-		FabrikChain3D unmarhsalledChain = MarshallingUtil.unmarshallChain(is, FabrikChain3D.class);
+	public void testUnserializing() throws Exception
+	{
+		InputStream is = SerializationUtil.class.getResourceAsStream("/serialization-presaved-chain-1.bin");
 		
-		Assert.assertNotNull(unmarhsalledChain);
+		if (is == null)
+		{
+			System.out.println("is IS NULL =///");
+		}
+		
+		FabrikChain3D unserializedChain = SerializationUtil.unserializeChain(is, FabrikChain3D.class);		
+		Assert.assertNotNull(unserializedChain);
+		
+		System.out.println("*** Unserialization is working ***");
 	}
 
 	/** Test for pitch / yaw functionality 
 	 */
 	@Test
 	public void testPitchAndYaw() throws Exception
-	{
+	{		
 		Vec3f X_AXIS = new Vec3f(1.0f, 0.0f, 0.0f);
 		Vec3f Y_AXIS = new Vec3f(0.0f, 1.0f, 0.0f);
 

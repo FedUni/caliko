@@ -1,17 +1,17 @@
 package au.edu.federation.caliko;
 
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import javax.xml.bind.JAXBException;
+import java.io.File;
 
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import au.edu.federation.utils.MarshallingUtil;
+import au.edu.federation.utils.SerializationUtil;
 import au.edu.federation.utils.Utils;
 import au.edu.federation.utils.Vec3f;
 
@@ -33,7 +33,7 @@ public class ApplicationPerfTest
 	public TemporaryFolder folder = new TemporaryFolder();
 	
 	@Test
-	public void runTests() throws IOException, JAXBException
+	public void runTests() throws IOException, Exception
 	{	
 		System.out.println("---------- Caliko CPU Performance Analysis ----------");
 		
@@ -50,7 +50,7 @@ public class ApplicationPerfTest
 		writer.close();		
 	}
 	
-	private void performTest(int testNumber) throws IOException, JAXBException
+	private void performTest(int testNumber) throws IOException, Exception
 	{
 		// Set a fixed random seed for repeatability across cycles
 		Utils.setSeed(123);
@@ -128,20 +128,33 @@ public class ApplicationPerfTest
 			
 			System.out.println("Average solve duration (Milliseconds): " + averageMS);			
 			writer.println(chain.getNumBones() + "\t" + averageMS);
-		}
-		System.out.println("*** Test completed. ***");
+			
+		} // End of perftest loop
+		
+		/*String s = "C:\\users\\r3dux\\Desktop\\serialization-presaved-chain" + Integer.toString(testNumber) + ".bin";
+		File file = new File(s);
+		FileOutputStream fos = new FileOutputStream(file);
+		SerializationUtil.serializeChain(chain, fos);		
+		System.out.println("*** Written chain. ***");
+		*/
 		
 		assertChain(chain, testNumber);
+		
+		System.out.println("*** Serialization / Unserialization success ***");
+		System.out.println("*** Test completed. ***");		
 	}
 	
-	private void assertChain(FabrikChain3D chain, int testNumber) throws IOException, JAXBException {
-		MarshallingUtil.marshall(chain, new FileOutputStream(folder.newFile("perftest-marshalled-" + testNumber + ".xml")));
+	private void assertChain(FabrikChain3D chain, int testNumber) throws IOException, Exception
+	{
+		// Serialize the provided chain
+		SerializationUtil.serializeChain( chain, new FileOutputStream( folder.newFile("perftest-serialized-" + testNumber + ".bin") ) );
+					
+		// Unserialize presaved chain
+		InputStream is = ApplicationPerfTest.class.getResourceAsStream("/serialization-presaved-chain-" + testNumber + ".bin");		
+		FabrikChain3D unserializedPresavedChain = SerializationUtil.unserializeChain(is, FabrikChain3D.class);
 		
-		FabrikChain3D presavedChain = MarshallingUtil.unmarshallChain(
-			ApplicationPerfTest.class.getResourceAsStream("/perftest-presaved-marshalled-" + testNumber + ".xml"),
-			FabrikChain3D.class);
-		
-		Assert.assertEquals(chain, presavedChain);
+		// Assert theat the original and
+		Assert.assertEquals(chain, unserializedPresavedChain);
 	}
 	
 	private double solveChain(FabrikChain3D chain, int numIterations)

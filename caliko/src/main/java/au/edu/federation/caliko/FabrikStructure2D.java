@@ -1,14 +1,9 @@
 package au.edu.federation.caliko;
 
+import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import au.edu.federation.caliko.FabrikChain2D.BaseboneConstraintType2D;
 import au.edu.federation.utils.Utils;
@@ -25,23 +20,21 @@ import au.edu.federation.utils.Vec2f;
  * Chains in a structure may be connected to other chains in the same structure in a variety of ways, if desired.
  * 
  * @author Al Lansley
- * @version 1.0 - 02/08/2016
+ * @version 1.1 - 19/06/2019
  **/
-@XmlRootElement(name="structure2d")
-@XmlAccessorType(XmlAccessType.NONE)
-public class FabrikStructure2D implements FabrikStructure<FabrikChain2D,Vec2f>
-{	
+
+public class FabrikStructure2D implements FabrikStructure<FabrikChain2D,Vec2f>, Serializable
+{
+	private static final long serialVersionUID = 1L;
+	
 	private static final Vec2f UP = new Vec2f(0.0f, 1.0f);
 	
 	// ---------- Private Properties ----------
 	
 	/** The string name of this FabrikStructure2D - can be used for creating Maps, if required. */
-	@XmlAttribute(name="name")
 	private String mName;
 
 	/** The main substance of a FabrikStructure2D is an ArrayList of FabrikChain2D objects. */
-	@XmlElementWrapper(name="chains2d")
-	@XmlElement(name="chain2d")
 	private List<FabrikChain2D> mChains = new ArrayList<>();
 
 	/** Property to indicate if the first chain (chain zero) in this structure has its basebone fixed in place or not. */
@@ -85,7 +78,6 @@ public class FabrikStructure2D implements FabrikStructure<FabrikChain2D,Vec2f>
 		int numChains = mChains.size();
 		int hostChainNumber;
 		FabrikChain2D thisChain;		
-		
 		
 		for (int loop = 0; loop < numChains; ++loop)
 		{

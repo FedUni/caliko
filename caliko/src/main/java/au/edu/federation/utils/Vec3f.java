@@ -1,10 +1,8 @@
 package au.edu.federation.utils;
 
-import java.text.DecimalFormat;
+import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import java.text.DecimalFormat;
 
 //FIXME: Need to incorporate the following into Vec2f / FabrikChain2D:
 // - NORMALISE corrected constraint angle to stop jitter / flip-out
@@ -13,13 +11,14 @@ import javax.xml.bind.annotation.XmlAttribute;
 /**
  * Class  : Simple vec3 class with common operations and utility / helper methods.
  *
- * Version: 0.8
- * Date   : 28/10/2018
+ * Version: 0.9
+ * Date   : 19/06/2019
  */
 
-@XmlAccessorType(XmlAccessType.NONE)
-public class Vec3f implements Vectorf<Vec3f>
+public class Vec3f implements Vectorf<Vec3f>, Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	// ----- Static Properties -----
 	
 	// Define a DecimalFormat to be used by our toString() method.
@@ -38,7 +37,6 @@ public class Vec3f implements Vectorf<Vec3f>
 	// ----- Properties -----
 
 	// A Vec3 simply has three properties called x, y and z - these are public so we can access them directly for speed
-	@XmlAttribute
 	public float x, y, z;
 
 	// ----- Methods -----

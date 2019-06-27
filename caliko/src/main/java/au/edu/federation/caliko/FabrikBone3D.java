@@ -1,10 +1,6 @@
 package au.edu.federation.caliko;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 import au.edu.federation.caliko.FabrikJoint3D.JointType;
 import au.edu.federation.utils.Colour4f;
@@ -19,13 +15,14 @@ import au.edu.federation.utils.Vec3f;
  * the rotation of the bone with regard to a previous bone in an IK chain either as a ball joint or as
  * a hinge joint constrained about a local or global axis.
  * 
- * @version 0.3.2 - 28/10/2018
+ * @version 0.3.3 - 19/06/2019
  * @see FabrikJoint3D
  */
-@XmlRootElement(name="bone3d")
-@XmlAccessorType(XmlAccessType.NONE)
-public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
+
+public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>, Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	/** A line separator for the current system running this code. */
 	private static final String NEW_LINE = System.lineSeparator();
 	
@@ -54,14 +51,13 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	 * By default, a joint is not constrained (that is, it is free to rotate up to 180
 	 * degrees in a clockwise or anticlockwise direction), however a joint may be
 	 * constrained by specifying constraint angles via the
-	 * {@link #setClockwiseConstraintDegs(float)} and {@link #setAnticlockwiseConstraintDegs(float)}
-	 * methods.
+	 * {@link #setBallJointConstraintDegs(float)}, {@link #setHingeJointClockwiseConstraintDegs(float)},
+	 * and {@link #setHingeJointAnticlockwiseConstraintDegs(float)} methods.
 	 * <p>
 	 * You might think that surely a bone has two joints, one at the beginning and one at
 	 * the end - however, consider an empty chain to which you add a single bone: It has
 	 * a joint at its start, around which the bone may rotate (and which it may optionally
-	 * be constrained around a global axis via the
-	 * {@link FabrikChain3D#constrainBaseBoneToDirectionUV(Vec3f)} method).
+	 * be constrained).
 	 * <p>
 	 * When a second bone is added to the chain, the joint at the start of this second bone
 	 * controls the rotational constraints with regard to the first ('base') bone, and so on.
@@ -76,7 +72,6 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	 * During the backward (base-to-tip) pass, each bone is constrained by the joint angles
 	 * relative to the bone before it, ensuring that all constraints are enforced.
 	 */
-	@XmlElement(name="joint3d")
 	private FabrikJoint3D mJoint = new FabrikJoint3D();
 
 	/**
@@ -85,7 +80,6 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	 * The start location of a bone may only be set through a constructor or via an 'addBone'
 	 * method provided by the {@link FabrikChain3D} class.
 	 */
-	@XmlElement(name="startLocation")
 	private Vec3f mStartLocation = new Vec3f();
 	
 	/**
@@ -94,7 +88,6 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	 * The end location of a bone may only be set through a constructor or indirectly via an
 	 * 'addBone' method provided by the {@link FabrikChain3D} class.
 	 */
-	@XmlElement(name="endLocation")
 	private Vec3f mEndLocation = new Vec3f();
 
 	/**
@@ -110,18 +103,16 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	 * @see #FabrikBone3D(Vec3f, Vec3f, String)
 	 * @see #FabrikBone3D(Vec3f, Vec3f, float, String)
 	 */
-	@XmlAttribute(name="name")
 	private String mName;
 	
 	/**
 	 * The length of this bone from its start location to its end location. This is is calculated
 	 * in the constructor and remains constant for the lifetime of the object.
 	 */
-	@XmlAttribute(name="length")
 	private float mLength;
 
 	/**
-	 * The colour used to draw the bone in the {@link draw} method specified as a {@link #Colour4f} object.
+	 * The colour used to draw the bone as specified by a {@link Colour4f au.edu.federation.utils.Colour4f.class} object.
 	 * <p>
 	 * The default colour to draw a bone is white at full opacity i.e. Colour4f(1.0f, 1.0f, 1.0f, 1.0f).
 	 */
@@ -130,16 +121,13 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>
 	/**
 	 * The width of the line drawn to represent this bone, specified in pixels.
 	 * <p>
-	 * This property can be changed via the {@link #setLineWidth(float)} method, or alternatively,
-	 * line widths may be specified as arguments to the {@link #draw(float, Mat4f)} or
-	 * {@link #draw(Colour4f, float, Mat4f) methods.
-	 * <p>
 	 * The default line width is 1.0f, which is the only value guaranteed to render correctly for
 	 * any given hardware/driver combination. The maximum line width that can be drawn depends on
 	 * the graphics hardware and drivers on the host machine, but is typically up to 64.0f (pixels)
 	 * on modern hardware.
 	 * 
-	 * @default	1.0f
+	 * The default value is 1.0f.
+	 *
 	 * @see		#setLineWidth(float)
 	 * @see		<a href="https://www.opengl.org/sdk/docs/man3/xhtml/glLineWidth.xml">glLineWidth(float)</a>
 	 */

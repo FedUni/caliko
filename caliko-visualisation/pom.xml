@@ -13,7 +13,7 @@
   <parent>
     <groupId>au.edu.federation.caliko</groupId>
     <artifactId>caliko-aggregate</artifactId>
-    <version>1.3.5</version>
+    <version>1.3.6</version>
   </parent>  
 
   <licenses>
@@ -32,11 +32,21 @@
       <scope>compile</scope>
     </dependency>
 
+    <!-- LWJGL3 libs - https://mvnrepository.com/artifact/org.lwjgl/lwjgl -->
     <dependency>
-      <groupId>org.lwjgl</groupId>
+       <groupId>org.lwjgl</groupId>
       <artifactId>lwjgl</artifactId>
       <version>${lwjgl.version}</version>
-      <scope>compile</scope>
+    </dependency>
+	<dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl-glfw</artifactId>
+      <version>${lwjgl.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.lwjgl</groupId>
+      <artifactId>lwjgl-opengl</artifactId>
+      <version>${lwjgl.version}</version>
     </dependency>
 
   </dependencies>
@@ -46,13 +56,12 @@
     <developer>
       <id>alansley</id>
       <name>Alastair Lansley</name>
-      <email>a.lansley@federation.edu.au</email>
-      <url>http://federation.edu.au/faculties-and-schools/faculty-of-science-and-technology/staff-profiles/information-technology/alastair-lansley</url>
       <organization>Federation University, Australia</organization>
       <organizationUrl>http://federation.edu.au</organizationUrl>
       <timezone>Australia/Melbourne</timezone>
     </developer>
   </developers>  
+  
   <scm>
     <connection>git:https://github.com/FedUni/caliko</connection>
     <developerConnection>scm:git:https://github.com/FedUni/caliko</developerConnection>
@@ -60,14 +69,17 @@
   
   <build>
     <plugins>
+	
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
       </plugin>    
+	  
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>      
       </plugin>
+	  
     </plugins>
   </build>  
 

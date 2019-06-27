@@ -1,5 +1,8 @@
 package au.edu.federation.utils;
 
+import java.io.Serializable;
+
+
 /**
  * Class to represent a RGBA colour as four floating point values.
  * <p>
@@ -7,12 +10,14 @@ package au.edu.federation.utils;
  * constructors and the 'set' method clamp the colour components to the valid range 0.0f
  * to 1.0f. Setting colour component values outside of this range may result in undefined
  * behaviour.
- * 
+ *
  * @author Al Lansley
- * @version 0.9 - 29/12/2015
+ * @version 1.0 - 20/06/2019
  */
-public class Colour4f
+public class Colour4f implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	// ---------- Properties ----------
 
 	/** The minimum valid value of any colour component. */
@@ -23,16 +28,16 @@ public class Colour4f
 
 	/** Red component. Publicly accessible. */
 	public float r;
-	
+
 	/** Green component. Publicly accessible. */
 	public float g;
-	
+
 	/** Blue component. Publicly accessible. */
 	public float b;
-	
+
 	/** Alpha (transparency) component. Publicly accessible. */
 	public float a;
-	
+
 	// ---------- Constructors ----------
 
 	/**
@@ -44,7 +49,7 @@ public class Colour4f
 
 	/**
 	 * Copy constructor.
-	 * 
+	 *
 	 * @param	source The source Colour4f object to copy the component values from.
 	 */
 	public Colour4f(Colour4f source) { r = source.r; g = source.g; b = source.b; a = source.a; }
@@ -53,7 +58,7 @@ public class Colour4f
 	 * Array Constructor.
 	 * <p>
 	 * If the array size is not 4, then an IllegalArgument exception is thrown.
-	 * 
+	 *
 	 * @param	sourceValues	The array of floats to copy the values from.
 	 */
 	public Colour4f(float[] sourceValues)
@@ -75,7 +80,7 @@ public class Colour4f
 	 * Float Constructor.
 	 * <p>
 	 * The valid range of each component is 0.0f to 1.0f inclusive, any values outside of this range will be clamped.
-	 * 
+	 *
 	 * @param   red		The red component of this colour.
 	 * @param   green	The green component of this colour.
 	 * @param   blue	The blue component of this colour.
@@ -95,7 +100,7 @@ public class Colour4f
 	 * Set the RGBA values of this Colour4f object from a source Colour4f object.
 	 * <p>
 	 * Source values are clamped to the range 0.0f..1.0f.
-	 * 
+	 *
 	 * @param   source 	The source colour to set the values of this colour to.
 	 */
 	public void set(Colour4f source)
@@ -123,16 +128,16 @@ public class Colour4f
 		this.b = Colour4f.clamp(blue);
 		this.a = Colour4f.clamp(alpha);
 	}
-	
+
 	/**
 	 * Add to the RGB components of this colour by the given amounts and return this modified colour for chaining.
 	 * <p>
 	 * When adding, colour values are clamped to a maximum value of 1.0f.
-	 * 
+	 *
 	 * @param   red		The red   component to add to this colour.
 	 * @param   green	The green component to add to this colour.
 	 * @param   blue	The blue  component to add to this colour.
-	 * @return			This modified colour. 
+	 * @return			This modified colour.
 	 */
 	public Colour4f addRGB(float red, float green, float blue)
 	{
@@ -141,15 +146,15 @@ public class Colour4f
 		this.b = Colour4f.clamp(this.b + blue);
 		return this;
 	}
-	
+
 	/** Subtract from the RGB components of this colour by the given amounts and return this modified colour for chaining.
 	 * <p>
 	 * When subtracting, colour values are clamped to a minimum value of 1.0f.
-	 * 
+	 *
 	 * @param   red		The red   component to add to this colour.
 	 * @param   green	The green component to add to this colour.
 	 * @param   blue	The blue  component to add to this colour.
-	 * @return			This modified colour. 
+	 * @return			This modified colour.
 	 */
 	public Colour4f subtractRGB(float red, float green, float blue)
 	{
@@ -158,22 +163,22 @@ public class Colour4f
 		this.b = Colour4f.clamp(this.b - blue);
 		return this;
 	}
-	
+
 	/**
 	 * Lighten the RGB components of this colour by a given amount.
 	 * <p>
 	 * Resulting colour components are clamped to the range 0.0f..1.0f.
-	 * 
+	 *
 	 * @param	amount	The value to add to each (RGB only) component of the colour.
 	 * @return			The 'lightened' colour with the amount added to each component.
 	 */
 	public Colour4f lighten(float amount) { return addRGB(amount, amount, amount); }
-	
+
 	/**
 	 * Darken the RGB components of this colour by a given amount.
 	 * <p>
 	 * Resulting colour components are clamped to the range 0.0f..1.0f.
-	 * 
+	 *
 	 * @param	amount	The value to subtract from each (RGB only) component of the colour.
 	 * @return			The 'darkened' colour with the amount subtracted from each component.
 	 */
@@ -185,7 +190,7 @@ public class Colour4f
 	 * @return	This colour as an array of four floats.
 	 */
 	public float[] toArray() { return new float[] { r, g, b, a }; }
-	
+
 	/** Return a concise, human-readable description of the Colour4f object. */
 	@Override
 	public String toString() { return "Red: " + r + ", Green: " + g  + ", Blue: " + b + ", Alpha: " + a; }
@@ -194,14 +199,14 @@ public class Colour4f
 
 	/**
 	 * Return a random colour with an alpha value of 1.0f (i.e. fully opaque)
-	 * 
+	 *
 	 * @return	The random opaque colour.
 	 */
 	public static Colour4f randomOpaqueColour()
 	{
 		return new Colour4f(Utils.random.nextFloat(), Utils.random.nextFloat(), Utils.random.nextFloat(), 1.0f);
 	}
-	
+
 	// ---------- Private Methods ----------
 
 	private static float clamp(final float componentValue)

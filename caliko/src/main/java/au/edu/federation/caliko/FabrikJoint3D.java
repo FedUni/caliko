@@ -1,10 +1,6 @@
 package au.edu.federation.caliko;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 import au.edu.federation.utils.Utils;
 import au.edu.federation.utils.Vec3f;
@@ -45,12 +41,13 @@ import au.edu.federation.utils.Vec3f;
  * during the 'backward pass', the correct constraints are enforced between the relative angles
  * of any pair of adjacent bones.
  * 
- * @version 0.4.1 - 20/07/2016
+ * @version 0.4.2 - 19/06/2019
  */
-@XmlRootElement(name="joint3d")
-@XmlAccessorType(XmlAccessType.NONE)
-public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
+
+public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	// A line separator for the current system running this code
 	private static final String NEW_LINE = System.lineSeparator();
 	
@@ -99,9 +96,8 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 	 * degrees means that the bone can rotate to face the opposite direction to the previous
 	 * bone.
 	 * 
-	 * @default 180.0f.
+	 * The default 180.0f.
 	 */
-	@XmlAttribute(name="rotorConstraintDegrees")
 	private float mRotorConstraintDegs = MAX_CONSTRAINT_ANGLE_DEGS;
 
 	/**
@@ -112,10 +108,8 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 	 * rotate in an clockwise direction at all, and 180.0f means that the joint is unconstrained
 	 * with regard to anti-clockwise rotation.
 	 * <p>
-	 * @default 180.0f.
-	 * @see mHingeAxis
+	 * The default is 180.0f (no constraint).
 	 */
-	@XmlAttribute(name="hingeClockwiseConstraintDegrees")
 	private float mHingeClockwiseConstraintDegs = MAX_CONSTRAINT_ANGLE_DEGS;
 	
 	/**
@@ -126,17 +120,14 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 	 * rotate in an anti-clockwise direction at all, and 180.0f means that the joint is unconstrained
 	 * with regard to anti-clockwise rotation.
 	 * <p>
-	 * @default 180.0f.
+	 * The default is 180.0f.
 	 */
-	@XmlAttribute(name="hingeAnticlockwiseConstraintDegrees")
 	private float mHingeAnticlockwiseConstraintDegs = MAX_CONSTRAINT_ANGLE_DEGS;
 	
 	/** The unit vector axis about which a hinged joint may rotate. */
-	@XmlElement(name="rotationAxis")
 	private Vec3f mRotationAxisUV = new Vec3f();
 	
 	/** For a hinged joint, this is the axis used as a point of reference for rotation (it is NOT the axis about which the hinge rotates). */
-	@XmlElement(name="referenceAxis")
 	private Vec3f mReferenceAxisUV = new Vec3f();
 	
 	/**
@@ -144,9 +135,8 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>
 	 * <p>
 	 * Valid options are JointType.BALL, JointType.GLOBAL_HINGE, and JointType.LOCAL_HINGE.
 	 * 
-	 * @default	JointType.BALL
+	 * The default is JointType.BALL.
 	 */
-	@XmlAttribute(name="jointType")
 	private JointType mJointType = JointType.BALL;
 
 	// ---------- Constructors ----------
