@@ -14,6 +14,7 @@ import org.junit.rules.TemporaryFolder;
 import au.edu.federation.utils.SerializationUtil;
 import au.edu.federation.utils.Utils;
 import au.edu.federation.utils.Vec3f;
+import au.edu.federation.utils.Mat3f;
 
 public class ApplicationPerfTest
 {	
@@ -35,9 +36,45 @@ public class ApplicationPerfTest
 	@Test
 	public void runTests() throws IOException, Exception
 	{	
-		System.out.println("---------- Caliko CPU Performance Analysis ----------");
+		System.out.println("---------- Caliko Performance Analysis ----------");
 		
 		writer = new PrintWriter(folder.newFile("caliko-performance-test.txt"), "UTF-8");
+		
+		System.out.println("\n--- Rotation matrix creation ---\n");
+		writer.println("\n--- Rotation matrix creation ---\n");
+		
+		Mat3f m;
+	
+		Vec3f plusX  = new Vec3f(1.0f, 0.0f, 0.0f);
+		Vec3f plusY  = new Vec3f(0.0f, 1.0f, 0.0f);
+		Vec3f plusZ  = new Vec3f(0.0f, 0.0f, 1.0f);
+		
+		Vec3f minusX = new Vec3f(-1.0f,  0.0f,  0.0f);
+		Vec3f minusY = new Vec3f( 0.0f, -1.0f,  0.0f);
+		Vec3f minusZ = new Vec3f( 0.0f,  0.0f, -1.0f);
+		
+		m = Mat3f.createRotationMatrix(plusX);
+		System.out.println("Rotation matrix generated from plusX:\n" + m.toString() );		
+		writer.println("Rotation matrix generated from plusX:\n" + m.toString() );		
+		m = Mat3f.createRotationMatrix(plusY);
+		System.out.println("Rotation matrix generated from plusY:\n" + m.toString() );		
+		writer.println("Rotation matrix generated from plusY:\n" + m.toString() );		
+		m = Mat3f.createRotationMatrix(plusZ);
+		System.out.println("Rotation matrix generated from plusZ:\n" + m.toString() );
+		writer.println("Rotation matrix generated from plusZ:\n" + m.toString() );
+		
+		m = Mat3f.createRotationMatrix(minusX);
+		System.out.println("Rotation matrix generated from minusX:\n" + m.toString() );
+		writer.println("Rotation matrix generated from minusX:\n" + m.toString() );				
+		m = Mat3f.createRotationMatrix(minusY);
+		System.out.println("Rotation matrix generated from minusY:\n" + m.toString() );
+		writer.println("Rotation matrix generated from minusY:\n" + m.toString() );				
+		m = Mat3f.createRotationMatrix(minusZ);
+		System.out.println("Rotation matrix generated from minusZ:\n" + m.toString() );
+		writer.println("Rotation matrix generated from minusZ:\n" + m.toString() );
+		
+		System.out.println("\n -----------------\n");
+		writer.println("\n -----------------\n");
 		
 		// Perform tests
 		int numTests = 3;
@@ -159,6 +196,8 @@ public class ApplicationPerfTest
 	
 	private double solveChain(FabrikChain3D chain, int numIterations)
 	{
+		float avgSolveDistance = 0.0f;
+	
 		// Get half the length of the chain (to ensure target can be reached)
 		float len = chain.getChainLength() / 2.0f;
 		
@@ -175,8 +214,8 @@ public class ApplicationPerfTest
 			// Get start time
 			startNanos = System.nanoTime();
 			
-				// Solve for target
-				chain.solveForTarget(target);
+			// Solve for target
+			avgSolveDistance += chain.solveForTarget(target);
 				
 			writer.println(chain.toString());
 			writer.flush();
@@ -191,6 +230,10 @@ public class ApplicationPerfTest
 		// Calculate and display average solve duration for this chain across all iterations
 		long averageMicrosecondsPerIteration = combinedMicrosecondsForIteration / (long)numIterations;
 		averageMilliseconds = (double)averageMicrosecondsPerIteration / 1000.0;
+		
+		// Calculate average solve distance & display it
+		avgSolveDistance /= numIterations;
+		System.out.println("Average solve distance: " + avgSolveDistance);
 		
 		return averageMilliseconds;
 	}

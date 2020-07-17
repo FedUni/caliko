@@ -119,7 +119,7 @@ public class Mat3f
 	 * Create a rotation matrix from a given direction.
 	 * <p>
 	 * The reference direction is aligned to the Z-Axis, and the X-Axis is generated via the 
-	 * genPerpendicularVectorQuuck() method. The Y-Axis is then the cross-product of those two axes.
+	 * genPerpendicularVectorQuick() method. The Y-Axis is then the cross-product of those two axes.
 	 * <p>
 	 * This method uses the <a href="https://gist.github.com/roxlu/3082114">Frisvad technique</a> for generating perpendicular axes. 
 	 * 
@@ -136,8 +136,71 @@ public class Mat3f
 	    return new Mat3f(xAxis, yAxis, zAxis);
 	}*/
 	
+	/**
+	 * Create a rotation matrix from a given direction.
+	 * <p>
+	 * The reference direction is aligned to the Z-Axis. Note: The singularity is on the positive Y-Axis.
+	 * <p>
+	 * This method uses the <a href="https://gist.github.com/roxlu/3082114">Frisvad technique</a> for generating perpendicular axes. 
+	 * 
+	 * @param	referenceDirection	The vector to use as the Z-Axis
+	 * @return	The created rotation matrix.
+	 *
+	 * @see Vec3f#genPerpendicularVectorQuick(Vec3f) 
+	 */
 	public static Mat3f createRotationMatrix(Vec3f referenceDirection)
 	{	
+		/*** You may want to try this - but the generated rotation matrix will be a little different (see below):
+		     Note: There is no difference in solve distance between these, performance varies slightly - see test details on build (i.e. "mvn package")
+		
+		--- Rotation matrix creation (Meaten fix) ---	--- Rotation matrix creation (Pixar) ---
+
+		Rotation matrix generated from plusX:
+		X Axis: 0.000,	0.000,	1.000			X Axis: 0.000,	-0.000,	-1.000
+		Y Axis: 0.000,	1.000,	0.000			Y Axis: -0.000,	1.000,	-0.000
+		Z Axis: 1.000,	0.000,	0.000			Z Axis: 1.000,	0.000,	0.000
+
+		Rotation matrix generated from plusY:
+		X Axis: 1.000,	0.000,	0.000			X Axis: 1.000,	-0.000,	-0.000
+		Y Axis: 0.000,	0.000,	1.000			Y Axis: -0.000,	0.000,	-1.000
+		Z Axis: 0.000,	1.000,	0.000			Z Axis: 0.000,	1.000,	0.000
+
+		Rotation matrix generated from plusZ:
+		X Axis: -1.000,	0.000,	0.000			X Axis: 1.000,	-0.000,	-0.000
+		Y Axis: 0.000,	1.000,	-0.000			Y Axis: -0.000,	1.000,	-0.000
+		Z Axis: 0.000,	0.000,	1.000			Z Axis: 0.000,	0.000,	1.000
+
+		Rotation matrix generated from minusX:
+		X Axis: 0.000,	0.000,	-1.000			X Axis: 0.000,	0.000,	1.000
+		Y Axis: 0.000,	1.000,	0.000			Y Axis: 0.000,	1.000,	-0.000
+		Z Axis: -1.000,	0.000,	0.000			Z Axis: -1.000,	0.000,	0.000
+
+		Rotation matrix generated from minusY:
+		X Axis: 1.000,	0.000,	0.000			1.000,	0.000,	-0.000
+		Y Axis: 0.000,	0.000,	-1.000			Y Axis: 0.000,	0.000,	1.000
+		Z Axis: 0.000,	-1.000,	0.000			Z Axis: 0.000,	-1.000,	0.000
+
+		Rotation matrix generated from minusZ:
+		X Axis: 1.000,	-0.000,	0.000			X Axis: 1.000,	-0.000,	0.000
+		Y Axis: 0.000,	1.000,	0.000			Y Axis: 0.000,	-1.000,	-0.000
+		Z Axis: 0.000,	0.000,	-1.000			Z Axis: 0.000,	0.000,	-1.000
+		
+		// Create an orthonormal basis using Pixar's method.
+		// Source: https://graphics.pixar.com/library/OrthonormalB/paper.pdf		
+		
+		float sign = Math.copySign(1.0f, referenceDirection.z);
+		float a = -1.0f / (sign + referenceDirection.z);
+		float b = referenceDirection.x * referenceDirection.y * a;
+		Vec3f xAxis = new Vec3f(1.0f + sign * referenceDirection.x * referenceDirection.x * a, sign * b, -sign * referenceDirection.x);
+		Vec3f yAxis = new Vec3f(b, sign + referenceDirection.y * referenceDirection.y * a, -referenceDirection.y);
+	
+		Mat3f rotMat = new Mat3f();
+		rotMat.setZBasis( referenceDirection );		
+		rotMat.setXBasis( xAxis.normalised() );
+		rotMat.setYBasis( yAxis.normalised() );		
+		return rotMat;
+		***/
+	
 		/*** OLD VERSION 1.3.4 and earlier
 		Vec3f xAxis;
 		Vec3f yAxis;
@@ -160,27 +223,28 @@ public class Mat3f
 		return new Mat3f(xAxis, yAxis, zAxis);
 		***/
 
-		/*** NEW VERSION - 1.3.5 onwards ***/
+		/*** NEW VERSION - 1.3.8 onwards ***/		
+		
 		Mat3f rotMat = new Mat3f();
-
-		// Bone direction is bang on the Y-axis singularity? Give it a tiny nudge because you can't cross product two identical vectors.
-		if (referenceDirection.y == 1.0f) {
-			referenceDirection.y -= 0.0001f;
-			referenceDirection.normalise();
+		
+		// Singularity fix provided by meaten - see: https://github.com/FedUni/caliko/issues/19
+		if (Math.abs(referenceDirection.y) > 0.9999f)
+		{
+			rotMat.setZBasis(referenceDirection);
+			rotMat.setXBasis( new Vec3f(1.0f, 0.0f, 0.0f));
+			rotMat.setYBasis( Vec3f.crossProduct( rotMat.getXBasis(), rotMat.getZBasis()).normalised());
+		}
+		else
+		{
+			rotMat.setZBasis( referenceDirection );		
+			rotMat.setXBasis( Vec3f.crossProduct( referenceDirection, new Vec3f(0.0f, 1.0f, 0.0f) ).normalised() );
+			rotMat.setYBasis( Vec3f.crossProduct( rotMat.getXBasis(), rotMat.getZBasis() ).normalised() );
 		}
 
-		rotMat.setZBasis( referenceDirection );		
-		rotMat.setXBasis( Vec3f.crossProduct( referenceDirection, new Vec3f(0.0f, 1.0f, 0.0f) ).normalised() );
-		rotMat.setYBasis( Vec3f.crossProduct( rotMat.getXBasis(), rotMat.getZBasis() ).normalised() );
-
 		return rotMat;
+		
 	}
-	
-//	THIS IS WAAAAAY BETTER THAN THE COMMENTED OUT ABOVE - BUT I THINK REFERENCE ANGLES **MUST** BE HONOURED IN THE
-//	FORWARD PASS OR WE END UP WITH JUMPY BULLSHIT RESULTS (SEE LOCAL HINGE WITH REFERENCE CONSTRAINTS)
-//
-//	PERHAPS genPerpendicularVectorQuick SHOULD USE THE SAME TECHNIQUE TO KEEP EVERYTHING IN ORDER??
-	
+		
 	/**
 	 * Return whether this matrix consists of three orthogonal axes or not to within a cross-product of 0.01f.
 	 *

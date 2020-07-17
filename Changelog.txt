@@ -1,3 +1,7 @@
+1.3.8 (2020/07/17)
+- Fixed the Mat3f.createRotationMatrix() method to correctly handle the singularity on the positive Y-axis (thanks, meaten!)
+- Also added a (commented out) Pixar version which works, but generates slightly different orthogonal 3x3 matrices (see method for details)
+
 1.3.7 (2020/04/02)
 - Updated documentation to discuss potential Mac demo crash & potential mitigation steps
 - Updated documentation display of project file structure
