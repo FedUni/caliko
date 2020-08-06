@@ -41,11 +41,7 @@ To use the library in your own Maven project, declare the following dependencies
     <dependency>
       <groupId>au.edu.federation.caliko</groupId>
       <artifactId>caliko</artifactId>
-<<<<<<< HEAD
       <version>1.3.8</version>
-=======
-      <version>1.3.6</version>
->>>>>>> 863cb069101035f61613b7983f504991d9a0d876
     </dependency> 
 ```
 
@@ -55,11 +51,7 @@ To use the library in your own Maven project, declare the following dependencies
     <dependency>
       <groupId>au.edu.federation.caliko.visualisation</groupId>
       <artifactId>caliko-visualisation</artifactId>
-<<<<<<< HEAD
       <version>1.3.8</version>
-=======
-      <version>1.3.6</version>
->>>>>>> 863cb069101035f61613b7983f504991d9a0d876
     </dependency> 
 ```
 
