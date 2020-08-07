@@ -31,6 +31,12 @@ To build yourself:
 Alternatively, download a release from: 
 [https://github.com/FedUni/caliko/releases](https://github.com/FedUni/caliko/releases)
 
+## Documentation
+
+Downloaded releases come packaged with a user guide and JavaDoc API documentation in the **docs** folder.
+
+Alternatively, if you'd just like to take a peek at the user guide, it can be found here: [https://github.com/FedUni/caliko/blob/master/caliko-distribution/src/site/docs/caliko-user-guide.pdf](Caliko User Guide PDF)
+
 ## Usage
 
 To use the library in your own Maven project, declare the following dependencies:
