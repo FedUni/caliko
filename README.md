@@ -1,3 +1,5 @@
+[![](https://jitpack.io/v/FedUni/caliko.svg)](https://jitpack.io/#FedUni/caliko)
+
 # Caliko
 The Caliko library is an implementation of the FABRIK inverse kinematics (IK) algorithm in the Java programming language, and is released under the MIT software license. See LICENSE.txt for further details.
 
