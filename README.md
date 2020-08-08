@@ -20,7 +20,7 @@ The **caliko-visualisation** module contains the optional visualisation componen
 
 The **caliko-demo** module contains a demonstration of the library utilising both 2D and 3D IK chains in various configurations. It requires the caliko, caliko-visualisation and LWJGL 3.2.2 libraries.
 
-## Build and Setup
+## Build and Setup ##
 
 To build yourself:
 
@@ -31,13 +31,13 @@ To build yourself:
 Alternatively, download a release from: 
 [https://github.com/FedUni/caliko/releases](https://github.com/FedUni/caliko/releases)
 
-## Documentation
+## Documentation ##
 
 Downloaded releases come packaged with a user guide and JavaDoc API documentation in the **docs** folder.
 
 Alternatively, if you'd just like to take a peek at the user guide, it can be found here: [Caliko User Guide.pdf](https://github.com/FedUni/caliko/blob/master/caliko-distribution/src/site/docs/caliko-user-guide.pdf)
 
-## Usage
+## Usage ##
 
 To use the library in your own Maven project, declare the following dependencies:
 
@@ -61,7 +61,7 @@ To use the library in your own Maven project, declare the following dependencies
     </dependency> 
 ```
 
-## Demo controls
+## Demo controls ##
 
 - Left mouse button sets target in 2D mode and enables mouse-look in 3D mode.
 - Up/Down cursors - Toggle 2D/3D mode.
@@ -75,15 +75,15 @@ To use the library in your own Maven project, declare the following dependencies
 - R - Toggle rotating base locations (3D)
 - Esc - Quit.
 
-## TODO
+## TODO ##
 
-### High priority
+### High priority ##
 - Nil.
 
-### Medium priority
+### Medium priority ##
 - Nil.
 
-### Low priority
+### Low priority ##
 - Refactor entire library to use quaternions.
 - Add parabolic constraint types.
 - Streamline Model class object copying.
