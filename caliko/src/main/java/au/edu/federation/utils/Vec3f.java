@@ -300,7 +300,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable
 	 * @param	v2	The second point.
 	 * @return		The Manhattan distance between the two points.
 	 */
-	public static float manhattanDistanceBetween(Vec3f v1, Vec3f v2) { return Math.abs(v2.x - v1.x) + Math.abs(v2.x - v1.x) + Math.abs(v2.x - v1.x); }
+	public static float manhattanDistanceBetween(Vec3f v1, Vec3f v2) { return Math.abs(v2.x - v1.x) + Math.abs(v2.y - v1.y) + Math.abs(v2.z - v1.z); }
 	
 	/**
 	 * Return whether two locations are within a given manhattan distance of each other.
